@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://shiraji.github.io/blog/2015/10/17/zi-ji-shao-jie/</loc>
+    <loc>http://shiraji.github.io/blog/2015/10/17/refactoring/</loc>
+    <lastmod>2015-10-17T11:39:09+09:00</lastmod>
+  </url>
+  <url>
+    <loc>http://shiraji.github.io/blog/2015/10/17/intro/</loc>
     <lastmod>2015-10-17T07:31:51+09:00</lastmod>
   </url>
   <url>
@@ -9,5 +13,8 @@
   </url>
   <url>
     <loc>http://shiraji.github.io/</loc>
+  </url>
+  <url>
+    <loc>http://shiraji.github.io/blog/categories/refactoring/</loc>
   </url>
 </urlset>

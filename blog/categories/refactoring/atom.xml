@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Shiraji's Blog]]></title>
-  <link href="http://shiraji.github.io/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Refactoring | Shiraji's Blog]]></title>
+  <link href="http://shiraji.github.io/blog/categories/refactoring/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
   <updated>2015-10-17T12:02:05+09:00</updated>
   <id>http://shiraji.github.io/</id>
@@ -108,23 +108,6 @@
 <h1>まとめ</h1>
 
 <p>汚い場所で人を働かせることが辛いということがわかるのであるなら、ぜひ汚い環境で働かされているエンジニアに掃除をする猶予を与えてあげてください。それが長期的に見るとサービスを改善を早くし、技術力のあるエンジニアを定着させ、変化に柔軟なサービスを提供させることが出来るようになるからです。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[自己紹介]]></title>
-    <link href="http://shiraji.github.io/blog/2015/10/17/intro/"/>
-    <updated>2015-10-17T07:31:51+09:00</updated>
-    <id>http://shiraji.github.io/blog/2015/10/17/intro</id>
-    <content type="html"><![CDATA[<p>shirajiと申します。GitHub活動は英語で行っていますが、このブログは日本語で記載していきたいと思います。</p>
-
-<ul>
-<li>Twitter: <a href="https://twitter.com/shiraj_i">@shiraj_i</a></li>
-<li>Qiita: <a href="http://qiita.com/shiraji">shiraji</a></li>
-</ul>
-
-
-<p>よろしくお願いいたします。</p>
 ]]></content>
   </entry>
   
