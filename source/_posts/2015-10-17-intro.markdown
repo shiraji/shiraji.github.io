@@ -1,0 +1,15 @@
+---
+layout: post
+title: "自己紹介"
+date: 2015-10-17 07:31:51 +0900
+comments: false
+sharing: true
+categories:
+---
+
+shirajiと申します。GitHub活動は英語で行っていますが、このブログは日本語で記載していきたいと思います。
+
+* Twitter: [@shiraj_i](https://twitter.com/shiraj_i)
+* Qiita: [shiraji](http://qiita.com/shiraji)
+
+よろしくお願いいたします。
