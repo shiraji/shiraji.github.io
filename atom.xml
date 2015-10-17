@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2015-10-17T07:27:54+09:00</updated>
+  <updated>2015-10-17T09:48:09+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Shiraji]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[自己紹介]]></title>
+    <link href="http://shiraji.github.io/blog/2015/10/17/zi-ji-shao-jie/"/>
+    <updated>2015-10-17T07:31:51+09:00</updated>
+    <id>http://shiraji.github.io/blog/2015/10/17/zi-ji-shao-jie</id>
+    <content type="html"><![CDATA[<p>shirajiと申します。GitHub活動は英語で行っていますが、このブログは日本語で記載していきたいと思います。</p>
+
+<ul>
+<li>Twitter: <a href="https://twitter.com/shiraj_i">@shiraj_i</a></li>
+<li>Qiita: <a href="http://qiita.com/shiraji">shiraji</a></li>
+</ul>
+
+
+<p>よろしくお願いいたします。</p>
+]]></content>
+  </entry>
   
 </feed>
