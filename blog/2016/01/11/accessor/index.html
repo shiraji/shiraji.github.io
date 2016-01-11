@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Shiraji's Blog</title>
+  <title>生成されてしまうAccessorに関して - Shiraji's Blog</title>
   <meta name="author" content="Shiraji">
 
   
-  <meta name="description" content="まとめ 修飾子次第で勝手にAccessorが生成されるから気をつけてね！ 最初に Jakeさんがこのpull requestを投げていて、察するに$accessorというメソッドが生成されてしまうので、それを生成しないようにしたぜ？ってことだと思う。が、なんでそうなるのかわからない。
-他にも、 &hellip;">
+  <meta name="description" content="生成されてしまうAccessorに関して Jan 11th, 2016 10:50 am まとめ 修飾子次第で勝手にAccessorが生成されるから気をつけてね！ 最初に Jakeさんがこのpull requestを投げていて、察するに$accessorというメソッドが生成されてしまうので、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://shiraji.github.io/">
+  <link rel="canonical" href="http://shiraji.github.io/blog/2016/01/11/accessor/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Shiraji's Blog" type="application/atom+xml">
@@ -67,15 +66,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/01/11/accessor/">生成されてしまうAccessorに関して</a></h1>
+      <h1 class="entry-title">生成されてしまうAccessorに関して</h1>
     
     
       <p class="meta">
@@ -91,7 +87,7 @@
   </header>
 
 
-  <div class="entry-content"><h1>まとめ</h1>
+<div class="entry-content"><h1>まとめ</h1>
 
 <p>修飾子次第で勝手にAccessorが生成されるから気をつけてね！</p>
 
@@ -605,355 +601,67 @@ privateアクセス修飾子のため、アクセス出来ないので、access�
 
 <p>これはメソッドを減らすことがどうやっても出来ないそうです。</p>
 </div>
-  
-  
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="9086067267"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
 
-    </article>
-  
-  
-    <article>
+
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/01/10/pull_req_study/">プルリク駆動勉強</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-01-10T10:44:39+09:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:44 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>まとめ</h1>
-
-<p>勉強出来そうなプロジェクトを選らんで、pull requestを投げて、レビューしてもらうと勉強になるよ。</p>
-
-<h1>対象者</h1>
-
-<ul>
-<li>息をするようにpull requestを投げられない</li>
-<li>プログラミングの基礎は勉強したけど、今度どうすればいいのわからない</li>
-</ul>
-
-
-<h1>プルリク駆動勉強とは</h1>
-
-<p>30歳を超えて、会社では中堅になりました。昔は会社から与えられた仕事をこなすことによって成長を感じられていました。ここ数年は後輩に教えたり、リソース管理などをすることが多くなり、エンジニアとしての成長を感じられなくなってしまいました。(マネージメント力の成長は感じています。)このままではいかん！ということで、考え出したのがプルリク駆動勉強です。</p>
-
-<p>プルリク駆動勉強とはpull requestを投げるためにそのプロジェクトを学んだり、英語でのコミュニケーションをしたり、その言語のベストプラクティスを体で覚えたりすることです。</p>
-
-<p>とにかくpull requestを投げてレビューされることを目的にします。</p>
-
-<p>pull request投げるなんて出来ない！怖い！って思うかもしれません。
-確かに急に新しい機能の提案するのは中々通らないし、レビューすらしてくれないこともあります。しかし、すでにあるIssueのうち、プロジェクトオーナーが「これはやりたいけど、時間が〜」と言っているようなものはくそコードを投げつけてもしっかり受け止めてくれ、そのコードをより良いものに仕上げるようにアドバイスくれます。</p>
-
-<p>このレビューが非常に良く、凄腕のエンジニアが無料でコードを見てくれてアドバイスまでくれるのでスキルアップに最適です。こっちは勉強のつもりなんですが、pull requestを送っただけで感謝されることだってあります。もしそのコードがマージなんてされちゃえば、有名どころのプロジェクトの一部が自分のコードで動くことになるわけです。これは嬉しい。</p>
-
-<p>かといって、無闇やたらにpull requestを投げてもいいことはないので自分の経験からこれなら勉強出来る！というものを説明していきます。</p>
-
-<h1>プルリク駆動勉強の条件</h1>
-
-<p>自分は以下の条件でpull requestを投げるプロジェクトを選定をします。</p>
-
-<ul>
-<li>GitHubのスターが500以上。出来れば5000以上</li>
-<li>開発が活発</li>
-<li>Issueがラベルなどで管理されている</li>
-<li>放置されているpull requestが少ない</li>
-<li>GitHubで完結している</li>
-<li>使ったことあるなしは気にしない</li>
-</ul>
-
-
-<h2>GitHubのスターが500↑</h2>
-
-<p>GitHubのスターが多いものは注目度が高く、利用価値が高いです。またこういうプロジェクトの開発に関わっている人は技術レベルが高く、pull requestへのレビューもかなり厳しくなります。こういうプロジェクトにコントリビュート出来るとモチベーションアップにも繋がるため、有名どころを積極的に狙います。</p>
-
-<p>ただし、有名どころだと「バグ報告はありがたいけど、いきなりコードのコントリビュートはしなくていい」と言うところもありますので、CONTRIBUTING.mdは注意して読んで下さい。</p>
-
-<h2>開発が活発</h2>
-
-<p>1年以上放置されているライブラリだとマージどころかレビューされない可能性が高くなります。それでは意味がないので、コードレビューがされているかどうかの確認は絶対行います。</p>
-
-<p>マージ権限があるユーザ(Collaborator)が複数いるとかなり良いです。マージしているコミッターが複数いるかどうかをコミット履歴から追ってみるとわかります。</p>
-
-<h2>Issueがラベルなどで管理されている</h2>
-
-<p>有名どころのプロジェクトはリソースがないから対応していないIssueが結構あります。新参者がいきなりそういうIssueに対してpull requestを送るのは怖いと感じるはずです。(pull request投げるのに慣れると特段気にならなくなりますが。。。)</p>
-
-<p>Issueが整理されているプロジェクトでは、誰がコントリビュートしてもいいよ！というラベルが貼ってある場合があります。例えば、自分がちょくちょくコントリビュートしている、<a href="https://github.com/excilys/androidannotations/">AndroidAnnotations</a>では<a href="https://github.com/excilys/androidannotations/labels/ContributionWelcome">ContributionWelcome</a>がそれに当たります。
-こういうラベルがあれば、いつでもバッチコイやと宣言しているので、新参者だろうと特に気にせず、pull request投げてしまいます。大抵の場合、何をするべきかということがしっかりIssueに記載されていますので、その通りに実装すれば良いだけです。</p>
-
-<p>ラベルが管理されていないところでも、Issueにこれやってもいいかね？というコメントをしてしまうのもありです。マージしている人が上げているようなIssueは特に狙い目で質問もしやすく、レスポンスも早いです。</p>
-
-<h2>放置されているpull requestが少ない</h2>
-
-<p>一ヶ月以上前に上げられたpull requestが10件以上放置されているようなプロジェクトは危険です。</p>
-
-<p>大抵、pull requestはマージしてほしいから出しているわけで、コントリビューター側の問題で放置されるというのは稀です。プロジェクトオーナーがレビューしてくれない、マージする気がない、忙しいことが多く、そういうプロジェクトにpull requestを投げても放置されるだけで勉強出来ません。時間の無駄です。</p>
-
-<h2>GitHubで完結している</h2>
-
-<p>GitHub内で完結していないプロジェクトは避けます。Issueが別サイトであったり、sourceがcloneで一発取得できなかったりするものです。そのプロジェクト特有のローカルルールはラーニングコストが高いわりに学んでもそのプロジェクトでしか使えないためです。</p>
-
-<p>どうしてもそのプロジェクトのコントリビュートがしたい！という人であれば、全力で推奨しますが、そういうプロジェクトは新参者に対しかなり壁が高く、最初からそういうのを狙ってしまうと続けられなくなります。</p>
-
-<h2>使ったことあるなしは気にしない</h2>
-
-<p>ビルドやテストが通る環境が出来てしまえさえすれば、そのプロジェクトを使ったことあるなしは特に問題ありません。</p>
-
-<p>自分の場合、今直近で出しているpull requestは全て使ったことがないプロジェクトだったりします。
-(ぶっちゃけると使ったことがないほうがマージされて壊れちゃっても業務に支障出ないし、気楽だったりします。)</p>
-
-<h1>必要なスキル</h1>
-
-<p>プルリク駆動勉強で必要なスキルは以下です。</p>
-
-<ul>
-<li>gitの基礎やfork->commit->pull requestまでが出来る</li>
-<li>コードレビューでも折れない心</li>
-<li>自分のスキルではまだ出来ないと思わないこと</li>
-</ul>
-
-
-<h2>gitの基礎やfork->commit->pull requestまでが出来る</h2>
-
-<p>pull requestを投げるまでの流れはググればすぐ出てくるので、説明省略。</p>
-
-<p>それ以外でもgit/githubの問題はやっているとちょくちょく出てきますが、都度やりたいことをググれば出てきます。勉強して下さい。どうしてもわからない場合は直接聞いてしまってもいいです。</p>
-
-<p>fork元のブランチとの同期方法が最初の壁だと思います。面倒であれば、forkしたリポジトリを消して再度forkして同期を取るのもありです。
-(ただし、マージ前のpull requestがあったりすると面倒なので、注意。)
-これも勉強だと思って、わからないのであればググッてみて下さい。「fork 更新 追随」とかで検索すれば出てきます。</p>
-
-<h2>コードレビューでも折れない心</h2>
-
-<p>特に経験の少ない人や潰れていった人に多いのがコードレビューの指摘点がその人に対して言っているのでは？と勘違いしていることです。</p>
-
-<p><strong>コードレビューはコードに対して言っているのであって、そのコードを書いた人に対しては言っていないです。</strong></p>
-
-<p>この考えになってない人は早めに切り替えないと精神的に病みやすいので気をつけて下さい。
-辛辣な意見があるかもしれませんが、あなたを否定しているわけではないです。
-(逆にコードを書いた人を否定するような意見をするレビュアーがいる場合、さっさとそのプロジェクトから離れるなり、転職するなりしたほうがいいです。そういう人と一緒にコード書いても精神的に疲れるだけです。)</p>
-
-<h2>自分のスキルではまだ出来ないと思わないこと</h2>
-
-<p>プルリク駆動勉強で一番問題なのが、「自分のスキルではまだ出来ない」と思う心の壁です。</p>
-
-<p>どれほどしょぼいコードでもpull requestを投げることで、そのプロジェクトに関わっている人に指摘してもらい、コードをどう書けばいいのかがわかってきます。</p>
-
-<p>自分の場合、一度も書いたことなかった言語を触りたいからということで、コード読んでpull request投げたこともあります。</p>
-
-<p>最終的に良いアウトプットになればいいわけで、最初から完璧を目指す必要がないです。また最初からほぼ完璧なコードが作れるのであれば、プルリク駆動勉強はもう卒業しています。</p>
-
-<p>会社でのプログラミングは社内の特殊なルールがあったりし、社外で通じないことが多々あります。有名どころのプロジェクトではベストプラクティスを求められるため、じっくり設計し、自分が考えたさいきょうのコードを作り上げることが出来ます。どんなことでもコントリビュートしてくれたことに感謝してくれるプロジェクトが多いです。無料で世界レベルのエンジニアに教えてもらい、さらに感謝までしてもらえます。そのコードがマージまでされれば、世界で使われるような有名なプロジェクトが自分のコードで動くことになります！</p>
-
-<h1>個人的な成果</h1>
-
-<p>まだ3ヶ月ほどですが、これをやるようになって、Java8, Groovy/Gradle, Kotlinの勉強が出来ました。Rubyや英語のスキルも上がったことを実感しています。</p>
-
-<p>また、gitの知識もかなり深まりました。他人の途中のpull requestを自分のpull requestとして取り込み、修正し、投げるみたいな貴重な経験も出来ました。小さいアイコンと大きいアイコンが一度に出るような<a href="https://github.com/excilys/androidannotations/pull/1603/commits">コミット</a>見たことありますか？</p>
-
-<h1>気をつけること</h1>
-
-<p>時間をかければかけるだけ勉強は出来ますが、業務に支障が出たり、最悪体を壊してしまいます。</p>
-
-<p>以前はブログを書いたり、本を読んだりと夜遅くまでダラダラをやっていました。でもいまいち成果が出なかったです。今は短い時間で集中して結果を出していくことを心がけています。夜12時には寝ます。お昼休みの食後30分と子供が寝た後の1時間だけやっています。無理は絶対にしません。だって、納期はありませんから。</p>
-
-<p>一日多くの時間がないので、毎日コミットは出来ません。Issueやコードを読むだけで過ぎてしまう日もあります。でも週1くらいのペースでpull requestを投げられています。</p>
-
-<p>スケジューリングに時間を使うのも無駄なので、一個終わったら次のIssueへという流れにしています。</p>
-
-<h1>pull requestが怖い人へ</h1>
-
-<p>そんなこといってもお前スキルあるからやれるんでしょ？みたいな人がいるかと思うので、実際に自分がつい最近送ったくそpull requestを晒しておきます。</p>
-
-<p><a href="https://github.com/excilys/androidannotations/pull/1673">https://github.com/excilys/androidannotations/pull/1673</a></p>
-
-<p>すでに指摘を受けて修正していますが、最初のpull requestを投げたタイミングで、「It&rsquo;s ready for review.」(ﾄﾞﾔｱ)と言っておきながら、
-<a href="https://github.com/excilys/androidannotations/pull/1673#discussion_r48849275">AndroidManifest.xmlのActivityタグにViewクラスを指定する</a>という意味不明な行動をしていたり、<a href="https://github.com/excilys/androidannotations/pull/1673#discussion-diff-49131871">newInsanceVarというtypoをかましていたり</a>といろいろひどいです。それでも罵られたりすることはないです。(いい加減罵られたほうがいいんじゃねーか？というレベルなのですが・・・)</p>
-
-<h1>最後に</h1>
-
-<p>この勉強法を使って経験が浅い若手や学生がどんどん世界で腕を磨いてくれたらと思います。特に時間のある人は積極的にコードを公開し、レビューを受けて腕を磨いて下さい。早ければ早いほど学べることが多いと思います。</p>
-
-<p>自分もスキルに自信がついたら・・・とGitHubでpull requestをほとんど送ってこなかったのですが、そんな自信はやらない限り絶対につかないです。どんどん他人のプロジェクトで失敗して、腕を磨いて下さい。</p>
-</div>
-  
   
 
+<span class="byline author vcard">Posted by <span class="fn">Shiraji</span></span>
 
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/10/17/refactoring/">リファクタリングについて伝えたいこと。</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
 
-<time class='entry-date' datetime='2015-10-17T11:39:09+09:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:39 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>この文章は以下のURLのコピーです。</p>
-
-<p><a href="http://shiraji.hatenablog.com/entry/2015/09/06/225204">http://shiraji.hatenablog.com/entry/2015/09/06/225204</a></p>
-
-<hr />
-
-<p>この文章は以下に該当する方へ、なぜエンジニアにリファクタリング(リファクタ)させるべきなのかを記載しています。</p>
-
-<ul>
-<li>リファクタリングする＝サービスの開発が停止すると考えている方</li>
-<li>リファクタリングに関して価値を見出せない方</li>
-<li>エンジニアにリファクタリングさせて欲しいと言われる方</li>
-</ul>
-
-
-<h1>最初に</h1>
-
-<p>リファクタリングの話をする前に、一般的な職場に関する質問があります。</p>
-
-<ul>
-<li>あなたの職場は綺麗ですか？</li>
-<li>あなたが思い浮かべる「できる同僚・上司」の机は整理整頓されていますか？</li>
-</ul>
-
-
-<p>全ての人に当てはまるわけではないと思います。しかし大抵の方は両方回答がYesになると思います。</p>
-
-<p>職場を綺麗にするのはそこで働く人の健康維持やモチベーション向上に役立ちます。職場を綺麗にしてくれる専門のスタッフがいる企業もあるのではないでしょうか？また整理整頓された机で仕事することにより、ムダを省略することが出来ます。仕事をするスペースが増えることにより効率もあがります。大抵の出来る人は机を整理整頓している傾向があるそうです。著名な会社の研修でも同じようなことを説いていました。</p>
-
-<p>汚い環境で働くということは、モチベーションを下げ、ムダな作業を発生させ、効率を下げるということです。汚い環境で働くのは非常に辛く、可能であれば、人はその環境から離れていきます。</p>
-
-<h1>リファクタリングとは何か？</h1>
-
-<p>さて、本題のリファクタリングについてです。wikipediaでは以下のように説明されています。</p>
-
-<blockquote><p>リファクタリング (refactoring) とはコンピュータプログラミングにおいて、プログラムの外部から見た動作を変えずにソースコードの内部構造を整理すること。((&ldquo;リファクタリング (プログラミング)&rdquo;. wikipedia. <a href="https://ja.wikipedia.org/wiki/%E3%83%AA%E3%83%95%E3%82%A1%E3%82%AF%E3%82%BF%E3%83%AA%E3%83%B3%E3%82%B0_">https://ja.wikipedia.org/wiki/%E3%83%AA%E3%83%95%E3%82%A1%E3%82%AF%E3%82%BF%E3%83%AA%E3%83%B3%E3%82%B0_</a>(%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0))</p></blockquote>
-
-<p>もう少しサービス開発に絡めて切り込んだ説明にすると、</p>
-
-<p>「リファクタリングするということは、サービスの機能の追加や削除は一切行わず、コストをかけて、今まで動いていたコードに対して修正を加える作業です。」</p>
-
-<p>リファクタリングをすることにより、バグを埋め込んでサービスを止めてしまう可能性も含まれることになります。もちろんそれを避ける術はいくつかあるのですが、手段はエンジニアが考えればいいのでここでは省略させていただきます。</p>
-
-<h1>リファクタリングをなぜやるのか？</h1>
-
-<p>なぜこんなムダな作業を行うのでしょうか？エンジニアはアホなんでしょうか？</p>
-
-<h3>エンジニアはコード上で仕事をしている</h3>
-
-<p>（実際、アホなことやる人は多いですが・・・）事自分たちが行っているサービス開発に関して言えば、プライドを持って行っているはずです。サービスに携わっている以上、そのサービスがより良くなることを望んで開発しています。そのエンジニアがコストがかかることを承知で、リファクタリングさせて欲しいという理由があります。それはエンジニアは<b>コード上で仕事をしている</b>ということです。</p>
-
-<h3>デスクの綺麗さとコードの綺麗さ</h3>
-
-<p>私が非エンジニアにリファクタリングの重要性を説明する時は以下のように説明します。</p>
-
-<ul>
-<li>デスクに毎日のようにいろんな人が資料を置いていくとします。</li>
-<li>資料を置くことを目的にする社員もいるので、資料はあなたが意図した場所には置かれません。</li>
-<li>デスクがどんどん汚くなっていき、必要な資料を探すのに苦労します。</li>
-<li>間違った資料を使って仕事をする可能性も出てきます。</li>
-<li>このような状況になった場合、あなたがまず最初に行うのが、整理整頓だと思います。</li>
-</ul>
-
-
-<p>ではエンジニアはコード上で仕事をしているということなので、デスクを「コード」、置かれていく資料を「追加機能」と読み替えてみます。</p>
-
-<ul>
-<li>コードに毎日のようにいろんな人が機能を追加していきます。</li>
-<li>機能追加を目的にする社員もいるので、エンジニアが意図した場所に機能が追加されません。</li>
-<li>コードがどんどん汚くなっていき、必要な機能を調査するのに苦労します。</li>
-<li>間違った機能を使って仕事をする可能性も出てきます。(=バグを作り出す)</li>
-<li>このような状況になった場合、エンジニアがまず最初に行うのが、整理整頓(=リファクタリング)だと思います。</li>
-</ul>
-
-
-<p>エンジニアが作業しているコードを綺麗にすることにより、将来的にバグを作り出さなかったり、効率良く作業が出来る環境を作ることが出来ます。</p>
-
-<h3>エンジニアを惹きつける、引き止めるためのリファクタリング</h3>
-
-<p>汚い環境で働くということは、モチベーションを下げ、ムダな作業を発生させ、効率を下げるということです。汚い環境で働くのは非常に辛く、可能であれば、人はその環境から離れていきます。</p>
-
-<p>この文章も同じように読み替えることが出来ます。</p>
-
-<p>汚いコード上で働くということは、モチベーションを下げ、ムダな作業を発生させ、効率を下げるということです。汚いコード上で働くのは非常に辛く、可能であれば、エンジニアはそのコード（会社）から離れていきます。</p>
-
-<p>エンジニアが働く場所の環境を良くすることとそのエンジニアを魅了するためにリファクタリングをさせる猶予を与えてあげてください。この魅力的な余裕があることでエンジニアとしてやる気が向上し、整理されたコードで仕事が出来るためパフォーマンスが上がります。働きやすい職場(コード)で最高のパフォーマンスを出すことが出来るのであれば、エンジニアが離職するのを引き止めるのに役立つはずです。</p>
-
-<h1>まとめ</h1>
-
-<p>汚い場所で人を働かせることが辛いということがわかるのであるなら、ぜひ汚い環境で働かされているエンジニアに掃除をする猶予を与えてあげてください。それが長期的に見るとサービスを改善を早くし、技術力のあるエンジニアを定着させ、変化に柔軟なサービスを提供させることが出来るようになるからです。</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
+<time class='entry-date' datetime='2016-01-11T10:50:49+09:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:50 am</span></time>
       
-  <header>
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/android/'>android,</a>, <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/java/'>java,</a>
+  
+</span>
+
+
+    </p>
     
-      <h1 class="entry-title"><a href="/blog/2015/10/17/intro/">自己紹介</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-10-17T07:31:51+09:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:31 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>shirajiと申します。GitHub活動は英語で行っていますが、このブログは日本語で記載していきたいと思います。</p>
-
-<ul>
-<li>Twitter: <a href="https://twitter.com/shiraj_i">@shiraj_i</a></li>
-<li>Qiita: <a href="http://qiita.com/shiraji">shiraji</a></li>
-</ul>
-
-
-<p>よろしくお願いいたします。</p>
+      <div class="sharing">
+  <a href="http://b.hatena.ne.jp/entry/http://shiraji.github.io/blog/2016/01/11/accessor/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shiraji.github.io/blog/2016/01/11/accessor/" data-via="shiraj_i" data-counturl="http://shiraji.github.io/blog/2016/01/11/accessor/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
 </div>
-  
-  
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/01/10/pull_req_study/" title="Previous Post: プルリク駆動勉強">&laquo; プルリク駆動勉強</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
 </div>
+
 <aside class="sidebar">
   
     <section>
@@ -1014,6 +722,7 @@ privateアクセス修飾子のため、アクセス出来ないので、access�
 
   
 </aside>
+
 
     </div>
   </div>

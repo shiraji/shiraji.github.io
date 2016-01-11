@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java, | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-01-11T18:56:21+09:00</updated>
+  <updated>2016-01-11T19:02:30+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -62,7 +62,7 @@
 
 <p>違いは、PrivateConstructor内にある、AbstractInnerClassのコンストラクタにprivateがあるかどうかです。</p>
 
-<pre><code class="shell">% javap -p PrivateConstructor*.class
+<pre><code class="java">% javap -p PrivateConstructor*.class
 Compiled from "PrivateConstructor.java"
 class PrivateConstructor$1 {
 }
@@ -83,7 +83,7 @@ class PrivateConstructor {
 }
 </code></pre>
 
-<pre><code class="shell">% javap -p DefaultConstructor*.class
+<pre><code class="java">% javap -p DefaultConstructor*.class
 Compiled from "DefaultConstuctor.java"
 abstract class DefaultConstructor$AbstractInnerClass {
   final DefaultConstructor this$0;
@@ -119,7 +119,7 @@ class DefaultConstructor {
 }
 </code></pre>
 
-<pre><code class="shell">% javap -p PrivateConstructor*.class
+<pre><code class="java">% javap -p PrivateConstructor*.class
 Compiled from "PrivateConstructor.java"
 abstract class PrivateConstructor$AbstractInnerClass {
   final PrivateConstructor this$0;
@@ -147,7 +147,7 @@ class PrivateConstructor {
 
 <p>これをコンパイルすると、以下のようになります。</p>
 
-<pre><code class="shell">Compiled from "NoDefaultConstructor.java"
+<pre><code class="java">Compiled from "NoDefaultConstructor.java"
 class NoDefaultConstructor$1 {
 }
 Compiled from "NoDefaultConstructor.java"
@@ -169,7 +169,7 @@ class NoDefaultConstructor {
 
 <p>コンストラクタが生成されています。</p>
 
-<pre><code class="shell">private NoDefaultConstructor$AbstractClass(NoDefaultConstructor);
+<pre><code class="java">private NoDefaultConstructor$AbstractClass(NoDefaultConstructor);
 NoDefaultConstructor$AbstractClass(NoDefaultConstructor, NoDefaultConstructor$1);
 </code></pre>
 
@@ -178,12 +178,12 @@ NoDefaultConstructor$AbstractClass(NoDefaultConstructor, NoDefaultConstructor$1)
 
 <p><code>AbstractClass</code>はprivateで定義されているため、privateのデフォルトコンストラクタが定義されます。それがこれ</p>
 
-<pre><code class="shell">private NoDefaultConstructor$AbstractClass(NoDefaultConstructor);
+<pre><code class="java">private NoDefaultConstructor$AbstractClass(NoDefaultConstructor);
 </code></pre>
 
 <p>それで、このコンストラクタにアクセスするためのコンストラクタを定義する必要があるので、</p>
 
-<pre><code class="shell">NoDefaultConstructor$AbstractClass(NoDefaultConstructor, NoDefaultConstructor$1);
+<pre><code class="java">NoDefaultConstructor$AbstractClass(NoDefaultConstructor, NoDefaultConstructor$1);
 </code></pre>
 
 <p>これが生成されます。</p>
@@ -208,7 +208,7 @@ NoDefaultConstructor$AbstractClass(NoDefaultConstructor, NoDefaultConstructor$1)
 }
 </code></pre>
 
-<pre><code class="shell">Compiled from "DefaultMember.java"
+<pre><code class="java">Compiled from "DefaultMember.java"
 class DefaultMember$InnerClass {
   final DefaultMember this$0;
   DefaultMember$InnerClass(DefaultMember);
@@ -232,7 +232,7 @@ class DefaultMember {
 }
 </code></pre>
 
-<pre><code class="shell">Compiled from "PrivateMember.java"
+<pre><code class="java">Compiled from "PrivateMember.java"
 class PrivateMember$InnerClass {
   final PrivateMember this$0;
   PrivateMember$InnerClass(PrivateMember);
@@ -248,7 +248,7 @@ class PrivateMember {
 
 <p>こんなのが出来ています。</p>
 
-<pre><code class="shell">static boolean access$002(PrivateMember, boolean);
+<pre><code class="java">static boolean access$002(PrivateMember, boolean);
 </code></pre>
 
 <p>これは、Innerクラスからflagにアクセスするためのメソッドです。
@@ -274,7 +274,7 @@ privateアクセス修飾子のため、アクセス出来ないので、access�
 }
 </code></pre>
 
-<pre><code class="shell">Compiled from "PrivateMethod.java"
+<pre><code class="java">Compiled from "PrivateMethod.java"
 class PrivateMethod {
   PrivateMethod();
   private void foo();
@@ -299,7 +299,7 @@ class PrivateMethod {
 }
 </code></pre>
 
-<pre><code class="shell">Compiled from "PrivateMethod.java"
+<pre><code class="java">Compiled from "PrivateMethod.java"
 class PrivateMethod {
   PrivateMethod();
   void foo();
@@ -318,7 +318,7 @@ class PrivateMethod {
 
 <p>Androiderは盲目的にprivateのアクセス修飾子にすればいいという考えは辞めたほうがいいようです。</p>
 
-<p>ちなみにJakeさんは一つどうしようもない<a href="https://gist.github.com/JakeWharton/5b3dbbc54c779a6bc6af">例</a>も出してくれてます。</p>
+<p>ちなみにJakeさんは一つ<a href="https://gist.github.com/JakeWharton/5b3dbbc54c779a6bc6af">どうしようもない例</a>も出してくれてます。</p>
 
 <p>これはメソッドを減らすことがどうやっても出来ないそうです。</p>
 ]]></content>

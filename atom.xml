@@ -4,7 +4,7 @@
   <title><![CDATA[Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-01-10T22:35:40+09:00</updated>
+  <updated>2016-01-11T19:02:30+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -12,6 +12,527 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[生成されてしまうAccessorに関して]]></title>
+    <link href="http://shiraji.github.io/blog/2016/01/11/accessor/"/>
+    <updated>2016-01-11T10:50:49+09:00</updated>
+    <id>http://shiraji.github.io/blog/2016/01/11/accessor</id>
+    <content type="html"><![CDATA[<h1>まとめ</h1>
+
+<p>修飾子次第で勝手にAccessorが生成されるから気をつけてね！</p>
+
+<h1>最初に</h1>
+
+<p>Jakeさんがこの<a href="https://github.com/google/gson/pull/761">pull request</a>を投げていて、察するに$accessorというメソッドが生成されてしまうので、それを生成しないようにしたぜ？ってことだと思う。が、なんでそうなるのかわからない。
+他にも、コンストラクタの修飾子を変更しているんだけど、これもなんのためなのかわからない。
+そこで、コードを書いてみて、実際にやってみました。</p>
+
+<p>このpull requestでは以下の４つを修正しています。</p>
+
+<ul>
+<li><a href="https://github.com/google/gson/pull/761/files#diff-694e40202daa75f0056c800b5d953297R88">コンストラクタのprivateの削除</a></li>
+<li><a href="https://github.com/google/gson/pull/761/files#diff-a654cd1a9dadb8afb191e239a12e19a5R765">デフォルトコンストラクタの定義</a></li>
+<li><a href="https://github.com/google/gson/pull/761/files#diff-0776314ca8e083ca3943426740d1dd69R245">メンバー変数のprivateの削除</a></li>
+<li><a href="https://github.com/google/gson/pull/761/files#diff-0776314ca8e083ca3943426740d1dd69R465">メソッドのprivateの削除</a></li>
+</ul>
+
+
+<h1><a href="https://github.com/google/gson/pull/761/files#diff-694e40202daa75f0056c800b5d953297R88">コンストラクタのprivateの削除</a></h1>
+
+<p>この変更がわかりやすいようにサンプルコードを作成してみました。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">PrivateConstructor</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AbstractInnerClass</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="nf">AbstractInnerClass</span><span class="o">()</span> <span class="o">{}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="kd">class</span> <span class="nc">InnerClass</span> <span class="kd">extends</span> <span class="n">AbstractInnerClass</span> <span class="o">{</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">DefaultConstructor</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AbstractInnerClass</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">AbstractInnerClass</span><span class="o">()</span> <span class="o">{}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="kd">class</span> <span class="nc">InnerClass</span> <span class="kd">extends</span> <span class="n">AbstractInnerClass</span> <span class="o">{</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>違いは、PrivateConstructor内にある、AbstractInnerClassのコンストラクタにprivateがあるかどうかです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">%</span> <span class="n">javap</span> <span class="o">-</span><span class="n">p</span> <span class="n">PrivateConstructor</span><span class="o">*.</span><span class="na">class</span>
+</span><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;PrivateConstructor.java&quot;</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">PrivateConstructor$1</span> <span class="o">{</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;PrivateConstructor.java&quot;</span>
+</span><span class='line'><span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">PrivateConstructor$AbstractInnerClass</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">final</span> <span class="n">PrivateConstructor</span> <span class="k">this</span><span class="n">$0</span><span class="o">;</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="nf">PrivateConstructor$AbstractInnerClass</span><span class="o">(</span><span class="n">PrivateConstructor</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">PrivateConstructor$AbstractInnerClass</span><span class="o">(</span><span class="n">PrivateConstructor</span><span class="o">,</span> <span class="n">PrivateConstructor$1</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;PrivateConstructor.java&quot;</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">PrivateConstructor$InnerClass</span> <span class="kd">extends</span> <span class="n">PrivateConstructor$AbstractInnerClass</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">final</span> <span class="n">PrivateConstructor</span> <span class="k">this</span><span class="n">$0</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">PrivateConstructor$InnerClass</span><span class="o">(</span><span class="n">PrivateConstructor</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;PrivateConstructor.java&quot;</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">PrivateConstructor</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">PrivateConstructor</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">%</span> <span class="n">javap</span> <span class="o">-</span><span class="n">p</span> <span class="n">DefaultConstructor</span><span class="o">*.</span><span class="na">class</span>
+</span><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;DefaultConstuctor.java&quot;</span>
+</span><span class='line'><span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">DefaultConstructor$AbstractInnerClass</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">final</span> <span class="n">DefaultConstructor</span> <span class="k">this</span><span class="n">$0</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">DefaultConstructor$AbstractInnerClass</span><span class="o">(</span><span class="n">DefaultConstructor</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;DefaultConstuctor.java&quot;</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">DefaultConstructor$InnerClass</span> <span class="kd">extends</span> <span class="n">DefaultConstructor$AbstractInnerClass</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">final</span> <span class="n">DefaultConstructor</span> <span class="k">this</span><span class="n">$0</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">DefaultConstructor$InnerClass</span><span class="o">(</span><span class="n">DefaultConstructor</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;DefaultConstuctor.java&quot;</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">DefaultConstructor</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">DefaultConstructor</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Javaファイル内では違いはprivateだけでしたが、classファイル内では、以下のメソッドが出来ています。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">PrivateConstructor$AbstractInnerClass</span><span class="o">(</span><span class="n">PrivateConstructor</span><span class="o">,</span> <span class="n">PrivateConstructor$1</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これが生成されることで、メソッド数がDefaultConstuctor.javaでは3つなのに、PrivateConstructor.javaでは4つになってしまいます。
+なぜこうなるのかというと、PrivateConstructor$InnerClassが継承するために必要なコンストラクタを定義する必要があるためです。</p>
+
+<p>実際こんなクラスを定義してみるとわかります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">PrivateConstructor</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AbstractInnerClass</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="nf">AbstractInnerClass</span><span class="o">()</span> <span class="o">{}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="c1">// class InnerClass extends AbstractInnerClass {</span>
+</span><span class='line'>  <span class="c1">// }</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">%</span> <span class="n">javap</span> <span class="o">-</span><span class="n">p</span> <span class="n">PrivateConstructor</span><span class="o">*.</span><span class="na">class</span>
+</span><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;PrivateConstructor.java&quot;</span>
+</span><span class='line'><span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">PrivateConstructor$AbstractInnerClass</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">final</span> <span class="n">PrivateConstructor</span> <span class="k">this</span><span class="n">$0</span><span class="o">;</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="nf">PrivateConstructor$AbstractInnerClass</span><span class="o">(</span><span class="n">PrivateConstructor</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;PrivateConstructor.java&quot;</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">PrivateConstructor</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">PrivateConstructor</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>PrivateConstructor$AbstractInnerClassだけしか定義されておらず、privateのコンストラクタにアクセスする必要がないため、<code>PrivateConstructor$AbstractInnerClass(PrivateConstructor, PrivateConstructor$1);</code>は生成されません。</p>
+
+<h1><a href="https://github.com/google/gson/pull/761/files#diff-a654cd1a9dadb8afb191e239a12e19a5R765">デフォルトコンストラクタの定義</a></h1>
+
+<p>今回の修正で一番おもしろいのがこれです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">NoDefaultConstructor</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AbstractClass</span> <span class="o">{</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="kd">class</span> <span class="nc">InnerClass</span> <span class="kd">extends</span> <span class="n">AbstractClass</span> <span class="o">{</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これをコンパイルすると、以下のようになります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;NoDefaultConstructor.java&quot;</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">NoDefaultConstructor$1</span> <span class="o">{</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;NoDefaultConstructor.java&quot;</span>
+</span><span class='line'><span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">NoDefaultConstructor$AbstractClass</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">final</span> <span class="n">NoDefaultConstructor</span> <span class="k">this</span><span class="n">$0</span><span class="o">;</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="nf">NoDefaultConstructor$AbstractClass</span><span class="o">(</span><span class="n">NoDefaultConstructor</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">NoDefaultConstructor$AbstractClass</span><span class="o">(</span><span class="n">NoDefaultConstructor</span><span class="o">,</span> <span class="n">NoDefaultConstructor$1</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;NoDefaultConstructor.java&quot;</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">NoDefaultConstructor$InnerClass</span> <span class="kd">extends</span> <span class="n">NoDefaultConstructor$AbstractClass</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">final</span> <span class="n">NoDefaultConstructor</span> <span class="k">this</span><span class="n">$0</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">NoDefaultConstructor$InnerClass</span><span class="o">(</span><span class="n">NoDefaultConstructor</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;NoDefaultConstructor.java&quot;</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">NoDefaultConstructor</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">NoDefaultConstructor</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>コンストラクタが生成されています。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="nf">NoDefaultConstructor$AbstractClass</span><span class="o">(</span><span class="n">NoDefaultConstructor</span><span class="o">);</span>
+</span><span class='line'><span class="n">NoDefaultConstructor$AbstractClass</span><span class="o">(</span><span class="n">NoDefaultConstructor</span><span class="o">,</span> <span class="n">NoDefaultConstructor$1</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Javaではコンストラクタを定義していない場合、デフォルトコンストラクタが生成されます。
+しかし、そのデフォルトコンストラクタはclassのアクセス修飾子と同じものが定義されます。</p>
+
+<p><code>AbstractClass</code>はprivateで定義されているため、privateのデフォルトコンストラクタが定義されます。それがこれ</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="nf">NoDefaultConstructor$AbstractClass</span><span class="o">(</span><span class="n">NoDefaultConstructor</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>それで、このコンストラクタにアクセスするためのコンストラクタを定義する必要があるので、</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">NoDefaultConstructor$AbstractClass</span><span class="o">(</span><span class="n">NoDefaultConstructor</span><span class="o">,</span> <span class="n">NoDefaultConstructor$1</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これが生成されます。</p>
+
+<p>メソッドを0で定義していますが、実は4つのメソッドが出来ていました。
+少なくともprivateのデフォルトコンストラクタはいらないので、空のデフォルトコンストラクタの変更を入れているわけです。</p>
+
+<h1><a href="https://github.com/google/gson/pull/761/files#diff-0776314ca8e083ca3943426740d1dd69R245">メンバー変数のprivateの削除</a></h1>
+
+<p>この変更も面白いです。</p>
+
+<p>サンプルコードはこんな感じです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">DefaultMember</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kt">boolean</span> <span class="n">flag</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">class</span> <span class="nc">InnerClass</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="nf">foo</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">flag</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;DefaultMember.java&quot;</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">DefaultMember$InnerClass</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">final</span> <span class="n">DefaultMember</span> <span class="k">this</span><span class="n">$0</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">DefaultMember$InnerClass</span><span class="o">(</span><span class="n">DefaultMember</span><span class="o">);</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="nf">foo</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;DefaultMember.java&quot;</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">DefaultMember</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kt">boolean</span> <span class="n">flag</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">DefaultMember</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">PrivateMember</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">flag</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">class</span> <span class="nc">InnerClass</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="nf">foo</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">flag</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;PrivateMember.java&quot;</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">PrivateMember$InnerClass</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">final</span> <span class="n">PrivateMember</span> <span class="k">this</span><span class="n">$0</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">PrivateMember$InnerClass</span><span class="o">(</span><span class="n">PrivateMember</span><span class="o">);</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="nf">foo</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;PrivateMember.java&quot;</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">PrivateMember</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">flag</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">PrivateMember</span><span class="o">();</span>
+</span><span class='line'>  <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">access$002</span><span class="o">(</span><span class="n">PrivateMember</span><span class="o">,</span> <span class="kt">boolean</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>こんなのが出来ています。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">access$002</span><span class="o">(</span><span class="n">PrivateMember</span><span class="o">,</span> <span class="kt">boolean</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これは、Innerクラスからflagにアクセスするためのメソッドです。
+privateアクセス修飾子のため、アクセス出来ないので、accessというprefix付きのメソッドが生成されflagにアクセス出来るようにしています。</p>
+
+<h1><a href="https://github.com/google/gson/pull/761/files#diff-0776314ca8e083ca3943426740d1dd69R465">メソッドのprivateの削除</a></h1>
+
+<p>パターンパターン！ですけどメソッドのアクセス修飾子も同じです。</p>
+
+<p>サンプルコードはこれ。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">PrivateMethod</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">static</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">Object</span> <span class="n">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Object</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="kt">void</span> <span class="nf">bar</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">PrivateMethod</span> <span class="n">method</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">PrivateMethod</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">method</span><span class="o">.</span><span class="na">foo</span><span class="o">();</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">};</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">foo</span><span class="o">()</span> <span class="o">{}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;PrivateMethod.java&quot;</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">PrivateMethod</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">PrivateMethod</span><span class="o">();</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">foo</span><span class="o">();</span>
+</span><span class='line'>  <span class="kd">static</span> <span class="kt">void</span> <span class="nf">access$000</span><span class="o">(</span><span class="n">PrivateMethod</span><span class="o">);</span>
+</span><span class='line'>  <span class="kd">static</span> <span class="o">{};</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでprivateを外すとこうなります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">PrivateMethod</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">static</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">Object</span> <span class="n">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Object</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="kt">void</span> <span class="nf">bar</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">PrivateMethod</span> <span class="n">method</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">PrivateMethod</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">method</span><span class="o">.</span><span class="na">foo</span><span class="o">();</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">};</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">void</span> <span class="nf">foo</span><span class="o">()</span> <span class="o">{}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Compiled</span> <span class="n">from</span> <span class="s">&quot;PrivateMethod.java&quot;</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">PrivateMethod</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">PrivateMethod</span><span class="o">();</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="nf">foo</span><span class="o">();</span>
+</span><span class='line'>  <span class="kd">static</span> <span class="o">{};</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>static void access$000(PrivateMethod);</code>が減りました。
+これもアクセスするために生成されたメソッドです。</p>
+
+<h1>終わりに</h1>
+
+<p>Javaのアプリケーションではそこまで影響度はないですが、Androidはメソッド65K問題があるので、メソッド数には注意が必要です。特に利用しているライブラリではメソッド数を減らそうという狙いがあったのだと思います。</p>
+
+<p>Jakeさんは他にもこの自動生成されるメソッドの検出方法を<a href="https://github.com/google/gson/pull/761#issuecomment-167436875">コメント</a>しています。</p>
+
+<p>Androiderは盲目的にprivateのアクセス修飾子にすればいいという考えは辞めたほうがいいようです。</p>
+
+<p>ちなみにJakeさんは一つ<a href="https://gist.github.com/JakeWharton/5b3dbbc54c779a6bc6af">どうしようもない例</a>も出してくれてます。</p>
+
+<p>これはメソッドを減らすことがどうやっても出来ないそうです。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[プルリク駆動勉強]]></title>
