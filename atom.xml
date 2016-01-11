@@ -4,7 +4,7 @@
   <title><![CDATA[Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-01-11T19:02:30+09:00</updated>
+  <updated>2016-01-11T19:26:49+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -14,13 +14,13 @@
 
   
   <entry>
-    <title type="html"><![CDATA[生成されてしまうAccessorに関して]]></title>
+    <title type="html"><![CDATA[アクセス修飾子次第で、メソッド数が増えてしまう問題について]]></title>
     <link href="http://shiraji.github.io/blog/2016/01/11/accessor/"/>
     <updated>2016-01-11T10:50:49+09:00</updated>
     <id>http://shiraji.github.io/blog/2016/01/11/accessor</id>
     <content type="html"><![CDATA[<h1>まとめ</h1>
 
-<p>修飾子次第で勝手にAccessorが生成されるから気をつけてね！</p>
+<p>アクセス修飾子次第で勝手にメソッド余分に生成されるから気をつけてね！</p>
 
 <h1>最初に</h1>
 
