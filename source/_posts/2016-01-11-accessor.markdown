@@ -1,0 +1,329 @@
+---
+layout: post
+title: "アクセス修飾子次第で、メソッド数が増えてしまう問題について"
+date: 2016-01-11 10:50:49 +0900
+comments: false
+categories: Java, Android, GitHub
+---
+
+# まとめ
+
+privateアクセス修飾子をつけると条件次第で勝手にメソッド余分に生成されるから気をつけてね！
+
+# 最初に
+
+Jakeさんがこの[pull request](https://github.com/google/gson/pull/761)を投げていて、察するに$accessorというメソッドが生成されてしまうので、それを生成しないようにしたぜ？ってことだと思う。が、なんでそうなるのかわからない。
+他にも、コンストラクタの修飾子を変更しているんだけど、これもなんのためなのかわからない。
+そこで、コードを書いてみて、実際にやってみました。
+
+このpull requestでは以下の４つを修正しています。
+
+* [コンストラクタのprivateの削除](https://github.com/google/gson/pull/761/files#diff-694e40202daa75f0056c800b5d953297R88)
+* [デフォルトコンストラクタの定義](https://github.com/google/gson/pull/761/files#diff-a654cd1a9dadb8afb191e239a12e19a5R765)
+* [メンバー変数のprivateの削除](https://github.com/google/gson/pull/761/files#diff-0776314ca8e083ca3943426740d1dd69R245)
+* [メソッドのprivateの削除](https://github.com/google/gson/pull/761/files#diff-0776314ca8e083ca3943426740d1dd69R465)
+
+# [コンストラクタのprivateの削除](https://github.com/google/gson/pull/761/files#diff-694e40202daa75f0056c800b5d953297R88)
+
+この変更がわかりやすいようにサンプルコードを作成してみました。
+
+```java
+class PrivateConstructor {
+  private abstract class AbstractInnerClass {
+    private AbstractInnerClass() {}
+  }
+  class InnerClass extends AbstractInnerClass {
+  }
+}
+```
+
+```java
+class DefaultConstructor {
+  private abstract class AbstractInnerClass {
+    AbstractInnerClass() {}
+  }
+  class InnerClass extends AbstractInnerClass {
+  }
+}
+```
+
+違いは、PrivateConstructor内にある、AbstractInnerClassのコンストラクタにprivateがあるかどうかです。
+
+```java
+% javap -p PrivateConstructor*.class
+Compiled from "PrivateConstructor.java"
+class PrivateConstructor$1 {
+}
+Compiled from "PrivateConstructor.java"
+abstract class PrivateConstructor$AbstractInnerClass {
+  final PrivateConstructor this$0;
+  private PrivateConstructor$AbstractInnerClass(PrivateConstructor);
+  PrivateConstructor$AbstractInnerClass(PrivateConstructor, PrivateConstructor$1);
+}
+Compiled from "PrivateConstructor.java"
+class PrivateConstructor$InnerClass extends PrivateConstructor$AbstractInnerClass {
+  final PrivateConstructor this$0;
+  PrivateConstructor$InnerClass(PrivateConstructor);
+}
+Compiled from "PrivateConstructor.java"
+class PrivateConstructor {
+  PrivateConstructor();
+}
+```
+
+```java
+% javap -p DefaultConstructor*.class
+Compiled from "DefaultConstuctor.java"
+abstract class DefaultConstructor$AbstractInnerClass {
+  final DefaultConstructor this$0;
+  DefaultConstructor$AbstractInnerClass(DefaultConstructor);
+}
+Compiled from "DefaultConstuctor.java"
+class DefaultConstructor$InnerClass extends DefaultConstructor$AbstractInnerClass {
+  final DefaultConstructor this$0;
+  DefaultConstructor$InnerClass(DefaultConstructor);
+}
+Compiled from "DefaultConstuctor.java"
+class DefaultConstructor {
+  DefaultConstructor();
+}
+```
+
+Javaファイル内では違いはprivateだけでしたが、classファイル内では、以下のメソッドが出来ています。
+
+```
+PrivateConstructor$AbstractInnerClass(PrivateConstructor, PrivateConstructor$1);
+```
+
+これが生成されることで、メソッド数がDefaultConstuctor.javaでは3つなのに、PrivateConstructor.javaでは4つになってしまいます。
+なぜこうなるのかというと、PrivateConstructor$InnerClassが継承するために必要なコンストラクタを定義する必要があるためです。
+
+実際こんなクラスを定義してみるとわかります。
+
+```java
+class PrivateConstructor {
+  private abstract class AbstractInnerClass {
+    private AbstractInnerClass() {}
+  }
+  // class InnerClass extends AbstractInnerClass {
+  // }
+}
+```
+
+```java
+% javap -p PrivateConstructor*.class
+Compiled from "PrivateConstructor.java"
+abstract class PrivateConstructor$AbstractInnerClass {
+  final PrivateConstructor this$0;
+  private PrivateConstructor$AbstractInnerClass(PrivateConstructor);
+}
+Compiled from "PrivateConstructor.java"
+class PrivateConstructor {
+  PrivateConstructor();
+}
+```
+
+PrivateConstructor$AbstractInnerClassだけしか定義されておらず、privateのコンストラクタにアクセスする必要がないため、`PrivateConstructor$AbstractInnerClass(PrivateConstructor, PrivateConstructor$1);`は生成されません。
+
+# [デフォルトコンストラクタの定義](https://github.com/google/gson/pull/761/files#diff-a654cd1a9dadb8afb191e239a12e19a5R765)
+
+今回の修正で一番おもしろいのがこれです。
+
+```java
+class NoDefaultConstructor {
+  private abstract class AbstractClass {
+  }
+  class InnerClass extends AbstractClass {
+  }
+}
+```
+
+これをコンパイルすると、以下のようになります。
+
+```java
+Compiled from "NoDefaultConstructor.java"
+class NoDefaultConstructor$1 {
+}
+Compiled from "NoDefaultConstructor.java"
+abstract class NoDefaultConstructor$AbstractClass {
+  final NoDefaultConstructor this$0;
+  private NoDefaultConstructor$AbstractClass(NoDefaultConstructor);
+  NoDefaultConstructor$AbstractClass(NoDefaultConstructor, NoDefaultConstructor$1);
+}
+Compiled from "NoDefaultConstructor.java"
+class NoDefaultConstructor$InnerClass extends NoDefaultConstructor$AbstractClass {
+  final NoDefaultConstructor this$0;
+  NoDefaultConstructor$InnerClass(NoDefaultConstructor);
+}
+Compiled from "NoDefaultConstructor.java"
+class NoDefaultConstructor {
+  NoDefaultConstructor();
+}
+```
+
+コンストラクタが生成されています。
+
+```java
+private NoDefaultConstructor$AbstractClass(NoDefaultConstructor);
+NoDefaultConstructor$AbstractClass(NoDefaultConstructor, NoDefaultConstructor$1);
+```
+
+Javaではコンストラクタを定義していない場合、デフォルトコンストラクタが生成されます。
+しかし、そのデフォルトコンストラクタはclassのアクセス修飾子と同じものが定義されます。
+
+`AbstractClass`はprivateで定義されているため、privateのデフォルトコンストラクタが定義されます。それがこれ
+
+```java
+private NoDefaultConstructor$AbstractClass(NoDefaultConstructor);
+```
+
+それで、このコンストラクタにアクセスするためのコンストラクタを定義する必要があるので、
+
+```java
+NoDefaultConstructor$AbstractClass(NoDefaultConstructor, NoDefaultConstructor$1);
+```
+
+これが生成されます。
+
+メソッドを0で定義していますが、実は4つのメソッドが出来ていました。
+少なくともprivateのデフォルトコンストラクタはいらないので、空のデフォルトコンストラクタの変更を入れているわけです。
+
+# [メンバー変数のprivateの削除](https://github.com/google/gson/pull/761/files#diff-0776314ca8e083ca3943426740d1dd69R245)
+
+この変更も面白いです。
+
+サンプルコードはこんな感じです。
+
+```java
+class DefaultMember {
+  boolean flag;
+
+  class InnerClass {
+    void foo() {
+      flag = true;
+    }
+  }
+}
+```
+
+```java
+Compiled from "DefaultMember.java"
+class DefaultMember$InnerClass {
+  final DefaultMember this$0;
+  DefaultMember$InnerClass(DefaultMember);
+  void foo();
+}
+Compiled from "DefaultMember.java"
+class DefaultMember {
+  boolean flag;
+  DefaultMember();
+}
+```
+
+```java
+class PrivateMember {
+  private boolean flag;
+
+  class InnerClass {
+    void foo() {
+      flag = true;
+    }
+  }
+}
+```
+
+```java
+Compiled from "PrivateMember.java"
+class PrivateMember$InnerClass {
+  final PrivateMember this$0;
+  PrivateMember$InnerClass(PrivateMember);
+  void foo();
+}
+Compiled from "PrivateMember.java"
+class PrivateMember {
+  private boolean flag;
+  PrivateMember();
+  static boolean access$002(PrivateMember, boolean);
+}
+```
+
+こんなのが出来ています。
+
+```java
+static boolean access$002(PrivateMember, boolean);
+```
+
+これは、Innerクラスからflagにアクセスするためのメソッドです。
+privateアクセス修飾子のため、アクセス出来ないので、accessというprefix付きのメソッドが生成されflagにアクセス出来るようにしています。
+
+# [メソッドのprivateの削除](https://github.com/google/gson/pull/761/files#diff-0776314ca8e083ca3943426740d1dd69R465)
+
+パターンパターン！ですけどメソッドのアクセス修飾子も同じです。
+
+サンプルコードはこれ。
+
+```java
+class PrivateMethod {
+  static {
+    Object obj = new Object() {
+      void bar() {
+        PrivateMethod method = new PrivateMethod();
+        method.foo();
+      }
+    };
+  }
+
+  private void foo() {}
+}
+```
+
+```java
+Compiled from "PrivateMethod.java"
+class PrivateMethod {
+  PrivateMethod();
+  private void foo();
+  static void access$000(PrivateMethod);
+  static {};
+}
+```
+
+これでprivateを外すとこうなります。
+
+```java
+class PrivateMethod {
+  static {
+    Object obj = new Object() {
+      void bar() {
+        PrivateMethod method = new PrivateMethod();
+        method.foo();
+      }
+    };
+  }
+
+  void foo() {}
+}
+```
+
+```java
+Compiled from "PrivateMethod.java"
+class PrivateMethod {
+  PrivateMethod();
+  void foo();
+  static {};
+}
+```
+
+`static void access$000(PrivateMethod);`が減りました。
+これもアクセスするために生成されたメソッドです。
+
+# 終わりに
+
+Javaのアプリケーションではそこまで影響度はないですが、Androidはメソッド65K問題があるので、メソッド数には注意が必要です。特に利用しているライブラリではメソッド数を減らそうという狙いがあったのだと思います。
+
+Jakeさんは他にもこの自動生成されるメソッドの検出方法を[コメント](https://github.com/google/gson/pull/761#issuecomment-167436875)しています。
+
+Androiderは盲目的にprivateのアクセス修飾子にすればいいという考えは辞めたほうがいいようです。
+
+ちなみにJakeさんは一つ[どうしようもない例](https://gist.github.com/JakeWharton/5b3dbbc54c779a6bc6af)も出してくれてます。
+
+これはメソッドを減らすことがどうやっても出来ないそうです。
