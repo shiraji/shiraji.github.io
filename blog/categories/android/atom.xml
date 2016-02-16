@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android, | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-01-24T23:13:27+09:00</updated>
+  <updated>2016-02-17T02:55:55+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -12,6 +12,128 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Custom Lint for Library]]></title>
+    <link href="http://shiraji.github.io/blog/2016/02/04/custom-lint-for-library/"/>
+    <updated>2016-02-04T23:40:40+09:00</updated>
+    <id>http://shiraji.github.io/blog/2016/02/04/custom-lint-for-library</id>
+    <content type="html"><![CDATA[<h1>Summary</h1>
+
+<ul>
+<li>PermissionsDispatcher now have a custom lint</li>
+<li>Adding custom lint is not that hard</li>
+<li>LintDetectorTest&hellip;? Forget it</li>
+</ul>
+
+
+<h1>PermissionsDispatcher now have a custom lint</h1>
+
+<p>First of all, I am one of collaborators of <a href="https://github.com/hotchemi/PermissionsDispatcher">PermissionsDispatcher</a> which makes developers handle runtime permissions very easily.</p>
+
+<p>PermissionsDispatcher now have a custom lint for its library. Initial issue came from <a href="https://github.com/hotchemi/PermissionsDispatcher/issues/56#issuecomment-163499243">this comment</a>.</p>
+
+<p>The library requires the developer to define a method with <code>@NeedsPermission</code>. Like this</p>
+
+<pre><code class="java">@NeedsPermission(Manifest.permission.CAMERA)
+void showCamera() {
+}
+</code></pre>
+
+<p>However, this method should not directly access. Instead, the developers must use a method that PermissionsDispatcher generated.</p>
+
+<pre><code class="Java">void foo() {
+    MainActivityPermissionsDispatcher.showCameraWithCheck(this); // Yes
+}
+
+void foo2() {
+    showCamera(); // No!
+}
+</code></pre>
+
+<p>In order to make sure the developers did not call this method, we decide to provide custom lint for this library.</p>
+
+<h1>How to add custom lint for library</h1>
+
+<p>To create custom lint for Android application, check links below</p>
+
+<ul>
+<li><a href="http://tools.android.com/tips/lint-custom-rules">Writing Custom Lint Rules</a></li>
+<li><a href="http://tools.android.com/tips/lint/writing-a-lint-check">Writing a Lint Check</a></li>
+<li><a href="http://qiita.com/hotchemi/items/9364d54a0e024a5e6275">@hotchime&rsquo;s blog post at qiita</a> (For Japanese developer)</li>
+</ul>
+
+
+<p>Custom lint for library needs extra settings to inject <code>lint.jar</code> to its .aar file</p>
+
+<pre><code class="Gradle">configurations {
+    lintChecks
+}
+
+dependencies {
+    ...
+
+    // we have lint module with lintCheck configuration.
+    // check this file: https://github.com/shiraji/PermissionsDispatcher/blob/master/lint/build.gradle
+    lintChecks project(path: ':lint', configuration: 'lintChecks')
+}
+
+assemble.doLast {
+    copyJarToOtherModules.execute()
+}
+
+task copyLintJar(type: Copy) {
+    from(configurations.lintChecks) {
+        rename { 'lint.jar' }
+    }
+    into 'build/intermediates/lint/'
+}
+
+project.afterEvaluate {
+    def compileLintTask = project.tasks.find { it.name == 'compileLint' }
+    compileLintTask.dependsOn(copyLintJar)
+}
+</code></pre>
+
+<p>Basically, if there is <code>compileLint</code> task, then make the task depends on <code>copyLintJar</code> task which copies <code>lint.jar</code> to <code>build/intermediates/lint/</code></p>
+
+<p>The user of this library doesn&rsquo;t need to put lint.jar to <code>.android/lint/</code>. Just sync library and then run <code>./gradlew lint</code></p>
+
+<h1>Use LintDetectorTest</h1>
+
+<p>Just don&rsquo;t.</p>
+
+<p>Check this code</p>
+
+<pre><code class="Java">File f = new File(root,
+            "tools/base/lint/libs/lint-tests/src/test/java/".replace('/', File.separatorChar)
+            + pkg.replace('.', File.separatorChar)
+            + File.separatorChar + path);
+</code></pre>
+
+<p>This is the code that reads from <code>$ROOT/tools/base/lint/libs/lint-tests/src/test/java/PACAKGE-NAME-REPLACE-DOT-WITH-SLASH</code>.
+I believe most developers doesn&rsquo;t want to put project in the specific directory in order to pass the test cases.</p>
+
+<p>Actually, current version of <code>LintDetectorTest</code> has a lots of problems with loading resources, java source and &ldquo;class&rdquo; file. (Yes! you need to supply .class file to run the test)</p>
+
+<p>In order to use the <code>LintDetectorTest</code>, the developer must override <code>protected InputStream getTestResource(String relativePath, boolean expectExists)</code> like <a href="https://android.googlesource.com/platform/tools/base/+/master/lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AbstractCheckTest.java?autodive=0%2F%2F%2F%2F%2F%2F%2F#49">what AOSP did</a></p>
+
+<p><code>LintDetectorTest</code> is still Beta. I assumed there are a lot of work to make it production release.</p>
+
+<p>If it comes to production, I hope it does not require me to pass .java/.class file like this way.</p>
+
+<pre><code class="Java">lintFiles("MainActivity.class=&gt;pkg/MainActivity.class"));
+</code></pre>
+
+<h1>Now how to test???</h1>
+
+<p>I don&rsquo;t know.</p>
+
+<p>The only way I came up is <a href="https://github.com/hotchemi/PermissionsDispatcher/pull/75#issuecomment-178650850">manual testing</a>.</p>
+
+<p>So, someone who know better way to test lint, please let me know!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[アクセス修飾子次第で、メソッド数が増えてしまう問題について]]></title>
