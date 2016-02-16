@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android, | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-02-17T02:55:55+09:00</updated>
+  <updated>2016-02-17T02:58:21+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -66,7 +66,7 @@ void foo2() {
 
 <p>Custom lint for library needs extra settings to inject <code>lint.jar</code> to its .aar file</p>
 
-<pre><code class="Gradle">configurations {
+<pre><code class="groovy">configurations {
     lintChecks
 }
 

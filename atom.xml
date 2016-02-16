@@ -4,7 +4,7 @@
   <title><![CDATA[Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-01-24T23:13:27+09:00</updated>
+  <updated>2016-02-17T02:58:21+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -12,6 +12,175 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Custom Lint for Library]]></title>
+    <link href="http://shiraji.github.io/blog/2016/02/04/custom-lint-for-library/"/>
+    <updated>2016-02-04T23:40:40+09:00</updated>
+    <id>http://shiraji.github.io/blog/2016/02/04/custom-lint-for-library</id>
+    <content type="html"><![CDATA[<h1>Summary</h1>
+
+<ul>
+<li>PermissionsDispatcher now have a custom lint</li>
+<li>Adding custom lint is not that hard</li>
+<li>LintDetectorTest&hellip;? Forget it</li>
+</ul>
+
+
+<h1>PermissionsDispatcher now have a custom lint</h1>
+
+<p>First of all, I am one of collaborators of <a href="https://github.com/hotchemi/PermissionsDispatcher">PermissionsDispatcher</a> which makes developers handle runtime permissions very easily.</p>
+
+<p>PermissionsDispatcher now have a custom lint for its library. Initial issue came from <a href="https://github.com/hotchemi/PermissionsDispatcher/issues/56#issuecomment-163499243">this comment</a>.</p>
+
+<p>The library requires the developer to define a method with <code>@NeedsPermission</code>. Like this</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@NeedsPermission</span><span class="o">(</span><span class="n">Manifest</span><span class="o">.</span><span class="na">permission</span><span class="o">.</span><span class="na">CAMERA</span><span class="o">)</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">showCamera</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>However, this method should not directly access. Instead, the developers must use a method that PermissionsDispatcher generated.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='Java'><span class='line'><span class="kt">void</span> <span class="nf">foo</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">MainActivityPermissionsDispatcher</span><span class="o">.</span><span class="na">showCameraWithCheck</span><span class="o">(</span><span class="k">this</span><span class="o">);</span> <span class="c1">// Yes</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="nf">foo2</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">showCamera</span><span class="o">();</span> <span class="c1">// No!</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In order to make sure the developers did not call this method, we decide to provide custom lint for this library.</p>
+
+<h1>How to add custom lint for library</h1>
+
+<p>To create custom lint for Android application, check links below</p>
+
+<ul>
+<li><a href="http://tools.android.com/tips/lint-custom-rules">Writing Custom Lint Rules</a></li>
+<li><a href="http://tools.android.com/tips/lint/writing-a-lint-check">Writing a Lint Check</a></li>
+<li><a href="http://qiita.com/hotchemi/items/9364d54a0e024a5e6275">@hotchime&rsquo;s blog post at qiita</a> (For Japanese developer)</li>
+</ul>
+
+
+<p>Custom lint for library needs extra settings to inject <code>lint.jar</code> to its .aar file</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">configurations</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">lintChecks</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">dependencies</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// we have lint module with lintCheck configuration.</span>
+</span><span class='line'>    <span class="c1">// check this file: https://github.com/shiraji/PermissionsDispatcher/blob/master/lint/build.gradle</span>
+</span><span class='line'>    <span class="n">lintChecks</span> <span class="nf">project</span><span class="o">(</span><span class="nl">path:</span> <span class="s1">&#39;:lint&#39;</span><span class="o">,</span> <span class="nl">configuration:</span> <span class="s1">&#39;lintChecks&#39;</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">assemble</span><span class="o">.</span><span class="na">doLast</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">copyJarToOtherModules</span><span class="o">.</span><span class="na">execute</span><span class="o">()</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">task</span> <span class="nf">copyLintJar</span><span class="o">(</span><span class="nl">type:</span> <span class="n">Copy</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">from</span><span class="o">(</span><span class="n">configurations</span><span class="o">.</span><span class="na">lintChecks</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">rename</span> <span class="o">{</span> <span class="s1">&#39;lint.jar&#39;</span> <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">into</span> <span class="s1">&#39;build/intermediates/lint/&#39;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">project</span><span class="o">.</span><span class="na">afterEvaluate</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kt">def</span> <span class="n">compileLintTask</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="na">tasks</span><span class="o">.</span><span class="na">find</span> <span class="o">{</span> <span class="n">it</span><span class="o">.</span><span class="na">name</span> <span class="o">==</span> <span class="s1">&#39;compileLint&#39;</span> <span class="o">}</span>
+</span><span class='line'>    <span class="n">compileLintTask</span><span class="o">.</span><span class="na">dependsOn</span><span class="o">(</span><span class="n">copyLintJar</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Basically, if there is <code>compileLint</code> task, then make the task depends on <code>copyLintJar</code> task which copies <code>lint.jar</code> to <code>build/intermediates/lint/</code></p>
+
+<p>The user of this library doesn&rsquo;t need to put lint.jar to <code>.android/lint/</code>. Just sync library and then run <code>./gradlew lint</code></p>
+
+<h1>Use LintDetectorTest</h1>
+
+<p>Just don&rsquo;t.</p>
+
+<p>Check this code</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='Java'><span class='line'><span class="n">File</span> <span class="n">f</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="n">root</span><span class="o">,</span>
+</span><span class='line'>            <span class="s">&quot;tools/base/lint/libs/lint-tests/src/test/java/&quot;</span><span class="o">.</span><span class="na">replace</span><span class="o">(</span><span class="sc">&#39;/&#39;</span><span class="o">,</span> <span class="n">File</span><span class="o">.</span><span class="na">separatorChar</span><span class="o">)</span>
+</span><span class='line'>            <span class="o">+</span> <span class="n">pkg</span><span class="o">.</span><span class="na">replace</span><span class="o">(</span><span class="sc">&#39;.&#39;</span><span class="o">,</span> <span class="n">File</span><span class="o">.</span><span class="na">separatorChar</span><span class="o">)</span>
+</span><span class='line'>            <span class="o">+</span> <span class="n">File</span><span class="o">.</span><span class="na">separatorChar</span> <span class="o">+</span> <span class="n">path</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is the code that reads from <code>$ROOT/tools/base/lint/libs/lint-tests/src/test/java/PACAKGE-NAME-REPLACE-DOT-WITH-SLASH</code>.
+I believe most developers doesn&rsquo;t want to put project in the specific directory in order to pass the test cases.</p>
+
+<p>Actually, current version of <code>LintDetectorTest</code> has a lots of problems with loading resources, java source and &ldquo;class&rdquo; file. (Yes! you need to supply .class file to run the test)</p>
+
+<p>In order to use the <code>LintDetectorTest</code>, the developer must override <code>protected InputStream getTestResource(String relativePath, boolean expectExists)</code> like <a href="https://android.googlesource.com/platform/tools/base/+/master/lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AbstractCheckTest.java?autodive=0%2F%2F%2F%2F%2F%2F%2F#49">what AOSP did</a></p>
+
+<p><code>LintDetectorTest</code> is still Beta. I assumed there are a lot of work to make it production release.</p>
+
+<p>If it comes to production, I hope it does not require me to pass .java/.class file like this way.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='Java'><span class='line'><span class="n">lintFiles</span><span class="o">(</span><span class="s">&quot;MainActivity.class=&gt;pkg/MainActivity.class&quot;</span><span class="o">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Now how to test???</h1>
+
+<p>I don&rsquo;t know.</p>
+
+<p>The only way I came up is <a href="https://github.com/hotchemi/PermissionsDispatcher/pull/75#issuecomment-178650850">manual testing</a>.</p>
+
+<p>So, someone who know better way to test lint, please let me know!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[アクセス修飾子次第で、メソッド数が増えてしまう問題について]]></title>
