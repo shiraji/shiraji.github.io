@@ -12,6 +12,16 @@ categories: Android, lint
 * Adding custom lint is not that hard
 * LintDetectorTest...? Forget it
 
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 # PermissionsDispatcher now have a custom lint
 
 First of all, I am one of collaborators of [PermissionsDispatcher](https://github.com/hotchemi/PermissionsDispatcher) which makes developers handle runtime permissions very easily.

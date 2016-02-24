@@ -10,6 +10,16 @@ categories: Java, Android, GitHub
 
 privateアクセス修飾子をつけると条件次第で勝手にメソッド余分に生成されるから気をつけてね！
 
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 # 最初に
 
 Jakeさんがこの[pull request](https://github.com/google/gson/pull/761)を投げていて、察するに$accessorというメソッドが生成されてしまうので、それを生成しないようにしたぜ？ってことだと思う。が、なんでそうなるのかわからない。
