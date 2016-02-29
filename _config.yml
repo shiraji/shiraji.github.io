@@ -6,8 +6,9 @@ url: http://shiraji.github.io
 title: Shiraji's Blog
 subtitle:
 author: Shiraji
-simple_search:
+simple_search: http://google.com/search
 description:
+keyword: "Tech blog, Android, Java, Kotlin, Development, Programming, Program, Gradle, Technology"
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
