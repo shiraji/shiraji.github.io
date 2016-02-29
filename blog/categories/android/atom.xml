@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android, | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-02-29T01:18:18+09:00</updated>
+  <updated>2016-03-01T00:44:31+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -12,6 +12,182 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ForwardingAstVisitor's Life Cycle (Android Lint)]]></title>
+    <link href="http://shiraji.github.io/blog/2016/02/24/forwardingAstVisitor/"/>
+    <updated>2016-02-24T14:37:58+09:00</updated>
+    <id>http://shiraji.github.io/blog/2016/02/24/forwardingAstVisitor</id>
+    <content type="html"><![CDATA[<h1>Summary</h1>
+
+<ul>
+<li><code>ForwardingAstVisitor</code> has life cycle</li>
+<li>visitXxx -> afterXxx -> endXxx</li>
+<li>Begin <code>visitCompilationUnit</code>, End <code>afterVisitCompilationUnit</code></li>
+<li>Go from top to bottom. No surprise, except annotation.</li>
+<li>Does not talk about visitIf or any of visitXxx where Xxx is keyword</li>
+</ul>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+<h1>Motivation</h1>
+
+<p>The past few weeks, I am working on creating custom lints for <a href="https://github.com/hotchemi/PermissionsDispatcher">PermissionsDispatcher</a>.</p>
+
+<p>Using <code>ForwardingAstVisitor</code> is the easiest way to implement custom lint. I found there are 75 &ldquo;visit&rdquo; methods in the class. For instance, <code>visitMethodDeclaration</code> is called for iterating all method declarations. <code>visitIdentifier</code> is for all identifiers. Trust me, there is even <code>visitIf</code> and <code>visitSwitch</code> that are called for each <code>if</code> and <code>switch</code>.</p>
+
+<p>However, I could not find any documentations that describes which &ldquo;visit&rdquo; method comes first. So&hellip;this is the post that describes what is the &ldquo;lifecycle&rdquo; of <code>ForwardingAstVisitor</code>.</p>
+
+<h1>Basic Rules</h1>
+
+<p>There are 4 types of methods, <code>visit</code>, <code>visitNode</code>, <code>afterVisit</code>, <code>endVisit</code> for <code>ForwardingAstVisitor</code>.</p>
+
+<ul>
+<li><code>visitXxx</code> comes first</li>
+<li><code>visitNode</code> comes second for dive into the node</li>
+<li><code>afterVisitXxx</code> comes if there is no more method call inside <code>visitXxx</code></li>
+<li>Finally, <code>endVisit</code> comes for wrap up.</li>
+</ul>
+
+
+<p>For instance, followings are the method call for checking <code>@Override</code>:</p>
+
+<pre><code>visitAnnotation                     : target node -&gt; @Override
+| visitNode                         : target node -&gt; @Override
+| | visitTypeReference              : target node -&gt; Override
+| | | visitNode                     : target node -&gt; Override
+| | | | visitTypeReferencePart      : target node -&gt; Override
+| | | | | visitNode                 : target node -&gt; Override
+| | | | | | visitIdentifier         : target node -&gt; Override
+| | | | | | | visitNode             : target node -&gt; Override
+| | | | | | afterVisitIdentifier    : target node -&gt; Override
+| | | | | endVisit                  : target node -&gt; Override
+| | | | afterVisitTypeReferencePart : target node -&gt; Override
+| | | endVisit                      : target node -&gt; Override
+| | afterVisitTypeReference         : target node -&gt; Override
+| endVisit                          : target node -&gt; Override
+afterVisitAnnotation                : target node -&gt; @Override
+</code></pre>
+
+<h1>General Rules</h1>
+
+<p>Now, let see what&rsquo;s happens if I want to lint check for a Java file.</p>
+
+<p>Assuming I am going to check following class</p>
+
+<pre><code class="Java">package pkg;
+
+import android.Manifest;
+import android.support.v7.app.AppCompatActivity;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
+
+@RuntimePermissions
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+
+    @NeedsPermission(Manifest.permission.CAMERA)
+    void showCamera() {
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+}
+</code></pre>
+
+<p>Here is the <a href="https://gist.github.com/shiraji/dc4665d704d8852243c3">debuging code</a>. It&rsquo;s basically Sys-out method name and <code>node</code> parameter. And the output is <a href="https://gist.github.com/shiraji/37993e824c36e31724d5">this</a></p>
+
+<p>OK, Too long&hellip;let me summarize idea.</p>
+
+<ul>
+<li>The first visit-method is <code>visitCompilationUnit</code></li>
+<li>Next it checks <code>visitPackageDeclaration</code> for <code>package pkg;</code> (Meaning, it starts from the first line of the class)</li>
+<li>And goes one by one until it reaches the bottom of the class</li>
+<li>The last after-method is <code>afterVisitCompilationUnit</code></li>
+</ul>
+
+
+<h1>Exceptional Rules</h1>
+
+<p>Now, we know the lint checks goes the top to the bottom. However, there is an exception, Annotation.</p>
+
+<p><code>@RuntimePermissions</code> which is located the above of the class declaration in the example above.</p>
+
+<p>Actually, when we run the lint checks, <code>visitClassDeclaration</code> comes <a href="https://gist.github.com/shiraji/37993e824c36e31724d5#file-output-txt-L127">first</a> and then <code>visitAnnotation</code> comes <a href="https://gist.github.com/shiraji/37993e824c36e31724d5#file-output-txt-L167">later</a>.</p>
+
+<p>It seems that the lint handles annotation as a node inside of method declaration.</p>
+
+<p>For example, if we want to store class declaration object which <code>@RuntimePermissions</code>, we cannot do followings:</p>
+
+<pre><code class="Java">List&lt;ClassDeclaration&gt; classDeclarations;
+boolean hasRuntimePermisions;
+
+@Override
+public boolean visitAnnotation(Annotation node) {
+    String type = node.astAnnotationTypeReference().getTypeName();
+    if ("permissions.dispatcher.RuntimePermissions".equals(type)) {
+        hasRuntimePermisions = true;
+    }
+    return super.visitAnnotation(node);
+}
+
+@Override
+public boolean visitClassDeclaration(ClassDeclaration node) {
+    if(hasRuntimePermisions) {
+        classDeclarations.add(node);
+    }
+    return super.visitClassDeclaration(node);
+}
+</code></pre>
+
+<p>Instead, I would use <code>afterVisitClassDeclaration</code> and call <code>requestRepeat</code> to run other detector which uses class declaration objects.</p>
+
+<pre><code class="Java">JavaContext context;
+List&lt;ClassDeclaration&gt; classDeclarations;
+boolean hasRuntimePermisions;
+
+@Override
+public boolean visitAnnotation(Annotation node) {
+    String type = node.astAnnotationTypeReference().getTypeName();
+    if ("permissions.dispatcher.RuntimePermissions".equals(type)) {
+        hasRuntimePermisions = true;
+    }
+    return super.visitAnnotation(node);
+}
+
+@Override
+public void afterVisitClassDeclaration(ClassDeclaration node) {
+    if(hasRuntimePermisions) {
+        classDeclarations.add(node);
+        context.requestRepeat(new MyOtherDetector(), EnumSet.of(Scope.ALL_JAVA_FILES));
+    }
+    return super.visitClassDeclaration(node);
+}
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Custom Lint for Library]]></title>

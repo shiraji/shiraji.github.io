@@ -9,9 +9,10 @@
   <meta name="author" content="Shiraji">
 
   
-  <meta name="description" content="Summary PermissionsDispatcher now have a custom lint
-Adding custom lint is not that hard
-LintDetectorTest&hellip;? Forget it PermissionsDispatcher &hellip;">
+  <meta name="description" content="Summary ForwardingAstVisitor has life cycle
+visitXxx -> afterXxx -> endXxx
+Begin visitCompilationUnit, End afterVisitCompilationUnit
+Go from top to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -70,6 +71,285 @@ LintDetectorTest&hellip;? Forget it PermissionsDispatcher &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/02/24/forwardingAstVisitor/">ForwardingAstVisitor's Life Cycle (Android Lint)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-02-24T14:37:58+09:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>2:37 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Summary</h1>
+
+<ul>
+<li><code>ForwardingAstVisitor</code> has life cycle</li>
+<li>visitXxx -> afterXxx -> endXxx</li>
+<li>Begin <code>visitCompilationUnit</code>, End <code>afterVisitCompilationUnit</code></li>
+<li>Go from top to bottom. No surprise, except annotation.</li>
+<li>Does not talk about visitIf or any of visitXxx where Xxx is keyword</li>
+</ul>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+<h1>Motivation</h1>
+
+<p>The past few weeks, I am working on creating custom lints for <a href="https://github.com/hotchemi/PermissionsDispatcher">PermissionsDispatcher</a>.</p>
+
+<p>Using <code>ForwardingAstVisitor</code> is the easiest way to implement custom lint. I found there are 75 &ldquo;visit&rdquo; methods in the class. For instance, <code>visitMethodDeclaration</code> is called for iterating all method declarations. <code>visitIdentifier</code> is for all identifiers. Trust me, there is even <code>visitIf</code> and <code>visitSwitch</code> that are called for each <code>if</code> and <code>switch</code>.</p>
+
+<p>However, I could not find any documentations that describes which &ldquo;visit&rdquo; method comes first. So&hellip;this is the post that describes what is the &ldquo;lifecycle&rdquo; of <code>ForwardingAstVisitor</code>.</p>
+
+<h1>Basic Rules</h1>
+
+<p>There are 4 types of methods, <code>visit</code>, <code>visitNode</code>, <code>afterVisit</code>, <code>endVisit</code> for <code>ForwardingAstVisitor</code>.</p>
+
+<ul>
+<li><code>visitXxx</code> comes first</li>
+<li><code>visitNode</code> comes second for dive into the node</li>
+<li><code>afterVisitXxx</code> comes if there is no more method call inside <code>visitXxx</code></li>
+<li>Finally, <code>endVisit</code> comes for wrap up.</li>
+</ul>
+
+
+<p>For instance, followings are the method call for checking <code>@Override</code>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>visitAnnotation                     : target node -&gt; @Override
+</span><span class='line'>| visitNode                         : target node -&gt; @Override
+</span><span class='line'>| | visitTypeReference              : target node -&gt; Override
+</span><span class='line'>| | | visitNode                     : target node -&gt; Override
+</span><span class='line'>| | | | visitTypeReferencePart      : target node -&gt; Override
+</span><span class='line'>| | | | | visitNode                 : target node -&gt; Override
+</span><span class='line'>| | | | | | visitIdentifier         : target node -&gt; Override
+</span><span class='line'>| | | | | | | visitNode             : target node -&gt; Override
+</span><span class='line'>| | | | | | afterVisitIdentifier    : target node -&gt; Override
+</span><span class='line'>| | | | | endVisit                  : target node -&gt; Override
+</span><span class='line'>| | | | afterVisitTypeReferencePart : target node -&gt; Override
+</span><span class='line'>| | | endVisit                      : target node -&gt; Override
+</span><span class='line'>| | afterVisitTypeReference         : target node -&gt; Override
+</span><span class='line'>| endVisit                          : target node -&gt; Override
+</span><span class='line'>afterVisitAnnotation                : target node -&gt; @Override</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>General Rules</h1>
+
+<p>Now, let see what&rsquo;s happens if I want to lint check for a Java file.</p>
+
+<p>Assuming I am going to check following class</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='Java'><span class='line'><span class="kn">package</span> <span class="n">pkg</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.Manifest</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.support.v7.app.AppCompatActivity</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">permissions.dispatcher.NeedsPermission</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">permissions.dispatcher.RuntimePermissions</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@RuntimePermissions</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="n">AppCompatActivity</span> <span class="o">{</span>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">setContentView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">activity_main</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@NeedsPermission</span><span class="o">(</span><span class="n">Manifest</span><span class="o">.</span><span class="na">permission</span><span class="o">.</span><span class="na">CAMERA</span><span class="o">)</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="nf">showCamera</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onRequestPermissionsResult</span><span class="o">(</span><span class="kt">int</span> <span class="n">requestCode</span><span class="o">,</span> <span class="n">String</span><span class="o">[]</span> <span class="n">permissions</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">grantResults</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="kd">super</span><span class="o">.</span><span class="na">onRequestPermissionsResult</span><span class="o">(</span><span class="n">requestCode</span><span class="o">,</span> <span class="n">permissions</span><span class="o">,</span> <span class="n">grantResults</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">MainActivityPermissionsDispatcher</span><span class="o">.</span><span class="na">onRequestPermissionsResult</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">requestCode</span><span class="o">,</span> <span class="n">grantResults</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here is the <a href="https://gist.github.com/shiraji/dc4665d704d8852243c3">debuging code</a>. It&rsquo;s basically Sys-out method name and <code>node</code> parameter. And the output is <a href="https://gist.github.com/shiraji/37993e824c36e31724d5">this</a></p>
+
+<p>OK, Too long&hellip;let me summarize idea.</p>
+
+<ul>
+<li>The first visit-method is <code>visitCompilationUnit</code></li>
+<li>Next it checks <code>visitPackageDeclaration</code> for <code>package pkg;</code> (Meaning, it starts from the first line of the class)</li>
+<li>And goes one by one until it reaches the bottom of the class</li>
+<li>The last after-method is <code>afterVisitCompilationUnit</code></li>
+</ul>
+
+
+<h1>Exceptional Rules</h1>
+
+<p>Now, we know the lint checks goes the top to the bottom. However, there is an exception, Annotation.</p>
+
+<p><code>@RuntimePermissions</code> which is located the above of the class declaration in the example above.</p>
+
+<p>Actually, when we run the lint checks, <code>visitClassDeclaration</code> comes <a href="https://gist.github.com/shiraji/37993e824c36e31724d5#file-output-txt-L127">first</a> and then <code>visitAnnotation</code> comes <a href="https://gist.github.com/shiraji/37993e824c36e31724d5#file-output-txt-L167">later</a>.</p>
+
+<p>It seems that the lint handles annotation as a node inside of method declaration.</p>
+
+<p>For example, if we want to store class declaration object which <code>@RuntimePermissions</code>, we cannot do followings:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='Java'><span class='line'><span class="n">List</span><span class="o">&lt;</span><span class="n">ClassDeclaration</span><span class="o">&gt;</span> <span class="n">classDeclarations</span><span class="o">;</span>
+</span><span class='line'><span class="kt">boolean</span> <span class="n">hasRuntimePermisions</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">visitAnnotation</span><span class="o">(</span><span class="n">Annotation</span> <span class="n">node</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">type</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="na">astAnnotationTypeReference</span><span class="o">().</span><span class="na">getTypeName</span><span class="o">();</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="s">&quot;permissions.dispatcher.RuntimePermissions&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">type</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">hasRuntimePermisions</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">visitAnnotation</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">visitClassDeclaration</span><span class="o">(</span><span class="n">ClassDeclaration</span> <span class="n">node</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span><span class="o">(</span><span class="n">hasRuntimePermisions</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">classDeclarations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">visitClassDeclaration</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Instead, I would use <code>afterVisitClassDeclaration</code> and call <code>requestRepeat</code> to run other detector which uses class declaration objects.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='Java'><span class='line'><span class="n">JavaContext</span> <span class="n">context</span><span class="o">;</span>
+</span><span class='line'><span class="n">List</span><span class="o">&lt;</span><span class="n">ClassDeclaration</span><span class="o">&gt;</span> <span class="n">classDeclarations</span><span class="o">;</span>
+</span><span class='line'><span class="kt">boolean</span> <span class="n">hasRuntimePermisions</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">visitAnnotation</span><span class="o">(</span><span class="n">Annotation</span> <span class="n">node</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">type</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="na">astAnnotationTypeReference</span><span class="o">().</span><span class="na">getTypeName</span><span class="o">();</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="s">&quot;permissions.dispatcher.RuntimePermissions&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">type</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">hasRuntimePermisions</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">visitAnnotation</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">afterVisitClassDeclaration</span><span class="o">(</span><span class="n">ClassDeclaration</span> <span class="n">node</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span><span class="o">(</span><span class="n">hasRuntimePermisions</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">classDeclarations</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">context</span><span class="o">.</span><span class="na">requestRepeat</span><span class="o">(</span><span class="k">new</span> <span class="nf">MyOtherDetector</span><span class="o">(),</span> <span class="n">EnumSet</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">Scope</span><span class="o">.</span><span class="na">ALL_JAVA_FILES</span><span class="o">));</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">visitClassDeclaration</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1215,6 +1495,10 @@ privateアクセス修飾子のため、アクセス出来ないので、access�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/02/24/forwardingAstVisitor/">ForwardingAstVisitor's Life Cycle (Android Lint)</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/17/custom-lint-for-library/">Custom Lint for Library</a>
       </li>
     
@@ -1228,10 +1512,6 @@ privateアクセス修飾子のため、アクセス出来ないので、access�
     
       <li class="post">
         <a href="/blog/2015/10/17/refactoring/">リファクタリングについて伝えたいこと。</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/17/intro/">自己紹介</a>
       </li>
     
   </ul>
