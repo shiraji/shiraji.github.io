@@ -29,6 +29,8 @@ http://shiraji.hatenablog.com/entry/2015/09/06/225204
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
+<!-- more -->
+
 # 最初に
 
 リファクタリングの話をする前に、一般的な職場に関する質問があります。

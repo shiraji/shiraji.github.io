@@ -22,6 +22,8 @@ categories: Android, lint
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
+<!-- more -->
+
 # PermissionsDispatcher now have a custom lint
 
 First of all, I am one of collaborators of [PermissionsDispatcher](https://github.com/hotchemi/PermissionsDispatcher) which makes developers handle runtime permissions very easily.

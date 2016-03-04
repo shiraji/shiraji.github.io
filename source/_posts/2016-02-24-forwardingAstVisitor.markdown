@@ -24,6 +24,8 @@ categories: Android, lint
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
+<!-- more -->
+
 # Motivation
 
 The past few weeks, I am working on creating custom lints for [PermissionsDispatcher](https://github.com/hotchemi/PermissionsDispatcher).

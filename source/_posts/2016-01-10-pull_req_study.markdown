@@ -20,6 +20,8 @@ categories: GitHub, 勉強方法, git
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
+<!-- more -->
+
 # 対象者
 
 * 息をするようにpull requestを投げられない
