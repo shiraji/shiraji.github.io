@@ -4,7 +4,7 @@
   <title><![CDATA[Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-03-02T22:00:10+09:00</updated>
+  <updated>2016-03-05T02:10:48+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -43,6 +43,11 @@
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+
+
+
+
+<!-- more -->
 
 
 <h1>Motivation</h1>
@@ -302,6 +307,11 @@
 </script>
 
 
+
+
+<!-- more -->
+
+
 <h1>PermissionsDispatcher now have a custom lint</h1>
 
 <p>First of all, I am one of collaborators of <a href="https://github.com/hotchemi/PermissionsDispatcher">PermissionsDispatcher</a> which makes developers handle runtime permissions very easily.</p>
@@ -480,6 +490,11 @@ I believe most developers doesn&rsquo;t want to put project in the specific dire
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+
+
+
+
+<!-- more -->
 
 
 <h1>最初に</h1>
@@ -1019,6 +1034,11 @@ privateアクセス修飾子のため、アクセス出来ないので、access�
 </script>
 
 
+
+
+<!-- more -->
+
+
 <h1>対象者</h1>
 
 <ul>
@@ -1208,6 +1228,11 @@ privateアクセス修飾子のため、アクセス出来ないので、access�
 </script>
 
 
+
+
+<!-- more -->
+
+
 <h1>最初に</h1>
 
 <p>リファクタリングの話をする前に、一般的な職場に関する質問があります。</p>
@@ -1291,7 +1316,28 @@ privateアクセス修飾子のため、アクセス出来ないので、access�
     <link href="http://shiraji.github.io/blog/2015/10/17/intro/"/>
     <updated>2015-10-17T07:31:51+09:00</updated>
     <id>http://shiraji.github.io/blog/2015/10/17/intro</id>
-    <content type="html"><![CDATA[<p>shirajiと申します。GitHub活動は英語で行っていますが、このブログは日本語で記載していきたいと思います。</p>
+    <content type="html"><![CDATA[<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<p>shirajiと申します。GitHub活動は英語で行っていますが、このブログは日本語で記載していきたいと思います。</p>
 
 <ul>
 <li>Twitter: <a href="https://twitter.com/shiraj_i">@shiraj_i</a></li>

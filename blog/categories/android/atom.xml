@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android, | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-03-02T22:00:10+09:00</updated>
+  <updated>2016-03-05T02:10:48+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -43,6 +43,11 @@
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+
+
+
+
+<!-- more -->
 
 
 <h1>Motivation</h1>
@@ -219,6 +224,11 @@ public void afterVisitClassDeclaration(ClassDeclaration node) {
 </script>
 
 
+
+
+<!-- more -->
+
+
 <h1>PermissionsDispatcher now have a custom lint</h1>
 
 <p>First of all, I am one of collaborators of <a href="https://github.com/hotchemi/PermissionsDispatcher">PermissionsDispatcher</a> which makes developers handle runtime permissions very easily.</p>
@@ -350,6 +360,11 @@ I believe most developers doesn&rsquo;t want to put project in the specific dire
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+
+
+
+
+<!-- more -->
 
 
 <h1>最初に</h1>

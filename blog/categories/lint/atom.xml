@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Lint | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/lint/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-03-02T22:00:10+09:00</updated>
+  <updated>2016-03-05T02:10:48+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -43,6 +43,11 @@
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+
+
+
+
+<!-- more -->
 
 
 <h1>Motivation</h1>
@@ -217,6 +222,11 @@ public void afterVisitClassDeclaration(ClassDeclaration node) {
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+
+
+
+
+<!-- more -->
 
 
 <h1>PermissionsDispatcher now have a custom lint</h1>
