@@ -16,3 +16,11 @@ Notifications.Bus.notify(Notification("Plugin Importer+Exporter",
                 "EventData: $foo hash: $currentRevisionHash Annotate: $annotate",
                 NotificationType.INFORMATION))
 ```
+
+Log
+
+Simply
+
+```Java
+System.out.println()
+```
