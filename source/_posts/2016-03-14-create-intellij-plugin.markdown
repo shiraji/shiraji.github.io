@@ -24,3 +24,26 @@ Simply
 ```Java
 System.out.println()
 ```
+
+plugin.xml
+
+URL of the plugin
+
+```xml
+<idea-plugin url="https://plugins.jetbrains.com/plugin/8262?pr=" version="2">
+```
+
+vendor
+
+```xml
+<vendor email="isogai.shiraji@gmail.com" url="https://github.com/shiraji">Shiraji</vendor>
+```
+
+To use kotlin
+
+```xml
+<idea-version since-build="143"/>
+```
+
+Ro create action in right place -> right click src -> New -> action
+
