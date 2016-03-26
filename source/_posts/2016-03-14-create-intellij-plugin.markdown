@@ -47,3 +47,16 @@ To use kotlin
 
 Ro create action in right place -> right click src -> New -> action
 
+Action class
+
+Main method
+
+```kotlin
+override fun actionPerformed(e: AnActionEvent)
+```
+
+update method - should be less than 0.1 sec to complete this method
+
+```kotlin
+override fun update(e: AnActionEvent?)
+```
