@@ -3,60 +3,90 @@ layout: post
 title: "Tips for creating intellij plugin"
 date: 2016-03-14 01:35:25 +0900
 comments: false
-categories:
-keywords:
-description:
+categories: Java, Kotlin, Intellij Plugin
+keywords: Java, Kotlin, Intellij Plugin, Development, develop, implementation
+description: IntelliJ Plugin development tips
 ---
 
-Notification
+# Summery
+
+There are tips for creating intellij plugins
+
+* Logging
+* plugin.xml
+* Action
+
+This is note for myself. I won't add description if the sample is clear enough for me.
+
+# Logging
+
+Simply use Sys-out
+
+```Java
+System.out.println("logging...")
+```
+
+However, sys-out shows logs on the console. If you want to show pop up, use notification
+
+## Notification
 
 ```Kotlin
-Notifications.Bus.notify(Notification("Plugin Importer+Exporter",
-                "Plugin Importer+Exporter",
-                "EventData: $foo hash: $currentRevisionHash Annotate: $annotate",
+Notifications.Bus.notify(Notification("Plugin ID",
+                "Title",
+                "Content",
                 NotificationType.INFORMATION))
 ```
 
-Log
+# plugin.xml
 
-Simply
-
-```Java
-System.out.println()
-```
-
-plugin.xml
-
-URL of the plugin
+## URL of the plugin
 
 ```xml
 <idea-plugin url="https://plugins.jetbrains.com/plugin/8262?pr=" version="2">
 ```
 
-vendor
+## vendor
 
 ```xml
 <vendor email="isogai.shiraji@gmail.com" url="https://github.com/shiraji">Shiraji</vendor>
 ```
 
-To use kotlin
+## idea-version
+
+To use kotlin, IDE version should be higher than 143.
 
 ```xml
 <idea-version since-build="143"/>
 ```
 
-Ro create action in right place -> right click src -> New -> action
+# Action class
 
-Action class
+## Creating new action
 
-Main method
+```
+right click src > New > action
+```
+
+## Methods
 
 ```kotlin
 override fun actionPerformed(e: AnActionEvent)
 ```
 
-update method - should be less than 0.1 sec to complete this method
+## Update method
+
+To decide show the action or not, I need to override the update method.
+
+This method should be less than 0.1 sec to complete.
 
 ```kotlin
-override fun update(e: AnActionEvent?)
+override fun update(e: AnActionEvent?) {
+    e ?: return
+    super.update(e)
+
+    if (!FindPullRequestModel(e).isEnable()) {
+        e.presentation.isEnabled = false
+        e.presentation.isVisible = false
+    }
+}
 ```
