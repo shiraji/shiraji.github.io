@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Intellij | Shiraji's Blog]]></title>
+  <link href="http://shiraji.github.io/blog/categories/intellij/atom.xml" rel="self"/>
+  <link href="http://shiraji.github.io/"/>
+  <updated>2016-03-28T23:11:01+09:00</updated>
+  <id>http://shiraji.github.io/</id>
+  <author>
+    <name><![CDATA[Shiraji]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Tips for Creating Intellij Plugin]]></title>
+    <link href="http://shiraji.github.io/blog/2016/03/14/create-intellij-plugin/"/>
+    <updated>2016-03-14T01:35:25+09:00</updated>
+    <id>http://shiraji.github.io/blog/2016/03/14/create-intellij-plugin</id>
+    <content type="html"><![CDATA[<h1>Summery</h1>
+
+<p>There are tips for creating intellij plugins</p>
+
+<ul>
+<li>Logging</li>
+<li>plugin.xml</li>
+<li>Action</li>
+</ul>
+
+
+<p>This is note for myself. I won&rsquo;t add description if the sample is clear enough for me.</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h1>Logging</h1>
+
+<p>Simply use Sys-out</p>
+
+<pre><code class="Java">System.out.println("logging...")
+</code></pre>
+
+<p>However, sys-out shows logs on the console. If you want to show pop up, use notification</p>
+
+<h2>Notification</h2>
+
+<pre><code class="Kotlin">Notifications.Bus.notify(Notification("Plugin ID",
+                "Title",
+                "Content",
+                NotificationType.INFORMATION))
+</code></pre>
+
+<h1>plugin.xml</h1>
+
+<h2>URL of the plugin</h2>
+
+<pre><code class="xml">&lt;idea-plugin url="https://plugins.jetbrains.com/plugin/8262?pr=" version="2"&gt;
+</code></pre>
+
+<h2>vendor</h2>
+
+<pre><code class="xml">&lt;vendor email="isogai.shiraji@gmail.com" url="https://github.com/shiraji"&gt;Shiraji&lt;/vendor&gt;
+</code></pre>
+
+<h2>idea-version</h2>
+
+<p>To use kotlin, IDE version should be higher than 143.</p>
+
+<pre><code class="xml">&lt;idea-version since-build="143"/&gt;
+</code></pre>
+
+<h1>Action class</h1>
+
+<h2>Creating new action</h2>
+
+<pre><code>right click src &gt; New &gt; action
+</code></pre>
+
+<h2>Methods</h2>
+
+<pre><code class="kotlin">override fun actionPerformed(e: AnActionEvent)
+</code></pre>
+
+<h2>Update method</h2>
+
+<p>To decide show the action or not, I need to override the update method.</p>
+
+<p>This method should be less than 0.1 sec to complete.</p>
+
+<pre><code class="kotlin">override fun update(e: AnActionEvent?) {
+    e ?: return
+    super.update(e)
+
+    if (!FindPullRequestModel(e).isEnable()) {
+        e.presentation.isEnabled = false
+        e.presentation.isVisible = false
+    }
+}
+</code></pre>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://shiraji.github.io/blog/2016/03/14/create-intellij-plugin/</loc>
+    <lastmod>2016-03-14T01:35:25+09:00</lastmod>
+  </url>
+  <url>
     <loc>http://shiraji.github.io/blog/2016/02/24/forwardingAstVisitor/</loc>
     <lastmod>2016-02-24T14:37:58+09:00</lastmod>
   </url>
@@ -53,5 +57,14 @@
   </url>
   <url>
     <loc>http://shiraji.github.io/blog/categories/lint/</loc>
+  </url>
+  <url>
+    <loc>http://shiraji.github.io/blog/categories/kotlin/</loc>
+  </url>
+  <url>
+    <loc>http://shiraji.github.io/blog/categories/intellij/</loc>
+  </url>
+  <url>
+    <loc>http://shiraji.github.io/blog/categories/plugin/</loc>
   </url>
 </urlset>
