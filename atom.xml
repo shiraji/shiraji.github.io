@@ -4,7 +4,7 @@
   <title><![CDATA[Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-03-28T23:11:01+09:00</updated>
+  <updated>2016-03-28T23:13:22+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Tips for Creating Intellij Plugin]]></title>
-    <link href="http://shiraji.github.io/blog/2016/03/14/create-intellij-plugin/"/>
-    <updated>2016-03-14T01:35:25+09:00</updated>
-    <id>http://shiraji.github.io/blog/2016/03/14/create-intellij-plugin</id>
+    <link href="http://shiraji.github.io/blog/2016/03/28/create-intellij-plugin/"/>
+    <updated>2016-03-28T23:00:00+09:00</updated>
+    <id>http://shiraji.github.io/blog/2016/03/28/create-intellij-plugin</id>
     <content type="html"><![CDATA[<h1>Summery</h1>
 
 <p>There are tips for creating intellij plugins</p>
@@ -144,22 +144,6 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-
-
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-
-<!-- 728x90 -->
-
-
-<p><ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-3940616565912592"
-     data-ad-slot="7693358062"></ins></p>
-
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
 
 ]]></content>
   </entry>
