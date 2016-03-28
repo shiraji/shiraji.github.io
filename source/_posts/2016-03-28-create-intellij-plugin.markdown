@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Tips for creating intellij plugin"
-date: 2016-03-14 01:35:25 +0900
+date: 2016-03-28 23:00:00 +0900
 comments: false
 categories: Java, Kotlin, Intellij Plugin
 keywords: Java, Kotlin, Intellij Plugin, Development, develop, implementation
