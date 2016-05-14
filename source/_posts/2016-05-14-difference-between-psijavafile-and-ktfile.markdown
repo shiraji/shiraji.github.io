@@ -39,7 +39,7 @@ Before start taking about the differences, the followings are the environment fo
 * Gradle for build
 * [gradle-intellij-plugin](https://github.com/JetBrains/gradle-intellij-plugin)
 
-# `getClasses` for PsiJavaFile vs KtFile
+# `getClasses` for `PsiJavaFile` vs `KtFile`
 
 ```kotlin
 e.getData(CommonDataKeys.PSI_FILE)
