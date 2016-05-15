@@ -66,3 +66,15 @@ val psiFactory: KtPsiFactory = KtPsiFactory(project)
 ```
 
 # Generating annotations
+
+`PsiMethod` has modifierList
+
+```kotlin
+method.modifierList.addAnnotation("Foo")`
+```
+
+On the other hand, `KtNamedFunction` has `addAnnotationEntry`
+
+```kotlin
+function.addAnnotationEntry(psiFactory.createAnnotationEntry("@Foo"))
+```
