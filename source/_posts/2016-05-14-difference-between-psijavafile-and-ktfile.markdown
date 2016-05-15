@@ -45,5 +45,24 @@ Before start taking about the differences, the followings are the environment fo
 e.getData(CommonDataKeys.PSI_FILE)
 ```
 
-returns PsiJavaFile or KtFile.
-Both of them implements `PsiClassOwner` which means both of them has the method `PsiClass[] getClasses()`.
+returns `PsiJavaFile` or `KtFile`. Both of them implements `PsiClassOwner` which means both of them has the method `PsiClass[] getClasses()`.
+
+This method is useful for `PsiJavaFile`, it lets access classes of the file. The plugin can read/write contents of the classes.
+
+For `KtFile`, I expected the same. I want to read/write code of classes. Yes, you can read `.class` file. It is not classes inside `.kt` file. So, even though, it has methods `add`, `addBefore` or `addAfter`, `KtFile#classes#add` throw an exception says the plugin won't be able to write contents to `.class` file!
+
+If you want to get objects for generating code of Kotlin, then use `KtFile#getDeclarations`.
+
+# `PsiFactory`
+
+This could be because I could not find the best way to generate code...but PsiFactory of Java and Kotlin is different
+
+```Kotlin
+val psiElementFactory: PsiElementFactory = JavaPsiFacade.getElementFactory(project)
+```
+
+```Kotlin
+val psiFactory: KtPsiFactory = KtPsiFactory(project)
+```
+
+# Generating annotations
