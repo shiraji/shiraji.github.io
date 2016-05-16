@@ -8,7 +8,14 @@ keywords: IntelliJ Plugin Development, Generate Java and Kotlin source
 description: Describe what is the difference generating Java and Kotlin
 ---
 
-# Summery
+# Motivation
+
+I am a maintainer of [PermissionsDispatcher Plugin](https://github.com/shiraji/permissions-dispatcher-plugin) which generates Java and Kotlin for [PermissionsDispatcher](https://github.com/hotchemi/PermissionsDispatcher)
+Since Kotlin is getting famous for Android developers, I thought IntelliJ plugins, which generate Android code, should support both Java and Kotlin. (By the way, [Kotlin 1.0.2](http://blog.jetbrains.com/kotlin/2016/05/kotlin-1-0-2-is-here/) now supports Android lint! This definitely will lead more developers use Kotlin!)
+
+However, while I was developing this plugin, I found really hard to generate both Java and Kotlin code.
+
+So, this blog post describes what are the differences between generating Java and generating Kotlin using IntelliJ plugin.
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- 728x90 -->
@@ -21,15 +28,6 @@ description: Describe what is the difference generating Java and Kotlin
 </script>
 
 <!-- more -->
-
-# Motivation
-
-I am a maintainer of [PermissionsDispatcher Plugin](https://github.com/shiraji/permissions-dispatcher-plugin) which generates Java and Kotlin for [PermissionsDispatcher](https://github.com/hotchemi/PermissionsDispatcher)
-Since Kotlin is getting famous for Android developers, I thought IntelliJ plugins, which generate Android code, should support both Java and Kotlin. (By the way, [Kotlin 1.0.2](http://blog.jetbrains.com/kotlin/2016/05/kotlin-1-0-2-is-here/) now supports Android lint! This definitely will lead more developers use Kotlin!)
-
-However, while I was developing this plugin, I found really hard to generate both Java and Kotlin code.
-
-So, this blog post describes what are the differences between generating Java and generating Kotlin using IntelliJ plugin.
 
 # Environment
 
@@ -77,4 +75,31 @@ On the other hand, `KtNamedFunction` has `addAnnotationEntry`
 
 ```kotlin
 function.addAnnotationEntry(psiFactory.createAnnotationEntry("@Foo"))
+```
+
+To insert new line after annotation, you need to add new line manually.
+
+```kotlin
+val entry = function.addAnnotationEntry(psiFactory.createAnnotationEntry("@Foo"))
+entry.add(psiFactory.createNewLine())
+```
+
+# Generating methods
+
+`PsiClass` is easy to add method. Use `createMethodFromText` and `add` to `PsiClass`
+
+```kotlin
+val methodTemplate = """void foo() {
+}""".trimMargin()
+val method = JavaPsiFacade.getElementFactory(project).createMethodFromText(methodTemplate, psiClass)
+psiClass.add(method)
+```
+
+For kotlin, it's almost the same.
+
+```kotlin
+val psiFactory = KtPsiFactory(project)
+val function = psiFactory.createFunction("""void foo() {
+}""".trimMargin())
+ktClass.getBody()!!.addBefore(function, ktClass.getBody()!!.rBrace)
 ```
