@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Android, | Shiraji's Blog]]></title>
+  <title><![CDATA[Category: Android | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-03-28T23:13:57+09:00</updated>
+  <updated>2016-05-16T22:54:29+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -14,20 +14,18 @@
 
   
   <entry>
-    <title type="html"><![CDATA[ForwardingAstVisitor's Life Cycle (Android Lint)]]></title>
-    <link href="http://shiraji.github.io/blog/2016/02/24/forwardingAstVisitor/"/>
-    <updated>2016-02-24T14:37:58+09:00</updated>
-    <id>http://shiraji.github.io/blog/2016/02/24/forwardingAstVisitor</id>
-    <content type="html"><![CDATA[<h1>Summary</h1>
+    <title type="html"><![CDATA[Difference Between Generating Java and Generating Kotlin for Developing IntelliJ Plugin]]></title>
+    <link href="http://shiraji.github.io/blog/2016/05/14/difference-between-psijavafile-and-ktfile/"/>
+    <updated>2016-05-14T23:33:07+09:00</updated>
+    <id>http://shiraji.github.io/blog/2016/05/14/difference-between-psijavafile-and-ktfile</id>
+    <content type="html"><![CDATA[<h1>Motivation</h1>
 
-<ul>
-<li><code>ForwardingAstVisitor</code> has life cycle</li>
-<li>visitXxx -> afterXxx -> endXxx</li>
-<li>Begin <code>visitCompilationUnit</code>, End <code>afterVisitCompilationUnit</code></li>
-<li>Go from top to bottom. No surprise, except annotation.</li>
-<li>Does not talk about visitIf or any of visitXxx where Xxx is keyword</li>
-</ul>
+<p>I am a maintainer of <a href="https://github.com/shiraji/permissions-dispatcher-plugin">PermissionsDispatcher Plugin</a> which generates Java and Kotlin for <a href="https://github.com/hotchemi/PermissionsDispatcher">PermissionsDispatcher</a>
+Since Kotlin is getting famous for Android developers, I thought IntelliJ plugins, which generate Android code, should support both Java and Kotlin. (By the way, <a href="http://blog.jetbrains.com/kotlin/2016/05/kotlin-1-0-2-is-here/">Kotlin 1.0.2</a> now supports Android lint! This definitely will lead more developers use Kotlin!)</p>
 
+<p>However, while I was developing this plugin, I found really hard to generate both Java and Kotlin code.</p>
+
+<p>So, this blog post describes what are the differences between generating Java and generating Kotlin using IntelliJ plugin.</p>
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
@@ -50,622 +48,75 @@
 <!-- more -->
 
 
-<h1>Motivation</h1>
+<h1>Environment</h1>
 
-<p>The past few weeks, I am working on creating custom lints for <a href="https://github.com/hotchemi/PermissionsDispatcher">PermissionsDispatcher</a>.</p>
-
-<p>Using <code>ForwardingAstVisitor</code> is the easiest way to implement custom lint. I found there are 75 &ldquo;visit&rdquo; methods in the class. For instance, <code>visitMethodDeclaration</code> is called for iterating all method declarations. <code>visitIdentifier</code> is for all identifiers. Trust me, there is even <code>visitIf</code> and <code>visitSwitch</code> that are called for each <code>if</code> and <code>switch</code>.</p>
-
-<p>However, I could not find any documentations that describes which &ldquo;visit&rdquo; method comes first. So&hellip;this is the post that describes what is the &ldquo;lifecycle&rdquo; of <code>ForwardingAstVisitor</code>.</p>
-
-<h1>Basic Rules</h1>
-
-<p>There are 4 types of methods, <code>visit</code>, <code>visitNode</code>, <code>afterVisit</code>, <code>endVisit</code> for <code>ForwardingAstVisitor</code>.</p>
+<p>Before start taking about the differences, the followings are the environment for this blog post.</p>
 
 <ul>
-<li><code>visitXxx</code> comes first</li>
-<li><code>visitNode</code> comes second for dive into the node</li>
-<li><code>afterVisitXxx</code> comes if there is no more method call inside <code>visitXxx</code></li>
-<li>Finally, <code>endVisit</code> comes for wrap up.</li>
+<li>Kotlin for writing the plugin</li>
+<li>Gradle for build</li>
+<li><a href="https://github.com/JetBrains/gradle-intellij-plugin">gradle-intellij-plugin</a></li>
 </ul>
 
 
-<p>For instance, followings are the method call for checking <code>@Override</code>:</p>
+<h1><code>getClasses</code> for <code>PsiJavaFile</code> vs <code>KtFile</code></h1>
 
-<pre><code>visitAnnotation                     : target node -&gt; @Override
-| visitNode                         : target node -&gt; @Override
-| | visitTypeReference              : target node -&gt; Override
-| | | visitNode                     : target node -&gt; Override
-| | | | visitTypeReferencePart      : target node -&gt; Override
-| | | | | visitNode                 : target node -&gt; Override
-| | | | | | visitIdentifier         : target node -&gt; Override
-| | | | | | | visitNode             : target node -&gt; Override
-| | | | | | afterVisitIdentifier    : target node -&gt; Override
-| | | | | endVisit                  : target node -&gt; Override
-| | | | afterVisitTypeReferencePart : target node -&gt; Override
-| | | endVisit                      : target node -&gt; Override
-| | afterVisitTypeReference         : target node -&gt; Override
-| endVisit                          : target node -&gt; Override
-afterVisitAnnotation                : target node -&gt; @Override
+<pre><code class="kotlin">e.getData(CommonDataKeys.PSI_FILE)
 </code></pre>
 
-<h1>General Rules</h1>
+<p>returns <code>PsiJavaFile</code> or <code>KtFile</code>. Both of them implements <code>PsiClassOwner</code> which means both of them has the method <code>PsiClass[] getClasses()</code>.</p>
 
-<p>Now, let see what&rsquo;s happens if I want to lint check for a Java file.</p>
+<p>This method is useful for <code>PsiJavaFile</code>, it lets access classes of the file. The plugin can read/write contents of the classes.</p>
 
-<p>Assuming I am going to check following class</p>
+<p>For <code>KtFile</code>, I expected the same. I want to read/write code of classes. Yes, you can read <code>.class</code> file. It is not classes inside <code>.kt</code> file. So, even though, it has methods <code>add</code>, <code>addBefore</code> or <code>addAfter</code>, <code>KtFile#classes#add</code> throw an exception says the plugin won&rsquo;t be able to write contents to <code>.class</code> file!</p>
 
-<pre><code class="Java">package pkg;
+<p>If you want to get objects for generating code of Kotlin, then use <code>KtFile#getDeclarations</code>.</p>
 
-import android.Manifest;
-import android.support.v7.app.AppCompatActivity;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
+<h1><code>PsiFactory</code></h1>
 
-@RuntimePermissions
-public class MainActivity extends AppCompatActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
+<p>This could be because I could not find the best way to generate code&hellip;but PsiFactory of Java and Kotlin is different</p>
 
-    @NeedsPermission(Manifest.permission.CAMERA)
-    void showCamera() {
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }
-}
+<pre><code class="Kotlin">val psiElementFactory: PsiElementFactory = JavaPsiFacade.getElementFactory(project)
 </code></pre>
 
-<p>Here is the <a href="https://gist.github.com/shiraji/dc4665d704d8852243c3">debuging code</a>. It&rsquo;s basically Sys-out method name and <code>node</code> parameter. And the output is <a href="https://gist.github.com/shiraji/37993e824c36e31724d5">this</a></p>
-
-<p>OK, Too long&hellip;let me summarize idea.</p>
-
-<ul>
-<li>The first visit-method is <code>visitCompilationUnit</code></li>
-<li>Next it checks <code>visitPackageDeclaration</code> for <code>package pkg;</code> (Meaning, it starts from the first line of the class)</li>
-<li>And goes one by one until it reaches the bottom of the class</li>
-<li>The last after-method is <code>afterVisitCompilationUnit</code></li>
-</ul>
-
-
-<h1>Exceptional Rules</h1>
-
-<p>Now, we know the lint checks goes the top to the bottom. However, there is an exception, Annotation.</p>
-
-<p><code>@RuntimePermissions</code> which is located the above of the class declaration in the example above.</p>
-
-<p>Actually, when we run the lint checks, <code>visitClassDeclaration</code> comes <a href="https://gist.github.com/shiraji/37993e824c36e31724d5#file-output-txt-L127">first</a> and then <code>visitAnnotation</code> comes <a href="https://gist.github.com/shiraji/37993e824c36e31724d5#file-output-txt-L167">later</a>.</p>
-
-<p>It seems that the lint handles annotation as a node inside of method declaration.</p>
-
-<p>For example, if we want to store class declaration object which <code>@RuntimePermissions</code>, we cannot do followings:</p>
-
-<pre><code class="Java">List&lt;ClassDeclaration&gt; classDeclarations;
-boolean hasRuntimePermisions;
-
-@Override
-public boolean visitAnnotation(Annotation node) {
-    String type = node.astAnnotationTypeReference().getTypeName();
-    if ("permissions.dispatcher.RuntimePermissions".equals(type)) {
-        hasRuntimePermisions = true;
-    }
-    return super.visitAnnotation(node);
-}
-
-@Override
-public boolean visitClassDeclaration(ClassDeclaration node) {
-    if(hasRuntimePermisions) {
-        classDeclarations.add(node);
-    }
-    return super.visitClassDeclaration(node);
-}
+<pre><code class="Kotlin">val psiFactory: KtPsiFactory = KtPsiFactory(project)
 </code></pre>
 
-<p>Instead, I would use <code>afterVisitClassDeclaration</code> and call <code>requestRepeat</code> to run other detector which uses class declaration objects.</p>
+<h1>Generating annotations</h1>
 
-<pre><code class="Java">JavaContext context;
-List&lt;ClassDeclaration&gt; classDeclarations;
-boolean hasRuntimePermisions;
+<p><code>PsiMethod</code> has modifierList</p>
 
-@Override
-public boolean visitAnnotation(Annotation node) {
-    String type = node.astAnnotationTypeReference().getTypeName();
-    if ("permissions.dispatcher.RuntimePermissions".equals(type)) {
-        hasRuntimePermisions = true;
-    }
-    return super.visitAnnotation(node);
-}
-
-@Override
-public void afterVisitClassDeclaration(ClassDeclaration node) {
-    if(hasRuntimePermisions) {
-        classDeclarations.add(node);
-        context.requestRepeat(new MyOtherDetector(), EnumSet.of(Scope.ALL_JAVA_FILES));
-    }
-    return super.visitClassDeclaration(node);
-}
-</code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Custom Lint for Library]]></title>
-    <link href="http://shiraji.github.io/blog/2016/02/17/custom-lint-for-library/"/>
-    <updated>2016-02-17T03:00:00+09:00</updated>
-    <id>http://shiraji.github.io/blog/2016/02/17/custom-lint-for-library</id>
-    <content type="html"><![CDATA[<h1>Summary</h1>
-
-<ul>
-<li>PermissionsDispatcher now have a custom lint</li>
-<li>Adding custom lint is not that hard</li>
-<li>LintDetectorTest&hellip;? Forget it</li>
-</ul>
-
-
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-
-<!-- 728x90 -->
-
-
-<p><ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-3940616565912592"
-     data-ad-slot="7693358062"></ins></p>
-
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-
-
-
-<!-- more -->
-
-
-<h1>PermissionsDispatcher now have a custom lint</h1>
-
-<p>First of all, I am one of collaborators of <a href="https://github.com/hotchemi/PermissionsDispatcher">PermissionsDispatcher</a> which makes developers handle runtime permissions very easily.</p>
-
-<p>PermissionsDispatcher now have a custom lint for its library. Initial issue came from <a href="https://github.com/hotchemi/PermissionsDispatcher/issues/56#issuecomment-163499243">this comment</a>.</p>
-
-<p>The library requires the developer to define a method with <code>@NeedsPermission</code>. Like this</p>
-
-<pre><code class="java">@NeedsPermission(Manifest.permission.CAMERA)
-void showCamera() {
-}
+<pre><code class="kotlin">method.modifierList.addAnnotation("Foo")`
 </code></pre>
 
-<p>However, this method should not directly access. Instead, the developers must use a method that PermissionsDispatcher generated.</p>
+<p>On the other hand, <code>KtNamedFunction</code> has <code>addAnnotationEntry</code></p>
 
-<pre><code class="Java">void foo() {
-    MainActivityPermissionsDispatcher.showCameraWithCheck(this); // Yes
-}
-
-void foo2() {
-    showCamera(); // No!
-}
+<pre><code class="kotlin">function.addAnnotationEntry(psiFactory.createAnnotationEntry("@Foo"))
 </code></pre>
 
-<p>In order to make sure the developers did not call this method, we decide to provide custom lint for this library.</p>
+<p>To insert new line after annotation, you need to add new line manually.</p>
 
-<h1>How to add custom lint for library</h1>
-
-<p>To create custom lint for Android application, check links below</p>
-
-<ul>
-<li><a href="http://tools.android.com/tips/lint-custom-rules">Writing Custom Lint Rules</a></li>
-<li><a href="http://tools.android.com/tips/lint/writing-a-lint-check">Writing a Lint Check</a></li>
-<li><a href="http://qiita.com/hotchemi/items/9364d54a0e024a5e6275">@hotchime&rsquo;s blog post at qiita</a> (For Japanese developer)</li>
-</ul>
-
-
-<p>Custom lint for library needs extra settings to inject <code>lint.jar</code> to its .aar file</p>
-
-<pre><code class="groovy">configurations {
-    lintChecks
-}
-
-dependencies {
-    ...
-
-    // we have lint module with lintCheck configuration.
-    // check this file: https://github.com/shiraji/PermissionsDispatcher/blob/master/lint/build.gradle
-    lintChecks project(path: ':lint', configuration: 'lintChecks')
-}
-
-assemble.doLast {
-    copyJarToOtherModules.execute()
-}
-
-task copyLintJar(type: Copy) {
-    from(configurations.lintChecks) {
-        rename { 'lint.jar' }
-    }
-    into 'build/intermediates/lint/'
-}
-
-project.afterEvaluate {
-    def compileLintTask = project.tasks.find { it.name == 'compileLint' }
-    compileLintTask.dependsOn(copyLintJar)
-}
+<pre><code class="kotlin">val entry = function.addAnnotationEntry(psiFactory.createAnnotationEntry("@Foo"))
+entry.add(psiFactory.createNewLine())
 </code></pre>
 
-<p>Basically, if there is <code>compileLint</code> task, then make the task depends on <code>copyLintJar</code> task which copies <code>lint.jar</code> to <code>build/intermediates/lint/</code></p>
+<h1>Generating methods</h1>
 
-<p>The user of this library doesn&rsquo;t need to put lint.jar to <code>.android/lint/</code>. Just sync library and then run <code>./gradlew lint</code></p>
+<p><code>PsiClass</code> is easy to add method. Use <code>createMethodFromText</code> and <code>add</code> to <code>PsiClass</code></p>
 
-<h1>Use LintDetectorTest</h1>
-
-<p>Just don&rsquo;t.</p>
-
-<p>Check this code</p>
-
-<pre><code class="Java">File f = new File(root,
-            "tools/base/lint/libs/lint-tests/src/test/java/".replace('/', File.separatorChar)
-            + pkg.replace('.', File.separatorChar)
-            + File.separatorChar + path);
+<pre><code class="kotlin">val methodTemplate = """void foo() {
+}""".trimMargin()
+val method = JavaPsiFacade.getElementFactory(project).createMethodFromText(methodTemplate, psiClass)
+psiClass.add(method)
 </code></pre>
 
-<p>This is the code that reads from <code>$ROOT/tools/base/lint/libs/lint-tests/src/test/java/PACAKGE-NAME-REPLACE-DOT-WITH-SLASH</code>.
-I believe most developers doesn&rsquo;t want to put project in the specific directory in order to pass the test cases.</p>
+<p>For kotlin, it&rsquo;s almost the same.</p>
 
-<p>Actually, current version of <code>LintDetectorTest</code> has a lots of problems with loading resources, java source and &ldquo;class&rdquo; file. (Yes! you need to supply .class file to run the test)</p>
-
-<p>In order to use the <code>LintDetectorTest</code>, the developer must override <code>protected InputStream getTestResource(String relativePath, boolean expectExists)</code> like <a href="https://android.googlesource.com/platform/tools/base/+/master/lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AbstractCheckTest.java?autodive=0%2F%2F%2F%2F%2F%2F%2F#49">what AOSP did</a></p>
-
-<p><code>LintDetectorTest</code> is still Beta. I assumed there are a lot of work to make it production release.</p>
-
-<p>If it comes to production, I hope it does not require me to pass .java/.class file like this way.</p>
-
-<pre><code class="Java">lintFiles("MainActivity.class=&gt;pkg/MainActivity.class"));
+<pre><code class="kotlin">val psiFactory = KtPsiFactory(project)
+val function = psiFactory.createFunction("""void foo() {
+}""".trimMargin())
+ktClass.getBody()!!.addBefore(function, ktClass.getBody()!!.rBrace)
 </code></pre>
-
-<h1>Now how to test???</h1>
-
-<p>I don&rsquo;t know.</p>
-
-<p>The only way I came up is <a href="https://github.com/hotchemi/PermissionsDispatcher/pull/75#issuecomment-178650850">manual testing</a>.</p>
-
-<p>So, someone who know better way to test lint, please let me know!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[アクセス修飾子次第で、メソッド数が増えてしまう問題について]]></title>
-    <link href="http://shiraji.github.io/blog/2016/01/11/accessor/"/>
-    <updated>2016-01-11T10:50:49+09:00</updated>
-    <id>http://shiraji.github.io/blog/2016/01/11/accessor</id>
-    <content type="html"><![CDATA[<h1>まとめ</h1>
-
-<p>privateアクセス修飾子をつけると条件次第で勝手にメソッド余分に生成されるから気をつけてね！</p>
-
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-
-<!-- 728x90 -->
-
-
-<p><ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-3940616565912592"
-     data-ad-slot="7693358062"></ins></p>
-
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-
-
-
-<!-- more -->
-
-
-<h1>最初に</h1>
-
-<p>Jakeさんがこの<a href="https://github.com/google/gson/pull/761">pull request</a>を投げていて、察するに$accessorというメソッドが生成されてしまうので、それを生成しないようにしたぜ？ってことだと思う。が、なんでそうなるのかわからない。
-他にも、コンストラクタの修飾子を変更しているんだけど、これもなんのためなのかわからない。
-そこで、コードを書いてみて、実際にやってみました。</p>
-
-<p>このpull requestでは以下の４つを修正しています。</p>
-
-<ul>
-<li><a href="https://github.com/google/gson/pull/761/files#diff-694e40202daa75f0056c800b5d953297R88">コンストラクタのprivateの削除</a></li>
-<li><a href="https://github.com/google/gson/pull/761/files#diff-a654cd1a9dadb8afb191e239a12e19a5R765">デフォルトコンストラクタの定義</a></li>
-<li><a href="https://github.com/google/gson/pull/761/files#diff-0776314ca8e083ca3943426740d1dd69R245">メンバー変数のprivateの削除</a></li>
-<li><a href="https://github.com/google/gson/pull/761/files#diff-0776314ca8e083ca3943426740d1dd69R465">メソッドのprivateの削除</a></li>
-</ul>
-
-
-<h1><a href="https://github.com/google/gson/pull/761/files#diff-694e40202daa75f0056c800b5d953297R88">コンストラクタのprivateの削除</a></h1>
-
-<p>この変更がわかりやすいようにサンプルコードを作成してみました。</p>
-
-<pre><code class="java">class PrivateConstructor {
-  private abstract class AbstractInnerClass {
-    private AbstractInnerClass() {}
-  }
-  class InnerClass extends AbstractInnerClass {
-  }
-}
-</code></pre>
-
-<pre><code class="java">class DefaultConstructor {
-  private abstract class AbstractInnerClass {
-    AbstractInnerClass() {}
-  }
-  class InnerClass extends AbstractInnerClass {
-  }
-}
-</code></pre>
-
-<p>違いは、PrivateConstructor内にある、AbstractInnerClassのコンストラクタにprivateがあるかどうかです。</p>
-
-<pre><code class="java">% javap -p PrivateConstructor*.class
-Compiled from "PrivateConstructor.java"
-class PrivateConstructor$1 {
-}
-Compiled from "PrivateConstructor.java"
-abstract class PrivateConstructor$AbstractInnerClass {
-  final PrivateConstructor this$0;
-  private PrivateConstructor$AbstractInnerClass(PrivateConstructor);
-  PrivateConstructor$AbstractInnerClass(PrivateConstructor, PrivateConstructor$1);
-}
-Compiled from "PrivateConstructor.java"
-class PrivateConstructor$InnerClass extends PrivateConstructor$AbstractInnerClass {
-  final PrivateConstructor this$0;
-  PrivateConstructor$InnerClass(PrivateConstructor);
-}
-Compiled from "PrivateConstructor.java"
-class PrivateConstructor {
-  PrivateConstructor();
-}
-</code></pre>
-
-<pre><code class="java">% javap -p DefaultConstructor*.class
-Compiled from "DefaultConstuctor.java"
-abstract class DefaultConstructor$AbstractInnerClass {
-  final DefaultConstructor this$0;
-  DefaultConstructor$AbstractInnerClass(DefaultConstructor);
-}
-Compiled from "DefaultConstuctor.java"
-class DefaultConstructor$InnerClass extends DefaultConstructor$AbstractInnerClass {
-  final DefaultConstructor this$0;
-  DefaultConstructor$InnerClass(DefaultConstructor);
-}
-Compiled from "DefaultConstuctor.java"
-class DefaultConstructor {
-  DefaultConstructor();
-}
-</code></pre>
-
-<p>Javaファイル内では違いはprivateだけでしたが、classファイル内では、以下のメソッドが出来ています。</p>
-
-<pre><code>PrivateConstructor$AbstractInnerClass(PrivateConstructor, PrivateConstructor$1);
-</code></pre>
-
-<p>これが生成されることで、メソッド数がDefaultConstuctor.javaでは3つなのに、PrivateConstructor.javaでは4つになってしまいます。
-なぜこうなるのかというと、PrivateConstructor$InnerClassが継承するために必要なコンストラクタを定義する必要があるためです。</p>
-
-<p>実際こんなクラスを定義してみるとわかります。</p>
-
-<pre><code class="java">class PrivateConstructor {
-  private abstract class AbstractInnerClass {
-    private AbstractInnerClass() {}
-  }
-  // class InnerClass extends AbstractInnerClass {
-  // }
-}
-</code></pre>
-
-<pre><code class="java">% javap -p PrivateConstructor*.class
-Compiled from "PrivateConstructor.java"
-abstract class PrivateConstructor$AbstractInnerClass {
-  final PrivateConstructor this$0;
-  private PrivateConstructor$AbstractInnerClass(PrivateConstructor);
-}
-Compiled from "PrivateConstructor.java"
-class PrivateConstructor {
-  PrivateConstructor();
-}
-</code></pre>
-
-<p>PrivateConstructor$AbstractInnerClassだけしか定義されておらず、privateのコンストラクタにアクセスする必要がないため、<code>PrivateConstructor$AbstractInnerClass(PrivateConstructor, PrivateConstructor$1);</code>は生成されません。</p>
-
-<h1><a href="https://github.com/google/gson/pull/761/files#diff-a654cd1a9dadb8afb191e239a12e19a5R765">デフォルトコンストラクタの定義</a></h1>
-
-<p>今回の修正で一番おもしろいのがこれです。</p>
-
-<pre><code class="java">class NoDefaultConstructor {
-  private abstract class AbstractClass {
-  }
-  class InnerClass extends AbstractClass {
-  }
-}
-</code></pre>
-
-<p>これをコンパイルすると、以下のようになります。</p>
-
-<pre><code class="java">Compiled from "NoDefaultConstructor.java"
-class NoDefaultConstructor$1 {
-}
-Compiled from "NoDefaultConstructor.java"
-abstract class NoDefaultConstructor$AbstractClass {
-  final NoDefaultConstructor this$0;
-  private NoDefaultConstructor$AbstractClass(NoDefaultConstructor);
-  NoDefaultConstructor$AbstractClass(NoDefaultConstructor, NoDefaultConstructor$1);
-}
-Compiled from "NoDefaultConstructor.java"
-class NoDefaultConstructor$InnerClass extends NoDefaultConstructor$AbstractClass {
-  final NoDefaultConstructor this$0;
-  NoDefaultConstructor$InnerClass(NoDefaultConstructor);
-}
-Compiled from "NoDefaultConstructor.java"
-class NoDefaultConstructor {
-  NoDefaultConstructor();
-}
-</code></pre>
-
-<p>コンストラクタが生成されています。</p>
-
-<pre><code class="java">private NoDefaultConstructor$AbstractClass(NoDefaultConstructor);
-NoDefaultConstructor$AbstractClass(NoDefaultConstructor, NoDefaultConstructor$1);
-</code></pre>
-
-<p>Javaではコンストラクタを定義していない場合、デフォルトコンストラクタが生成されます。
-しかし、そのデフォルトコンストラクタはclassのアクセス修飾子と同じものが定義されます。</p>
-
-<p><code>AbstractClass</code>はprivateで定義されているため、privateのデフォルトコンストラクタが定義されます。それがこれ</p>
-
-<pre><code class="java">private NoDefaultConstructor$AbstractClass(NoDefaultConstructor);
-</code></pre>
-
-<p>それで、このコンストラクタにアクセスするためのコンストラクタを定義する必要があるので、</p>
-
-<pre><code class="java">NoDefaultConstructor$AbstractClass(NoDefaultConstructor, NoDefaultConstructor$1);
-</code></pre>
-
-<p>これが生成されます。</p>
-
-<p>メソッドを0で定義していますが、実は4つのメソッドが出来ていました。
-少なくともprivateのデフォルトコンストラクタはいらないので、空のデフォルトコンストラクタの変更を入れているわけです。</p>
-
-<h1><a href="https://github.com/google/gson/pull/761/files#diff-0776314ca8e083ca3943426740d1dd69R245">メンバー変数のprivateの削除</a></h1>
-
-<p>この変更も面白いです。</p>
-
-<p>サンプルコードはこんな感じです。</p>
-
-<pre><code class="java">class DefaultMember {
-  boolean flag;
-
-  class InnerClass {
-    void foo() {
-      flag = true;
-    }
-  }
-}
-</code></pre>
-
-<pre><code class="java">Compiled from "DefaultMember.java"
-class DefaultMember$InnerClass {
-  final DefaultMember this$0;
-  DefaultMember$InnerClass(DefaultMember);
-  void foo();
-}
-Compiled from "DefaultMember.java"
-class DefaultMember {
-  boolean flag;
-  DefaultMember();
-}
-</code></pre>
-
-<pre><code class="java">class PrivateMember {
-  private boolean flag;
-
-  class InnerClass {
-    void foo() {
-      flag = true;
-    }
-  }
-}
-</code></pre>
-
-<pre><code class="java">Compiled from "PrivateMember.java"
-class PrivateMember$InnerClass {
-  final PrivateMember this$0;
-  PrivateMember$InnerClass(PrivateMember);
-  void foo();
-}
-Compiled from "PrivateMember.java"
-class PrivateMember {
-  private boolean flag;
-  PrivateMember();
-  static boolean access$002(PrivateMember, boolean);
-}
-</code></pre>
-
-<p>こんなのが出来ています。</p>
-
-<pre><code class="java">static boolean access$002(PrivateMember, boolean);
-</code></pre>
-
-<p>これは、Innerクラスからflagにアクセスするためのメソッドです。
-privateアクセス修飾子のため、アクセス出来ないので、accessというprefix付きのメソッドが生成されflagにアクセス出来るようにしています。</p>
-
-<h1><a href="https://github.com/google/gson/pull/761/files#diff-0776314ca8e083ca3943426740d1dd69R465">メソッドのprivateの削除</a></h1>
-
-<p>パターンパターン！ですけどメソッドのアクセス修飾子も同じです。</p>
-
-<p>サンプルコードはこれ。</p>
-
-<pre><code class="java">class PrivateMethod {
-  static {
-    Object obj = new Object() {
-      void bar() {
-        PrivateMethod method = new PrivateMethod();
-        method.foo();
-      }
-    };
-  }
-
-  private void foo() {}
-}
-</code></pre>
-
-<pre><code class="java">Compiled from "PrivateMethod.java"
-class PrivateMethod {
-  PrivateMethod();
-  private void foo();
-  static void access$000(PrivateMethod);
-  static {};
-}
-</code></pre>
-
-<p>これでprivateを外すとこうなります。</p>
-
-<pre><code class="java">class PrivateMethod {
-  static {
-    Object obj = new Object() {
-      void bar() {
-        PrivateMethod method = new PrivateMethod();
-        method.foo();
-      }
-    };
-  }
-
-  void foo() {}
-}
-</code></pre>
-
-<pre><code class="java">Compiled from "PrivateMethod.java"
-class PrivateMethod {
-  PrivateMethod();
-  void foo();
-  static {};
-}
-</code></pre>
-
-<p><code>static void access$000(PrivateMethod);</code>が減りました。
-これもアクセスするために生成されたメソッドです。</p>
-
-<h1>終わりに</h1>
-
-<p>Javaのアプリケーションではそこまで影響度はないですが、Androidはメソッド65K問題があるので、メソッド数には注意が必要です。特に利用しているライブラリではメソッド数を減らそうという狙いがあったのだと思います。</p>
-
-<p>Jakeさんは他にもこの自動生成されるメソッドの検出方法を<a href="https://github.com/google/gson/pull/761#issuecomment-167436875">コメント</a>しています。</p>
-
-<p>Androiderは盲目的にprivateのアクセス修飾子にすればいいという考えは辞めたほうがいいようです。</p>
-
-<p>ちなみにJakeさんは一つ<a href="https://gist.github.com/JakeWharton/5b3dbbc54c779a6bc6af">どうしようもない例</a>も出してくれてます。</p>
-
-<p>これはメソッドを減らすことがどうやっても出来ないそうです。</p>
 ]]></content>
   </entry>
   

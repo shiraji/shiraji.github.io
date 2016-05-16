@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://shiraji.github.io/blog/2016/05/14/difference-between-psijavafile-and-ktfile/</loc>
+    <lastmod>2016-05-14T23:33:07+09:00</lastmod>
+  </url>
+  <url>
     <loc>http://shiraji.github.io/blog/2016/03/28/create-intellij-plugin/</loc>
     <lastmod>2016-03-28T23:00:00+09:00</lastmod>
   </url>
@@ -66,5 +70,11 @@
   </url>
   <url>
     <loc>http://shiraji.github.io/blog/categories/plugin/</loc>
+  </url>
+  <url>
+    <loc>http://shiraji.github.io/blog/categories/plugin/</loc>
+  </url>
+  <url>
+    <loc>http://shiraji.github.io/blog/categories/android/</loc>
   </url>
 </urlset>

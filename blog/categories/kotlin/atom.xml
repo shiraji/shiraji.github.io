@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Kotlin, | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/kotlin/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-03-28T23:13:57+09:00</updated>
+  <updated>2016-05-16T22:54:29+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -12,6 +12,113 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Difference Between Generating Java and Generating Kotlin for Developing IntelliJ Plugin]]></title>
+    <link href="http://shiraji.github.io/blog/2016/05/14/difference-between-psijavafile-and-ktfile/"/>
+    <updated>2016-05-14T23:33:07+09:00</updated>
+    <id>http://shiraji.github.io/blog/2016/05/14/difference-between-psijavafile-and-ktfile</id>
+    <content type="html"><![CDATA[<h1>Motivation</h1>
+
+<p>I am a maintainer of <a href="https://github.com/shiraji/permissions-dispatcher-plugin">PermissionsDispatcher Plugin</a> which generates Java and Kotlin for <a href="https://github.com/hotchemi/PermissionsDispatcher">PermissionsDispatcher</a>
+Since Kotlin is getting famous for Android developers, I thought IntelliJ plugins, which generate Android code, should support both Java and Kotlin. (By the way, <a href="http://blog.jetbrains.com/kotlin/2016/05/kotlin-1-0-2-is-here/">Kotlin 1.0.2</a> now supports Android lint! This definitely will lead more developers use Kotlin!)</p>
+
+<p>However, while I was developing this plugin, I found really hard to generate both Java and Kotlin code.</p>
+
+<p>So, this blog post describes what are the differences between generating Java and generating Kotlin using IntelliJ plugin.</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h1>Environment</h1>
+
+<p>Before start taking about the differences, the followings are the environment for this blog post.</p>
+
+<ul>
+<li>Kotlin for writing the plugin</li>
+<li>Gradle for build</li>
+<li><a href="https://github.com/JetBrains/gradle-intellij-plugin">gradle-intellij-plugin</a></li>
+</ul>
+
+
+<h1><code>getClasses</code> for <code>PsiJavaFile</code> vs <code>KtFile</code></h1>
+
+<pre><code class="kotlin">e.getData(CommonDataKeys.PSI_FILE)
+</code></pre>
+
+<p>returns <code>PsiJavaFile</code> or <code>KtFile</code>. Both of them implements <code>PsiClassOwner</code> which means both of them has the method <code>PsiClass[] getClasses()</code>.</p>
+
+<p>This method is useful for <code>PsiJavaFile</code>, it lets access classes of the file. The plugin can read/write contents of the classes.</p>
+
+<p>For <code>KtFile</code>, I expected the same. I want to read/write code of classes. Yes, you can read <code>.class</code> file. It is not classes inside <code>.kt</code> file. So, even though, it has methods <code>add</code>, <code>addBefore</code> or <code>addAfter</code>, <code>KtFile#classes#add</code> throw an exception says the plugin won&rsquo;t be able to write contents to <code>.class</code> file!</p>
+
+<p>If you want to get objects for generating code of Kotlin, then use <code>KtFile#getDeclarations</code>.</p>
+
+<h1><code>PsiFactory</code></h1>
+
+<p>This could be because I could not find the best way to generate code&hellip;but PsiFactory of Java and Kotlin is different</p>
+
+<pre><code class="Kotlin">val psiElementFactory: PsiElementFactory = JavaPsiFacade.getElementFactory(project)
+</code></pre>
+
+<pre><code class="Kotlin">val psiFactory: KtPsiFactory = KtPsiFactory(project)
+</code></pre>
+
+<h1>Generating annotations</h1>
+
+<p><code>PsiMethod</code> has modifierList</p>
+
+<pre><code class="kotlin">method.modifierList.addAnnotation("Foo")`
+</code></pre>
+
+<p>On the other hand, <code>KtNamedFunction</code> has <code>addAnnotationEntry</code></p>
+
+<pre><code class="kotlin">function.addAnnotationEntry(psiFactory.createAnnotationEntry("@Foo"))
+</code></pre>
+
+<p>To insert new line after annotation, you need to add new line manually.</p>
+
+<pre><code class="kotlin">val entry = function.addAnnotationEntry(psiFactory.createAnnotationEntry("@Foo"))
+entry.add(psiFactory.createNewLine())
+</code></pre>
+
+<h1>Generating methods</h1>
+
+<p><code>PsiClass</code> is easy to add method. Use <code>createMethodFromText</code> and <code>add</code> to <code>PsiClass</code></p>
+
+<pre><code class="kotlin">val methodTemplate = """void foo() {
+}""".trimMargin()
+val method = JavaPsiFacade.getElementFactory(project).createMethodFromText(methodTemplate, psiClass)
+psiClass.add(method)
+</code></pre>
+
+<p>For kotlin, it&rsquo;s almost the same.</p>
+
+<pre><code class="kotlin">val psiFactory = KtPsiFactory(project)
+val function = psiFactory.createFunction("""void foo() {
+}""".trimMargin())
+ktClass.getBody()!!.addBefore(function, ktClass.getBody()!!.rBrace)
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Tips for Creating Intellij Plugin]]></title>
