@@ -12,27 +12,100 @@ Japanese text is following
 
 # Motivation
 
-When I created Intellij custom wizard,
-I first read JetBrains [official documentation](http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard.html).
+When I created Intellij custom wizard called [gradle-intellij-plugin wizard](https://github.com/shiraji/intellij-plugin-with-gradle-wizard),
+I read JetBrains [official documentation](http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard.html).
 They explains how to [support module types](http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard/module_types.html) and [how to add new steps](http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard/adding_new_steps.html).
-However, what I want to know is how to add custom fields, how to add custom files, how to customize files based on custom fields, and so on.
+However, what I want to know is how to add custom fields, how to add custom files, and how to customize files based on custom fields.
 
-There is no such documentation at this point
+There is no such documentation at this point, so I decided to write this entry
+
+# Target reader
+
+* Understand how to setup intellij plugin project
+* Completed http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard.html
 
 # Topics
 
-* How to setup plugin project
-* How to add custom fields
-* How to add new files (template)
-* How to customize files based on fields
+* How to add custom views
+* How to create a template file
+* How to save new file
+* How to customize a file based on fields
 
-# How to setup plugin project
+# How to add custom fields
 
-**If you don't like gradle project, please skip this section.**
+To add custom views, it really simple.
 
-Since I love [gradle-intellij-plugin](https://github.com/JetBrains/gradle-intellij-plugin), let's create plugin project using Gradle.
-Please check official documentation of [Building plugins with Gradle](http://www.jetbrains.org/intellij/sdk/docs/tutorials/build_system.html)
+```java
+@Override
+public JComponent getComponent() {
+    return new JLabel("Provide some setting here");
+}
+```
 
-You can also use my [gradle-intellij-plugin wizard](https://github.com/shiraji/intellij-plugin-with-gradle-wizard) to skip copy and paste gradle related files.
+Add custom views to `JComponent` and return `getComponent()`.
+
+If you make a form file which binds to your `ModuleWizardStep`, then just return root panel.
+
+In my case, I created GUI [form file](https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.form)
+Then, bind the form file to [IPGWizardSupportLanguageStep](https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.java).
+
+It ends up
+
+![language](https://raw.githubusercontent.com/shiraji/intellij-plugin-with-gradle-wizard/master/website/images/language.png)
+
+In order to add "Project SDK" field, you need to override `getModuleType()` in your `ModuleBuilder`
+
+For instance, to pick standard Java sdk, write following code in kotlin.
+
+```kotlin
+override fun getModuleType() = StdModuleTypes.JAVA
+```
+
+If a user click "Next" button, `ModuleWizardStep#updateDataModel()` will be called. The wizard plugin developers should pass/save user input in the method.
+
+In my case, it looks really bad design, but directly pass language to builder.
+
+https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.java#L43-L46
+
+```java
+@Override
+public void updateDataModel() {
+    builder.setLanguage(languages.get(languageComboBox.getSelectedIndex()));
+}
+```
+
+# How to create a template file
+
+Using a template file is the best way to customize new files.
+
+You need to create template files in `resources/fileTemplates/internal` (or `src/main/resources/fileTemplates/internal` in gradle project)
+
+The file extension is `.ft`. The file name should be unique.
+
+For instance, if you want to add `.gitignore` file, create `unique_name_.gitignore.ft` with following contents
+
+```
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+/.idea/dictionaries
+.DS_Store
+/build
+```
+
+After below section, you will be able to create `.gitignore` file.
 
 
+
+
+# How to add new files
+
+To create new file for new project, the developers need to use `VfsUtil.saveText`
+
+
+# トピック
+
+* カスタムフィールドの作成方法
+* ファイルの追加方法
+* テンプレートファイルのカスタマイズ方法
