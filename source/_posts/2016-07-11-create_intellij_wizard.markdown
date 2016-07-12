@@ -26,10 +26,10 @@ There is no such documentation at this point, so I decided to write this entry
 
 # Topics
 
-* How to add custom views
-* How to create a template file
-* How to save new file
-* How to customize a file based on fields
+* How to add custom view
+* How to create a file
+* How to get the user input in `ModuleWizardStep`
+* How to change file contents
 
 # How to add custom fields
 
@@ -61,9 +61,11 @@ For instance, to pick standard Java sdk, write following code in kotlin.
 override fun getModuleType() = StdModuleTypes.JAVA
 ```
 
-If a user click "Next" button, `ModuleWizardStep#updateDataModel()` will be called. The wizard plugin developers should pass/save user input in the method.
+# How to get the user input in `ModuleWizardStep`
 
-In my case, it looks really bad design, but directly pass language to builder.
+If a user click "Next" button, `ModuleWizardStep#updateDataModel()` will be called. You should pass/save the user input in the method.
+
+In my case, it looks really bad design, but it directly passes the language to builder.
 
 https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.java#L43-L46
 
@@ -73,6 +75,11 @@ public void updateDataModel() {
     builder.setLanguage(languages.get(languageComboBox.getSelectedIndex()));
 }
 ```
+
+# How to change file contents
+
+To create a file for new project, You can use `VfsUtil.saveText`
+
 
 # How to create a template file
 
@@ -99,9 +106,7 @@ After below section, you will be able to create `.gitignore` file.
 
 
 
-# How to add new files
 
-To create new file for new project, the developers need to use `VfsUtil.saveText`
 
 
 # トピック
