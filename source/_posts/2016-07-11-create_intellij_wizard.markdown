@@ -5,10 +5,8 @@ date: 2016-07-11 13:22:11 +0900
 comments: false
 categories: Intellij, plugin
 keywords: Intellij, wizard, plugin, JetBrains
-description: Describe how to create intellij custom wizard (with more example compare with official documentation)
+description: Tips of how to create intellij custom wizard
 ---
-
-Japanese text is following
 
 # Motivation
 
@@ -17,19 +15,14 @@ I read JetBrains [official documentation](http://www.jetbrains.org/intellij/sdk/
 They explains how to [support module types](http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard/module_types.html) and [how to add new steps](http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard/adding_new_steps.html).
 However, what I want to know is how to add custom fields, how to add custom files, and how to customize files based on custom fields.
 
-There is no such documentation at this point, so I decided to write this entry
-
-# Target reader
-
-* Understand how to setup intellij plugin project
-* Completed http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard.html
+There is no such documentation at this point, so I decided to write this entry for me.
 
 # Topics
 
 * How to add custom view
-* How to create a file
 * How to get the user input in `ModuleWizardStep`
-* How to change file contents
+* How to create a file
+* How to change the file contents
 
 # How to add custom fields
 
@@ -76,41 +69,30 @@ public void updateDataModel() {
 }
 ```
 
-# How to change file contents
+# How to create a file
 
-To create a file for new project, You can use `VfsUtil.saveText`
+To create a file for new project, You can use `VfsUtil.saveText(VirtualFile, text)`.
 
+I found really great method in intellij-community repo.
 
-# How to create a template file
+https://github.com/JetBrains/intellij-community/blob/9d6477485d37e796036ee524788231f2f47e6ada/plugins/gradle/src/org/jetbrains/plugins/gradle/service/project/wizard/GradleModuleBuilder.java#L332-L360
 
-Using a template file is the best way to customize new files.
+I wish they open this method.
 
-You need to create template files in `resources/fileTemplates/internal` (or `src/main/resources/fileTemplates/internal` in gradle project)
+# How to change the file contents
 
-The file extension is `.ft`. The file name should be unique.
+Use file template. You can check official documentation of [File and Code Templates](https://www.jetbrains.com/help/idea/2016.1/file-and-code-templates.html)
 
-For instance, if you want to add `.gitignore` file, create `unique_name_.gitignore.ft` with following contents
+One thing I want to add is condition. The file template support conditions in following syntax.
 
 ```
-.gradle
-/local.properties
-/.idea/workspace.xml
-/.idea/libraries
-/.idea/dictionaries
-.DS_Store
-/build
+#if (${LANGUAGE} && ${LANGUAGE} == "Kotlin")
+apply plugin: 'kotlin'
+#else
+apply plugin: 'java'
+#end
 ```
 
-After below section, you will be able to create `.gitignore` file.
+Watch out the indentation. You will generate useless spaces.
 
-
-
-
-
-
-
-# トピック
-
-* カスタムフィールドの作成方法
-* ファイルの追加方法
-* テンプレートファイルのカスタマイズ方法
+I'm not sure but some code formatter does not support `.ft` file. (It actually has a bug adding space before single quotation.)
