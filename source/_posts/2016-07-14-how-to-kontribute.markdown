@@ -16,9 +16,9 @@ kotlinにcontributeし始めました。ドキュメントに書いてない部�
 
 この文章は2016/07に書かれたので、その後、contribute方法が変わっているかもしれません。
 
-# contribute前準備
-
 contributeする前に[README](https://github.com/JetBrains/kotlin/blob/master/ReadMe.md)は必ず読み込んでください。
+
+# contribute前準備
 
 ## JDK周り
 
