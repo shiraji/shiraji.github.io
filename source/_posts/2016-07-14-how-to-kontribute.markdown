@@ -16,9 +16,22 @@ kotlinにcontributeし始めました。ドキュメントに書いてない部�
 
 この文章は2016/07に書かれたので、その後、contribute方法が変わっているかもしれません。
 
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<!-- more -->
+
+
 contributeする前に[README](https://github.com/JetBrains/kotlin/blob/master/ReadMe.md)は必ず読み込んでください。
 
-# contribute前準備
+# 開発環境
 
 ## JDK周り
 
@@ -61,7 +74,7 @@ UnitテストもIDEAなどと同じでrun設定から起動します。
 
 なぜか動かないマシンがあった。ideaSDK/を消したら動くらしいが、それでも動かず。
 
-# contribute開始
+# 開発
 
 READMEにもありますが、kotlinにはまだまだいっぱいやることがあるので、contributeし放題です。
 
@@ -91,6 +104,16 @@ READMEにもありますが、kotlinにはまだまだいっぱいやること�
 
 https://github.com/JetBrains/kotlin/commits?author=shiraji
 
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 # 雑感
 
 殺伐としておらず、やりたい！と手をあげたらやらせてくれる。ちょっとわかんね。となっても質問すれば教えてくれる。
@@ -98,4 +121,3 @@ https://github.com/JetBrains/kotlin/commits?author=shiraji
 kontributorチャンネルで聞けばだいたい問題は解決する。やってほしいIssueとかも聞けば答えてくれる。非常にやりやすい感じでした。
 
 IDE周りは今まで結構コード書いてたり読んでたりしているので、引き続きcontributeしていこうかなと考えています。
-
