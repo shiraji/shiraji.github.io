@@ -70,9 +70,11 @@ UnitテストもIDEAなどと同じでrun設定から起動します。
 
 一つ一つのテストを起動することも出来ますが、working directoryがプロジェクトrootを指定しない限り動かないので注意。All IDEA Plugin Testsの設定を参考にしてください。
 
-##
+### Plugin "GitHub" was not loaded: required plugin "Git4Idea" not installed.
 
-なぜか動かないマシンがあった。ideaSDK/を消したら動くらしいが、それでも動かず。
+`ideaSDK/config-idea`の中身を全て消せばいいらしい。
+
+でもそれで動くマシンと動かないマシンがあった。これに関しては謎。動かないマシンはもう一回環境構築しなおしてみます。
 
 # 開発
 
