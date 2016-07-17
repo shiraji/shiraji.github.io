@@ -4,7 +4,7 @@
   <title><![CDATA[Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-05-16T22:55:03+09:00</updated>
+  <updated>2016-07-17T17:53:31+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -12,6 +12,400 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How to Kontribute (for Japanese)]]></title>
+    <link href="http://shiraji.github.io/blog/2016/07/14/how-to-kontribute/"/>
+    <updated>2016-07-14T13:07:08+09:00</updated>
+    <id>http://shiraji.github.io/blog/2016/07/14/how-to-kontribute</id>
+    <content type="html"><![CDATA[<p>This entry is for Japanese. For English speaker, please refer <a href="https://github.com/JetBrains/kotlin">kotlin repo</a></p>
+
+<h1>最初に</h1>
+
+<p>kotlinにcontributeし始めました。ドキュメントに書いてない部分があったので、主に自分用になりますが、書いておきます。</p>
+
+<p>この文章は2016/07に書かれたので、その後、contribute方法が変わっているかもしれません。</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<p>contributeする前に<a href="https://github.com/JetBrains/kotlin/blob/master/ReadMe.md">README</a>は必ず読み込んでください。</p>
+
+<h1>開発環境</h1>
+
+<h2>JDK周り</h2>
+
+<p>特に、JDKの設定は複雑です。jdk1.6, 1.7, 1.8全てが必要で、それらをドキュメント通り指定します。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>JDK_17=`/usr/libexec/java_home -v 1.7`</span></code></pre></td></tr></table></div></figure>
+
+
+<p>こんな感じで設定していきました。</p>
+
+<h2>build</h2>
+
+<p>pullには結構時間かかります。buildコマンドはドキュメントにある通り、</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ant -f update_dependencies.xml
+</span><span class='line'>ant -f build.xml</span></code></pre></td></tr></table></div></figure>
+
+
+<p>kotlin開発用プラグインのインストールも必要です。</p>
+
+<p>全てが揃わない限り、ビルド出来ません。このあたりで断念するのはもったいないので、わからなければ、slackのkotlinlangのkontributorチャンネルで聞いてください。</p>
+
+<p>kotlinlangのslackは<a href="https://kotlinlang.org/community.html%E3%81%93%E3%81%93%E3%81%AB%E8%A9%B3%E7%B4%B0%E3%81%8C%E3%81%82%E3%82%8A%E3%81%BE%E3%81%99%E3%80%82">https://kotlinlang.org/community.html%E3%81%93%E3%81%93%E3%81%AB%E8%A9%B3%E7%B4%B0%E3%81%8C%E3%81%82%E3%82%8A%E3%81%BE%E3%81%99%E3%80%82</a></p>
+
+<h2>run</h2>
+
+<p>.idea/runConfigurationを見てもらうとわかるのですが、かなり多くのrun設定が含まれています。</p>
+
+<p>ビルドが成功すれば、それらをrunするだけで、動きます。IDEAをrunすると自分の修正を取り込んだIntellijが立ち上がります。</p>
+
+<h3>run test</h3>
+
+<p>UnitテストもIDEAなどと同じでrun設定から起動します。</p>
+
+<p>一つ一つのテストを起動することも出来ますが、working directoryがプロジェクトrootを指定しない限り動かないので注意。All IDEA Plugin Testsの設定を参考にしてください。</p>
+
+<h1>#</h1>
+
+<p>なぜか動かないマシンがあった。ideaSDK/を消したら動くらしいが、それでも動かず。</p>
+
+<h1>開発</h1>
+
+<p>READMEにもありますが、kotlinにはまだまだいっぱいやることがあるので、contributeし放題です。</p>
+
+<p><a href="https://youtrack.jetbrains.com/oauth?state=%2Fissues%2FKT%3Fq%3Dtag%3A%2520%257BUp%2520For%2520Grabs%257D%2520%2523Unresolved">YouTrack</a>からやりたいものを選んで下さい。</p>
+
+<p>そのスレッドにやるわこれ！とコメントすると良いです。やっていいのかわからない場合は、kontributorチャンネルでやっていいか？という質問を投げて下さい。JetBrainsの営業時間になればだいたい回答が来ます。</p>
+
+<h2>ブランチ名</h2>
+
+<p>特にルールないらしい。なんでも良い。masterはさすがにマナー違反だと思う。</p>
+
+<h2>コミットメッセージ</h2>
+
+<p>あんまりルールがあるように見えない。<code>#KT-12345 Fixed</code>はつけたほうが良さ気。</p>
+
+<h2>Pull Request</h2>
+
+<p>特に気にせず投げてOK。</p>
+
+<p>投げた後に、そのURLを対象のYouTrackのissueのコメントに貼り付けて欲しいとのこと。</p>
+
+<h2>マージ</h2>
+
+<p>マージはcherry-pick？でマージ先をJetBrainsの中の人がやってくれる。微修正までしてくれる。Authorは自分になる。(CommiterがJBの中の人。)</p>
+
+<p>こんな感じ。</p>
+
+<p><a href="https://github.com/JetBrains/kotlin/commits?author=shiraji">https://github.com/JetBrains/kotlin/commits?author=shiraji</a></p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+<h1>雑感</h1>
+
+<p>殺伐としておらず、やりたい！と手をあげたらやらせてくれる。ちょっとわかんね。となっても質問すれば教えてくれる。</p>
+
+<p>kontributorチャンネルで聞けばだいたい問題は解決する。やってほしいIssueとかも聞けば答えてくれる。非常にやりやすい感じでした。</p>
+
+<p>IDE周りは今まで結構コード書いてたり読んでたりしているので、引き続きcontributeしていこうかなと考えています。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How to Create Intellij Custom Wizard]]></title>
+    <link href="http://shiraji.github.io/blog/2016/07/11/create_intellij_wizard/"/>
+    <updated>2016-07-11T13:22:11+09:00</updated>
+    <id>http://shiraji.github.io/blog/2016/07/11/create_intellij_wizard</id>
+    <content type="html"><![CDATA[<p>Japanese text is following.(日本語は英語の下です。)</p>
+
+<h1>Motivation</h1>
+
+<p>When I created Intellij custom wizard called <a href="https://github.com/shiraji/intellij-plugin-with-gradle-wizard">gradle-intellij-plugin wizard</a>,
+I read JetBrains <a href="http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard.html">official documentation</a>.
+They explains how to <a href="http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard/module_types.html">support module types</a> and <a href="http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard/adding_new_steps.html">how to add new steps</a>.
+However, what I want to know is how to add custom fields, how to add custom files, and how to customize files based on custom fields.</p>
+
+<p>There is no such documentation at this point, so I decided to write this entry for me.</p>
+
+<h1>Topics</h1>
+
+<ul>
+<li>How to add custom view</li>
+<li>How to get the user input in <code>ModuleWizardStep</code></li>
+<li>How to create a file</li>
+<li>How to change the file contents</li>
+</ul>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h1>How to add custom fields</h1>
+
+<p>To add custom views, it really simple.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">JComponent</span> <span class="nf">getComponent</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">new</span> <span class="nf">JLabel</span><span class="o">(</span><span class="s">&quot;Provide some setting here&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add custom views to <code>JComponent</code> and return <code>getComponent()</code>.</p>
+
+<p>If you make a form file which binds to your <code>ModuleWizardStep</code>, then just return root panel.</p>
+
+<p>In my case, I created GUI <a href="https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.form">form file</a>
+Then, bind the form file to <a href="https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.java">IPGWizardSupportLanguageStep</a>.</p>
+
+<p>It ends up</p>
+
+<p><img src="https://raw.githubusercontent.com/shiraji/intellij-plugin-with-gradle-wizard/master/website/images/language.png" alt="language" /></p>
+
+<p>In order to add &ldquo;Project SDK&rdquo; field, you need to override <code>getModuleType()</code> in your <code>ModuleBuilder</code></p>
+
+<p>For instance, to pick standard Java sdk, write following code in kotlin.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">override</span> <span class="k">fun</span> <span class="nf">getModuleType</span><span class="p">()</span> <span class="p">=</span> <span class="n">StdModuleTypes</span><span class="p">.</span><span class="n">JAVA</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>How to get the user input in <code>ModuleWizardStep</code></h1>
+
+<p>If a user click &ldquo;Next&rdquo; button, <code>ModuleWizardStep#updateDataModel()</code> will be called. You should pass/save the user input in the method.</p>
+
+<p>In my case, it looks really bad design, but it directly passes the language to builder.</p>
+
+<p><a href="https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.java#L43-L46">https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.java#L43-L46</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">updateDataModel</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">builder</span><span class="o">.</span><span class="na">setLanguage</span><span class="o">(</span><span class="n">languages</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">languageComboBox</span><span class="o">.</span><span class="na">getSelectedIndex</span><span class="o">()));</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>How to create a file</h1>
+
+<p>To create a file for new project, You can use <code>VfsUtil.saveText(VirtualFile, text)</code>.</p>
+
+<p>I found really great method in intellij-community repo.</p>
+
+<p><a href="https://github.com/JetBrains/intellij-community/blob/9d6477485d37e796036ee524788231f2f47e6ada/plugins/gradle/src/org/jetbrains/plugins/gradle/service/project/wizard/GradleModuleBuilder.java#L332-L360">https://github.com/JetBrains/intellij-community/blob/9d6477485d37e796036ee524788231f2f47e6ada/plugins/gradle/src/org/jetbrains/plugins/gradle/service/project/wizard/GradleModuleBuilder.java#L332-L360</a></p>
+
+<p>I wish they open this method.</p>
+
+<h1>How to change the file contents</h1>
+
+<p>Use file template. You can check official documentation of <a href="https://www.jetbrains.com/help/idea/2016.1/file-and-code-templates.html">File and Code Templates</a></p>
+
+<p>One thing I want to add is condition. The file template support conditions in following syntax.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="err">#</span><span class="k">if</span> <span class="o">(</span><span class="n">$</span><span class="o">{</span><span class="n">LANGUAGE</span><span class="o">}</span> <span class="o">&amp;&amp;</span> <span class="n">$</span><span class="o">{</span><span class="n">LANGUAGE</span><span class="o">}</span> <span class="o">==</span> <span class="s">&quot;Kotlin&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="n">apply</span> <span class="nl">plugin:</span> <span class="err">&#39;</span><span class="n">kotlin</span><span class="err">&#39;</span>
+</span><span class='line'><span class="err">#</span><span class="k">else</span>
+</span><span class='line'><span class="n">apply</span> <span class="nl">plugin:</span> <span class="err">&#39;</span><span class="n">java</span><span class="err">&#39;</span>
+</span><span class='line'><span class="err">#</span><span class="n">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Watch out the indentation. You will generate useless spaces.</p>
+
+<hr />
+
+<p>日本語</p>
+
+<h1>モチベーション</h1>
+
+<p>Intellijのカスタムwizard <a href="https://github.com/shiraji/intellij-plugin-with-gradle-wizard">gradle-intellij-plugin wizard</a>を作った時、JetBrainsの<a href="http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard.html">公式ドキュメント</a>を読みました。</p>
+
+<p>ただ、この公式ドキュメントは<a href="http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard/module_types.html">support module types</a>と<a href="http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard/adding_new_steps.html">how to add new steps</a>しかなく、カスタムフィールドの作成方法や、ファイルの追加方法、ファイルの編集方法などがありませんでした。</p>
+
+<p>そこで、このエントリーでその辺りの説明をしたいと思います。</p>
+
+<h1>トピック</h1>
+
+<ul>
+<li>カスタムビューの追加方法</li>
+<li><code>ModuleWizardStep</code>内での入力情報の取得方法</li>
+<li>ファイル作成方法</li>
+<li>ファイルの内容変更方法</li>
+</ul>
+
+
+<h1>カスタムビューの追加方法</h1>
+
+<p>カスタムビューの追加方法は正直言うとかなり簡単です。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">JComponent</span> <span class="nf">getComponent</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">new</span> <span class="nf">JLabel</span><span class="o">(</span><span class="s">&quot;Provide some setting here&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このメソッド内でカスタムビューを作成し、returnすればOKです。</p>
+
+<p>もし、カスタマイズした<code>ModuleWizardStep</code>をformファイルにバインドしているのであれば、ルートのpanelをreturnするだけです。</p>
+
+<p>自分の場合、<a href="https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.form">フォームファイル</a>
+これをこっちにバインドしています。
+ <a href="https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.java">IPGWizardSupportLanguageStep</a>.</p>
+
+<p>最終的に出来上がるのが</p>
+
+<p><img src="https://raw.githubusercontent.com/shiraji/intellij-plugin-with-gradle-wizard/master/website/images/language.png" alt="language" /></p>
+
+<p>&ldquo;Project SDK"フィールドを作成するには、<code>getModuleType()</code>を継承する必要があります。</p>
+
+<p>例えば、スタンダードなJava SDKを追加したい場合、以下のようにKoltinで記述します。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">override</span> <span class="k">fun</span> <span class="nf">getModuleType</span><span class="p">()</span> <span class="p">=</span> <span class="n">StdModuleTypes</span><span class="p">.</span><span class="n">JAVA</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1><code>ModuleWizardStep</code>内での入力情報の取得方法</h1>
+
+<p>ユーザが"Next"ボタンをクリックすると、<code>ModuleWizardStep#updateDataModel()</code>が呼ばれます。このメソッド内で値を取得したり、保存したりします。</p>
+
+<p>自分の場合、かなり設計がクソだけど、builderに直接設定しちゃってます。(動けばええやろ？)</p>
+
+<p><a href="https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.java#L43-L46">https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.java#L43-L46</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">updateDataModel</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">builder</span><span class="o">.</span><span class="na">setLanguage</span><span class="o">(</span><span class="n">languages</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">languageComboBox</span><span class="o">.</span><span class="na">getSelectedIndex</span><span class="o">()));</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>ファイル作成方法</h1>
+
+<p>ファイルを新しいプロジェクトに追加するには、<code>VfsUtil.saveText(VirtualFile, text)</code>を使います。</p>
+
+<p>intellij-communityのレポジトリにめっちゃ良いメソッドがありました。</p>
+
+<p><a href="https://github.com/JetBrains/intellij-community/blob/9d6477485d37e796036ee524788231f2f47e6ada/plugins/gradle/src/org/jetbrains/plugins/gradle/service/project/wizard/GradleModuleBuilder.java#L332-L360">https://github.com/JetBrains/intellij-community/blob/9d6477485d37e796036ee524788231f2f47e6ada/plugins/gradle/src/org/jetbrains/plugins/gradle/service/project/wizard/GradleModuleBuilder.java#L332-L360</a></p>
+
+<p>これ公開してくれたらいいのにね。</p>
+
+<h1>ファイルの内容変更方法</h1>
+
+<p>IntellijのFile templateの仕組みを使います。File templateの<a href="https://www.jetbrains.com/help/idea/2016.1/file-and-code-templates.html">File and Code Templates</a>を読むと良いです。</p>
+
+<p>一つ、条件文に関して記載がなかったので、追加で説明します。条件文の文法は以下です。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="err">#</span><span class="k">if</span> <span class="o">(</span><span class="n">$</span><span class="o">{</span><span class="n">LANGUAGE</span><span class="o">}</span> <span class="o">&amp;&amp;</span> <span class="n">$</span><span class="o">{</span><span class="n">LANGUAGE</span><span class="o">}</span> <span class="o">==</span> <span class="s">&quot;Kotlin&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="n">apply</span> <span class="nl">plugin:</span> <span class="err">&#39;</span><span class="n">kotlin</span><span class="err">&#39;</span>
+</span><span class='line'><span class="err">#</span><span class="k">else</span>
+</span><span class='line'><span class="n">apply</span> <span class="nl">plugin:</span> <span class="err">&#39;</span><span class="n">java</span><span class="err">&#39;</span>
+</span><span class='line'><span class="err">#</span><span class="n">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>spaceいっぱい生成しちゃうのでインデント気をつけて下さい。</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Difference Between Generating Java and Generating Kotlin for Developing IntelliJ Plugin]]></title>

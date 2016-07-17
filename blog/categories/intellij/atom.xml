@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Intellij | Shiraji's Blog]]></title>
+  <title><![CDATA[Category: Intellij, | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/intellij/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-05-16T22:55:03+09:00</updated>
+  <updated>2016-07-17T17:53:31+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -14,18 +14,30 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Difference Between Generating Java and Generating Kotlin for Developing IntelliJ Plugin]]></title>
-    <link href="http://shiraji.github.io/blog/2016/05/14/difference-between-psijavafile-and-ktfile/"/>
-    <updated>2016-05-14T23:33:07+09:00</updated>
-    <id>http://shiraji.github.io/blog/2016/05/14/difference-between-psijavafile-and-ktfile</id>
-    <content type="html"><![CDATA[<h1>Motivation</h1>
+    <title type="html"><![CDATA[How to Create Intellij Custom Wizard]]></title>
+    <link href="http://shiraji.github.io/blog/2016/07/11/create_intellij_wizard/"/>
+    <updated>2016-07-11T13:22:11+09:00</updated>
+    <id>http://shiraji.github.io/blog/2016/07/11/create_intellij_wizard</id>
+    <content type="html"><![CDATA[<p>Japanese text is following.(日本語は英語の下です。)</p>
 
-<p>I am a maintainer of <a href="https://github.com/shiraji/permissions-dispatcher-plugin">PermissionsDispatcher Plugin</a> which generates Java and Kotlin for <a href="https://github.com/hotchemi/PermissionsDispatcher">PermissionsDispatcher</a>
-Since Kotlin is getting famous for Android developers, I thought IntelliJ plugins, which generate Android code, should support both Java and Kotlin. (By the way, <a href="http://blog.jetbrains.com/kotlin/2016/05/kotlin-1-0-2-is-here/">Kotlin 1.0.2</a> now supports Android lint! This definitely will lead more developers use Kotlin!)</p>
+<h1>Motivation</h1>
 
-<p>However, while I was developing this plugin, I found really hard to generate both Java and Kotlin code.</p>
+<p>When I created Intellij custom wizard called <a href="https://github.com/shiraji/intellij-plugin-with-gradle-wizard">gradle-intellij-plugin wizard</a>,
+I read JetBrains <a href="http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard.html">official documentation</a>.
+They explains how to <a href="http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard/module_types.html">support module types</a> and <a href="http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard/adding_new_steps.html">how to add new steps</a>.
+However, what I want to know is how to add custom fields, how to add custom files, and how to customize files based on custom fields.</p>
 
-<p>So, this blog post describes what are the differences between generating Java and generating Kotlin using IntelliJ plugin.</p>
+<p>There is no such documentation at this point, so I decided to write this entry for me.</p>
+
+<h1>Topics</h1>
+
+<ul>
+<li>How to add custom view</li>
+<li>How to get the user input in <code>ModuleWizardStep</code></li>
+<li>How to create a file</li>
+<li>How to change the file contents</li>
+</ul>
+
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
@@ -48,181 +60,178 @@ Since Kotlin is getting famous for Android developers, I thought IntelliJ plugin
 <!-- more -->
 
 
-<h1>Environment</h1>
+<h1>How to add custom fields</h1>
 
-<p>Before start taking about the differences, the followings are the environment for this blog post.</p>
+<p>To add custom views, it really simple.</p>
 
-<ul>
-<li>Kotlin for writing the plugin</li>
-<li>Gradle for build</li>
-<li><a href="https://github.com/JetBrains/gradle-intellij-plugin">gradle-intellij-plugin</a></li>
-</ul>
-
-
-<h1><code>getClasses</code> for <code>PsiJavaFile</code> vs <code>KtFile</code></h1>
-
-<pre><code class="kotlin">e.getData(CommonDataKeys.PSI_FILE)
-</code></pre>
-
-<p>returns <code>PsiJavaFile</code> or <code>KtFile</code>. Both of them implements <code>PsiClassOwner</code> which means both of them has the method <code>PsiClass[] getClasses()</code>.</p>
-
-<p>This method is useful for <code>PsiJavaFile</code>, it lets access classes of the file. The plugin can read/write contents of the classes.</p>
-
-<p>For <code>KtFile</code>, I expected the same. I want to read/write code of classes. Yes, you can read <code>.class</code> file. It is not classes inside <code>.kt</code> file. So, even though, it has methods <code>add</code>, <code>addBefore</code> or <code>addAfter</code>, <code>KtFile#classes#add</code> throw an exception says the plugin won&rsquo;t be able to write contents to <code>.class</code> file!</p>
-
-<p>If you want to get objects for generating code of Kotlin, then use <code>KtFile#getDeclarations</code>.</p>
-
-<h1><code>PsiFactory</code></h1>
-
-<p>This could be because I could not find the best way to generate code&hellip;but PsiFactory of Java and Kotlin is different</p>
-
-<pre><code class="Kotlin">val psiElementFactory: PsiElementFactory = JavaPsiFacade.getElementFactory(project)
-</code></pre>
-
-<pre><code class="Kotlin">val psiFactory: KtPsiFactory = KtPsiFactory(project)
-</code></pre>
-
-<h1>Generating annotations</h1>
-
-<p><code>PsiMethod</code> has modifierList</p>
-
-<pre><code class="kotlin">method.modifierList.addAnnotation("Foo")`
-</code></pre>
-
-<p>On the other hand, <code>KtNamedFunction</code> has <code>addAnnotationEntry</code></p>
-
-<pre><code class="kotlin">function.addAnnotationEntry(psiFactory.createAnnotationEntry("@Foo"))
-</code></pre>
-
-<p>To insert new line after annotation, you need to add new line manually.</p>
-
-<pre><code class="kotlin">val entry = function.addAnnotationEntry(psiFactory.createAnnotationEntry("@Foo"))
-entry.add(psiFactory.createNewLine())
-</code></pre>
-
-<h1>Generating methods</h1>
-
-<p><code>PsiClass</code> is easy to add method. Use <code>createMethodFromText</code> and <code>add</code> to <code>PsiClass</code></p>
-
-<pre><code class="kotlin">val methodTemplate = """void foo() {
-}""".trimMargin()
-val method = JavaPsiFacade.getElementFactory(project).createMethodFromText(methodTemplate, psiClass)
-psiClass.add(method)
-</code></pre>
-
-<p>For kotlin, it&rsquo;s almost the same.</p>
-
-<pre><code class="kotlin">val psiFactory = KtPsiFactory(project)
-val function = psiFactory.createFunction("""void foo() {
-}""".trimMargin())
-ktClass.getBody()!!.addBefore(function, ktClass.getBody()!!.rBrace)
-</code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Tips for Creating Intellij Plugin]]></title>
-    <link href="http://shiraji.github.io/blog/2016/03/28/create-intellij-plugin/"/>
-    <updated>2016-03-28T23:00:00+09:00</updated>
-    <id>http://shiraji.github.io/blog/2016/03/28/create-intellij-plugin</id>
-    <content type="html"><![CDATA[<h1>Summery</h1>
-
-<p>There are tips for creating intellij plugins</p>
-
-<ul>
-<li>Logging</li>
-<li>plugin.xml</li>
-<li>Action</li>
-</ul>
-
-
-<p>This is note for myself. I won&rsquo;t add description if the sample is clear enough for me.</p>
-
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-
-<!-- 728x90 -->
-
-
-<p><ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-3940616565912592"
-     data-ad-slot="7693358062"></ins></p>
-
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-
-
-
-<!-- more -->
-
-
-<h1>Logging</h1>
-
-<p>Simply use Sys-out</p>
-
-<pre><code class="Java">System.out.println("logging...")
-</code></pre>
-
-<p>However, sys-out shows logs on the console. If you want to show pop up, use notification</p>
-
-<h2>Notification</h2>
-
-<pre><code class="Kotlin">Notifications.Bus.notify(Notification("Plugin ID",
-                "Title",
-                "Content",
-                NotificationType.INFORMATION))
-</code></pre>
-
-<h1>plugin.xml</h1>
-
-<h2>URL of the plugin</h2>
-
-<pre><code class="xml">&lt;idea-plugin url="https://plugins.jetbrains.com/plugin/8262?pr=" version="2"&gt;
-</code></pre>
-
-<h2>vendor</h2>
-
-<pre><code class="xml">&lt;vendor email="isogai.shiraji@gmail.com" url="https://github.com/shiraji"&gt;Shiraji&lt;/vendor&gt;
-</code></pre>
-
-<h2>idea-version</h2>
-
-<p>To use kotlin, IDE version should be higher than 143.</p>
-
-<pre><code class="xml">&lt;idea-version since-build="143"/&gt;
-</code></pre>
-
-<h1>Action class</h1>
-
-<h2>Creating new action</h2>
-
-<pre><code>right click src &gt; New &gt; action
-</code></pre>
-
-<h2>Methods</h2>
-
-<pre><code class="kotlin">override fun actionPerformed(e: AnActionEvent)
-</code></pre>
-
-<h2>Update method</h2>
-
-<p>To decide show the action or not, I need to override the update method.</p>
-
-<p>This method should be less than 0.1 sec to complete.</p>
-
-<pre><code class="kotlin">override fun update(e: AnActionEvent?) {
-    e ?: return
-    super.update(e)
-
-    if (!FindPullRequestModel(e).isEnable()) {
-        e.presentation.isEnabled = false
-        e.presentation.isVisible = false
-    }
+<pre><code class="java">@Override
+public JComponent getComponent() {
+    return new JLabel("Provide some setting here");
 }
 </code></pre>
+
+<p>Add custom views to <code>JComponent</code> and return <code>getComponent()</code>.</p>
+
+<p>If you make a form file which binds to your <code>ModuleWizardStep</code>, then just return root panel.</p>
+
+<p>In my case, I created GUI <a href="https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.form">form file</a>
+Then, bind the form file to <a href="https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.java">IPGWizardSupportLanguageStep</a>.</p>
+
+<p>It ends up</p>
+
+<p><img src="https://raw.githubusercontent.com/shiraji/intellij-plugin-with-gradle-wizard/master/website/images/language.png" alt="language" /></p>
+
+<p>In order to add &ldquo;Project SDK&rdquo; field, you need to override <code>getModuleType()</code> in your <code>ModuleBuilder</code></p>
+
+<p>For instance, to pick standard Java sdk, write following code in kotlin.</p>
+
+<pre><code class="kotlin">override fun getModuleType() = StdModuleTypes.JAVA
+</code></pre>
+
+<h1>How to get the user input in <code>ModuleWizardStep</code></h1>
+
+<p>If a user click &ldquo;Next&rdquo; button, <code>ModuleWizardStep#updateDataModel()</code> will be called. You should pass/save the user input in the method.</p>
+
+<p>In my case, it looks really bad design, but it directly passes the language to builder.</p>
+
+<p><a href="https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.java#L43-L46">https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.java#L43-L46</a></p>
+
+<pre><code class="java">@Override
+public void updateDataModel() {
+    builder.setLanguage(languages.get(languageComboBox.getSelectedIndex()));
+}
+</code></pre>
+
+<h1>How to create a file</h1>
+
+<p>To create a file for new project, You can use <code>VfsUtil.saveText(VirtualFile, text)</code>.</p>
+
+<p>I found really great method in intellij-community repo.</p>
+
+<p><a href="https://github.com/JetBrains/intellij-community/blob/9d6477485d37e796036ee524788231f2f47e6ada/plugins/gradle/src/org/jetbrains/plugins/gradle/service/project/wizard/GradleModuleBuilder.java#L332-L360">https://github.com/JetBrains/intellij-community/blob/9d6477485d37e796036ee524788231f2f47e6ada/plugins/gradle/src/org/jetbrains/plugins/gradle/service/project/wizard/GradleModuleBuilder.java#L332-L360</a></p>
+
+<p>I wish they open this method.</p>
+
+<h1>How to change the file contents</h1>
+
+<p>Use file template. You can check official documentation of <a href="https://www.jetbrains.com/help/idea/2016.1/file-and-code-templates.html">File and Code Templates</a></p>
+
+<p>One thing I want to add is condition. The file template support conditions in following syntax.</p>
+
+<pre><code>#if (${LANGUAGE} &amp;&amp; ${LANGUAGE} == "Kotlin")
+apply plugin: 'kotlin'
+#else
+apply plugin: 'java'
+#end
+</code></pre>
+
+<p>Watch out the indentation. You will generate useless spaces.</p>
+
+<hr />
+
+<p>日本語</p>
+
+<h1>モチベーション</h1>
+
+<p>Intellijのカスタムwizard <a href="https://github.com/shiraji/intellij-plugin-with-gradle-wizard">gradle-intellij-plugin wizard</a>を作った時、JetBrainsの<a href="http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard.html">公式ドキュメント</a>を読みました。</p>
+
+<p>ただ、この公式ドキュメントは<a href="http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard/module_types.html">support module types</a>と<a href="http://www.jetbrains.org/intellij/sdk/docs/tutorials/project_wizard/adding_new_steps.html">how to add new steps</a>しかなく、カスタムフィールドの作成方法や、ファイルの追加方法、ファイルの編集方法などがありませんでした。</p>
+
+<p>そこで、このエントリーでその辺りの説明をしたいと思います。</p>
+
+<h1>トピック</h1>
+
+<ul>
+<li>カスタムビューの追加方法</li>
+<li><code>ModuleWizardStep</code>内での入力情報の取得方法</li>
+<li>ファイル作成方法</li>
+<li>ファイルの内容変更方法</li>
+</ul>
+
+
+<h1>カスタムビューの追加方法</h1>
+
+<p>カスタムビューの追加方法は正直言うとかなり簡単です。</p>
+
+<pre><code class="java">@Override
+public JComponent getComponent() {
+    return new JLabel("Provide some setting here");
+}
+</code></pre>
+
+<p>このメソッド内でカスタムビューを作成し、returnすればOKです。</p>
+
+<p>もし、カスタマイズした<code>ModuleWizardStep</code>をformファイルにバインドしているのであれば、ルートのpanelをreturnするだけです。</p>
+
+<p>自分の場合、<a href="https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.form">フォームファイル</a>
+これをこっちにバインドしています。
+ <a href="https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.java">IPGWizardSupportLanguageStep</a>.</p>
+
+<p>最終的に出来上がるのが</p>
+
+<p><img src="https://raw.githubusercontent.com/shiraji/intellij-plugin-with-gradle-wizard/master/website/images/language.png" alt="language" /></p>
+
+<p>&ldquo;Project SDK"フィールドを作成するには、<code>getModuleType()</code>を継承する必要があります。</p>
+
+<p>例えば、スタンダードなJava SDKを追加したい場合、以下のようにKoltinで記述します。</p>
+
+<pre><code class="kotlin">override fun getModuleType() = StdModuleTypes.JAVA
+</code></pre>
+
+<h1><code>ModuleWizardStep</code>内での入力情報の取得方法</h1>
+
+<p>ユーザが"Next"ボタンをクリックすると、<code>ModuleWizardStep#updateDataModel()</code>が呼ばれます。このメソッド内で値を取得したり、保存したりします。</p>
+
+<p>自分の場合、かなり設計がクソだけど、builderに直接設定しちゃってます。(動けばええやろ？)</p>
+
+<p><a href="https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.java#L43-L46">https://github.com/shiraji/intellij-plugin-with-gradle-wizard/blob/1.0.1/src/main/kotlin/com/github/shiraji/ipgwizard/step/IPGWizardSupportLanguageStep.java#L43-L46</a></p>
+
+<pre><code class="java">@Override
+public void updateDataModel() {
+    builder.setLanguage(languages.get(languageComboBox.getSelectedIndex()));
+}
+</code></pre>
+
+<h1>ファイル作成方法</h1>
+
+<p>ファイルを新しいプロジェクトに追加するには、<code>VfsUtil.saveText(VirtualFile, text)</code>を使います。</p>
+
+<p>intellij-communityのレポジトリにめっちゃ良いメソッドがありました。</p>
+
+<p><a href="https://github.com/JetBrains/intellij-community/blob/9d6477485d37e796036ee524788231f2f47e6ada/plugins/gradle/src/org/jetbrains/plugins/gradle/service/project/wizard/GradleModuleBuilder.java#L332-L360">https://github.com/JetBrains/intellij-community/blob/9d6477485d37e796036ee524788231f2f47e6ada/plugins/gradle/src/org/jetbrains/plugins/gradle/service/project/wizard/GradleModuleBuilder.java#L332-L360</a></p>
+
+<p>これ公開してくれたらいいのにね。</p>
+
+<h1>ファイルの内容変更方法</h1>
+
+<p>IntellijのFile templateの仕組みを使います。File templateの<a href="https://www.jetbrains.com/help/idea/2016.1/file-and-code-templates.html">File and Code Templates</a>を読むと良いです。</p>
+
+<p>一つ、条件文に関して記載がなかったので、追加で説明します。条件文の文法は以下です。</p>
+
+<pre><code>#if (${LANGUAGE} &amp;&amp; ${LANGUAGE} == "Kotlin")
+apply plugin: 'kotlin'
+#else
+apply plugin: 'java'
+#end
+</code></pre>
+
+<p>spaceいっぱい生成しちゃうのでインデント気をつけて下さい。</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 ]]></content>
   </entry>
   
