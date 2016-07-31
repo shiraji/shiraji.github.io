@@ -4,7 +4,7 @@
   <title><![CDATA[Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-07-17T18:00:41+09:00</updated>
+  <updated>2016-07-31T11:12:21+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -94,6 +94,16 @@
 <p><code>ideaSDK/config-idea</code>の中身を全て消せばいいらしい。</p>
 
 <p>でもそれで動くマシンと動かないマシンがあった。これに関しては謎。動かないマシンはもう一回環境構築しなおしてみます。</p>
+
+<h4>追記</h4>
+
+<p>理由がわかりました。テスト時にSDKに設定されているプラグインを全て読み込みます。</p>
+
+<p><code>File &gt; Project Structure &gt; 1.8 &gt; Classpath</code></p>
+
+<p>私の場合、ここに、CE版のgithubプラグインのパスが設定されていました。これを削除すると動くようになりました。</p>
+
+<p>別プラグイン開発で使っていたものが残っていました。</p>
 
 <h1>開発</h1>
 
