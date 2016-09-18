@@ -4,7 +4,7 @@
   <title><![CDATA[Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-07-31T11:12:21+09:00</updated>
+  <updated>2016-09-19T00:24:13+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -12,6 +12,104 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Tips for Creating Intellij Plugin in Kotlin]]></title>
+    <link href="http://shiraji.github.io/blog/2016/09/18/create-intellij-plugin-2/"/>
+    <updated>2016-09-18T21:14:03+09:00</updated>
+    <id>http://shiraji.github.io/blog/2016/09/18/create-intellij-plugin-2</id>
+    <content type="html"><![CDATA[<p>This is the second blog post for &ldquo;Tips of creating Intellij plugin&rdquo;.</p>
+
+<p>This entry is focus on tips for creating intellij plugin in Kotlin. (But I still believe it is useful for Java developers.)</p>
+
+<p>For more basic tips, please read <a href="http://shiraji.github.io/blog/2016/03/28/create-intellij-plugin/">Tips for Creating Intellij Plugin</a></p>
+
+<h1>Topics</h1>
+
+<ul>
+<li>How to find parent</li>
+<li>How to find children</li>
+<li>How to find files</li>
+</ul>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h1>How to find parent</h1>
+
+<p>Finding parent is just calling <code>PsiElement#getParent()</code>. However, in most case, I want to find a specific type of parent. In that case, using extension methods in <code>psiUtils.kt</code> is the best way to do it. <a href="https://github.com/shiraji/kotlin/blob/1.0.3/compiler/frontend/src/org/jetbrains/kotlin/psi/psiUtil/psiUtils.kt#L115-L129">psiUtils.kt</a> provides variety of useful extension methods.</p>
+
+<p>For instance, if I want to find the function that the element belong,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">parentFunc</span> <span class="p">=</span> <span class="n">element</span><span class="p">.</span><span class="n">getStrictParentOfType</span><span class="p">&lt;</span><span class="n">KtNamedFunction</span><span class="p">&gt;()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This method return <code>null</code> if there is no applicable element. (In the example, if the element is not located inside a function, it will be null.)</p>
+
+<p>For Java developers, use <code>PsiTreeUtil.getParentOfType()</code></p>
+
+<h1>How to find children</h1>
+
+<p>After finding <code>psiUtils.kt</code>, I was expected to find children using something like <code>getStrictChildrenOfType</code> or something. Guess what. I was wrong. There are more useful methods in <a href="https://github.com/shiraji/kotlin/blob/1.0.3/compiler/frontend/src/org/jetbrains/kotlin/psi/psiUtil/psiUtils.kt#L173-L233">psiUtils.kt</a>. The reason why it is not <code>getStrictChildrenOfType</code> is I guess it requires to recursive tree visiting.</p>
+
+<p>To find all children of specific types, use <code>collectDescendantsOfType</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="n">element</span><span class="p">.</span><span class="n">collectDescendantsOfType</span><span class="p">&lt;</span><span class="n">KtExpression</span><span class="p">&gt;()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>To find existance of children of specific type, use <code>anyDescendantOfType</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="n">element</span><span class="p">.</span><span class="n">anyDescendantOfType</span><span class="p">&lt;</span><span class="n">KtNamedFunction</span><span class="p">&gt;()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To find the one child of specific type, use <code>findDescendantOfType</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="n">element</span><span class="p">.</span><span class="n">findDescendantOfType</span><span class="p">&lt;</span><span class="n">KtFunctionLiteral</span><span class="p">&gt;()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>How to find files</h1>
+
+<p>When I want to iterate though all resource files in my project, following one liner archive it</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="n">FileTypeIndex</span><span class="p">.</span><span class="n">getFiles</span><span class="p">(</span><span class="n">XmlFileType</span><span class="p">.</span><span class="n">INSTANCE</span><span class="p">,</span> <span class="n">ProjectScope</span><span class="p">.</span><span class="n">getProjectScope</span><span class="p">(</span><span class="n">project</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(Watch out <code>.idea/</code> folder. It is also include as &ldquo;Project&rdquo; so this line also grabs all xml files in &ldquo;.idea&rdquo;.)</p>
+
+<p>This method find all files in specific types of specific scope. The above line finds all xml files in my project.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How to Kontribute (for Japanese)]]></title>
