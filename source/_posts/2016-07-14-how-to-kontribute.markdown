@@ -102,6 +102,20 @@ READMEにもありますが、kotlinにはまだまだいっぱいやること�
 
 あんまりルールがあるように見えない。`#KT-12345 Fixed`はつけたほうが良さ気。
 
+## テスト
+
+基本書いたコードに対して考えられるケースのテストを書くことになる。`XxxTestGenerated`という名前のクラスはRun ConfigurationのGenerate Testsで自動生成されたテストケース。これらのテストケースは編集しない。
+
+例えば、Inspectionのテストの場合、[InspectionTestGenerated](https://github.com/shiraji/kotlin/blob/1.0.3/idea/tests/org/jetbrains/kotlin/idea/codeInsight/InspectionTestGenerated.java)があり、これにテストを追加するには`idea/testData/inspections`配下にフォルダを作成し、その下にテストデータを作成する。その後、"Generate Tests"を起動させると、テストケースが追加される。
+
+### 新規のUnit Test
+
+新規のUnit Testを書くことになるIssueもある。
+
+その場合、通常通り、JUnitでテストを作成してもいいのだけど、`KotlinCodeInsightTestCase`を継承した、abstract classを作成し、[GenerateTests.kt](https://github.com/shiraji/kotlin/blob/1.0.3/ultimate/tests/org/jetbrains/kotlin/tests/GenerateTests.kt)に追記すると、上記"Generate Tests"の対象となり、abstractクラスで作ったロジックに則った自動テストを作成することが出来る。
+
+例えば、この[PR](https://github.com/JetBrains/kotlin/commit/391a0fdde5788ad7c8e854e7eba03a4e186256b5)では`AbstractConcatenatedStringGeneratorTest`を作成して、`ConcatenatedStringGenerator`クラスをテストする自動テストケースを作成している。
+
 ## Pull Request
 
 特に気にせず投げてOK。
