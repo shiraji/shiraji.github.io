@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Oss | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/oss/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-09-19T00:24:13+09:00</updated>
+  <updated>2016-09-24T00:49:10+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -117,6 +117,20 @@ ant -f build.xml
 <h2>コミットメッセージ</h2>
 
 <p>あんまりルールがあるように見えない。<code>#KT-12345 Fixed</code>はつけたほうが良さ気。</p>
+
+<h2>テスト</h2>
+
+<p>基本書いたコードに対して考えられるケースのテストを書くことになる。<code>XxxTestGenerated</code>という名前のクラスはRun ConfigurationのGenerate Testsで自動生成されたテストケース。これらのテストケースは編集しない。</p>
+
+<p>例えば、Inspectionのテストの場合、<a href="https://github.com/shiraji/kotlin/blob/1.0.3/idea/tests/org/jetbrains/kotlin/idea/codeInsight/InspectionTestGenerated.java">InspectionTestGenerated</a>があり、これにテストを追加するには<code>idea/testData/inspections</code>配下にフォルダを作成し、その下にテストデータを作成する。その後、"Generate Tests"を起動させると、テストケースが追加される。</p>
+
+<h3>新規のUnit Test</h3>
+
+<p>新規のUnit Testを書くことになるIssueもある。</p>
+
+<p>その場合、通常通り、JUnitでテストを作成してもいいのだけど、<code>KotlinCodeInsightTestCase</code>を継承した、abstract classを作成し、<a href="https://github.com/shiraji/kotlin/blob/1.0.3/ultimate/tests/org/jetbrains/kotlin/tests/GenerateTests.kt">GenerateTests.kt</a>に追記すると、上記"Generate Tests"の対象となり、abstractクラスで作ったロジックに則った自動テストを作成することが出来る。</p>
+
+<p>例えば、この<a href="https://github.com/JetBrains/kotlin/commit/391a0fdde5788ad7c8e854e7eba03a4e186256b5">PR</a>では<code>AbstractConcatenatedStringGeneratorTest</code>を作成して、<code>ConcatenatedStringGenerator</code>クラスをテストする自動テストケースを作成している。</p>
 
 <h2>Pull Request</h2>
 
