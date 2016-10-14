@@ -153,6 +153,16 @@
 
 <p>kotlinlangのslackは<a href="https://kotlinlang.org/community.html%E3%81%93%E3%81%93%E3%81%AB%E8%A9%B3%E7%B4%B0%E3%81%8C%E3%81%82%E3%82%8A%E3%81%BE%E3%81%99%E3%80%82">https://kotlinlang.org/community.html%E3%81%93%E3%81%93%E3%81%AB%E8%A9%B3%E7%B4%B0%E3%81%8C%E3%81%82%E3%82%8A%E3%81%BE%E3%81%99%E3%80%82</a></p>
 
+<h3>ANTの設定</h3>
+
+<p>よくハマるのが、antの設定です。Heapサイズを増やさないとビルド出来ないことが多々発生します。</p>
+
+<p>以下のように<code>ANT_OPTS</code>を設定して下さい。Xmxの数値は任意。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>export ANT_OPTS="-Xmx2048m -XX:MaxPermSize=2048m"</span></code></pre></td></tr></table></div></figure>
+
+
 <h2>run</h2>
 
 <p>.idea/runConfigurationを見てもらうとわかるのですが、かなり多くのrun設定が含まれています。</p>
@@ -240,6 +250,25 @@
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
+
+<h1>ビルド出来なくなったら？</h1>
+
+<p>kotlinプラグインは結構な頻度で更新されていきます。</p>
+
+<p>急にビルド出来なくなった場合、まず、kotlinプラグインを最新のバージョンにしているのか確認して下さい。</p>
+
+<p>また、masterにマージされているものが時々ビルドエラーを起こしたりします。こうなるとその修正が入るまで特に何も出来ません。我慢して待ちましょう！</p>
+
+<p>ただ、2~3日ビルド出来ないというのは何かしら環境がおかしい場合があります。その時は以下の作業をしてみます。</p>
+
+<ul>
+<li><code>ideaSDK/config-idea</code>以下を削除する(Run時に使うプラグインを削除)</li>
+<li><code>ant -f update_dependencies.xml</code>を実行する</li>
+<li><code>ant dist</code>を実行する</li>
+</ul>
+
+
+<p>それでもだめならkontributorチャンネルで聞いてみましょう。</p>
 
 <h1>雑感</h1>
 
