@@ -58,6 +58,16 @@ kotlin開発用プラグインのインストールも必要です。
 
 kotlinlangのslackはhttps://kotlinlang.org/community.htmlここに詳細があります。
 
+### ANTの設定
+
+よくハマるのが、antの設定です。Heapサイズを増やさないとビルド出来ないことが多々発生します。
+
+以下のように`ANT_OPTS`を設定して下さい。Xmxの数値は任意。
+
+```
+export ANT_OPTS="-Xmx2048m -XX:MaxPermSize=2048m"
+```
+
 ## run
 
 .idea/runConfigurationを見てもらうとわかるのですが、かなり多くのrun設定が含まれています。
