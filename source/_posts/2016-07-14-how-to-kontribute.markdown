@@ -150,6 +150,22 @@ https://github.com/JetBrains/kotlin/commits?author=shiraji
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
+# ビルド出来なくなったら？
+
+kotlinプラグインは結構な頻度で更新されていきます。
+
+急にビルド出来なくなった場合、まず、kotlinプラグインを最新のバージョンにしているのか確認して下さい。
+
+また、masterにマージされているものが時々ビルドエラーを起こしたりします。こうなるとその修正が入るまで特に何も出来ません。我慢して待ちましょう！
+
+ただ、2~3日ビルド出来ないというのは何かしら環境がおかしい場合があります。その時は以下の作業をしてみます。
+
+* `ideaSDK/config-idea`以下を削除する(Run時に使うプラグインを削除)
+* `ant -f update_dependencies.xml`を実行する
+* `ant dist`を実行する
+
+それでもだめならkontributorチャンネルで聞いてみましょう。
+
 # 雑感
 
 殺伐としておらず、やりたい！と手をあげたらやらせてくれる。ちょっとわかんね。となっても質問すれば教えてくれる。
