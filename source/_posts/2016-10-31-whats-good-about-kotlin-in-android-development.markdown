@@ -16,7 +16,7 @@ Kotlinの文法紹介というより、Javaで書いてた辛い文法をこん�
 
 [Kotlin 1.0.4](https://blog.jetbrains.com/kotlin/2016/09/kotlin-1-0-4-is-here/)のexternal Contributorsの一人です。主に静的解析のところにコントリビュートしています。
 
-Android開発もちょくちょくしており、絶賛Kotlinで移植中です。
+Android開発もちょくちょくしており、絶賛Kotlinで開発中です。
 
 # 前提条件と想定読者
 
@@ -28,6 +28,10 @@ Kotlinの文法はJavaコードと比較すればだいたいわかる感じで�
 
 # キモチイイ！文法たち
 
+Kotlinは書きやすいとよく耳にしますが、実際どういうところでどういう文法にすると「書きやすい」になるのかJavaとの比較があまりありません。そこで独断と偏見で気持ちいい文法だこれ！と思った文法や書き方を紹介したいと思います。
+
+Null安全やセミコロンレスに関しては多くのドキュメントやブログがありますので省略します。
+
 ## 一行メソッド
 
 例えば、そのある特定のテキストを返すだけのメソッドがあるとします。Javaで書くとこんな感じになります。
@@ -38,7 +42,7 @@ public String getName() {
 }
 ```
 
-これをKotlinだと同じようにこうかけます。
+これをKotlinだと同じように書けます。
 
 ```kotlin
 fun getName(): String {
@@ -52,7 +56,7 @@ fun getName(): String {
 fun getName(): String = "MyApp"
 ```
 
-さらに、戻り値が明らかな場合、指定しなくても良いので
+さらに、戻りの型が明らかな場合、型の指定しなくても良いので
 
 ```kotlin
 fun getName() = "MyApp"
@@ -60,9 +64,37 @@ fun getName() = "MyApp"
 
 短いですね！
 
-## 空メソッド
+## null時何する？
 
-`fun foo() = Unit`
+例えば、パラメータがnullだった場合、即メソッドを抜けるという処理を書くとします。Javaの場合、結構色々書かなきゃいけません。
+
+```java
+public void foo(@Nullable String text) {
+    if (text == null) {
+        return;
+    }
+    // ...
+}
+```
+
+Kotlinはnull時にこれをしてくれという`?:`文法が用意されています。
+
+```kotlin
+fun foo(text: String?) {
+    text ?: return
+    // ...
+}
+```
+
+null時に別値を代入ということも可能です。
+
+```kotlin
+fun foo(text: String?) {
+    // textをbarに代入する。textがnullだった場合、空文字とする。
+    val bar = text ?: ""
+    // ...
+}
+```
 
 ## 空クラス
 
@@ -84,9 +116,101 @@ interface Foo
 class Bar
 ```
 
+## 空メソッド
+
+空メソッド。Javaの場合、`{}`を書かなくてはなりません。
+
+```java
+public void foo() {
+}
+```
+
+Kotlinの場合、一行メソッドと同じように書けます。
+
+```kotlin
+fun foo() = Unit
+```
+
+あれ？ながｋ(省略
+
+気持ちいいですね！
+
+## get/set省略
+
+Kotlinでは、getter/setterがあった場合、propertyとしてアクセス可能になります。AOSPに書いてあるgetter/setterも同様です。
+
+Activity#getLayoutInflater()を使うようなメソッドを定義する場合
+
+```java
+public LayoutInflater getLayoutInflater() {
+    return activity.getLayoutInflater();
+}
+```
+
+Kotlinで書くと以下のように書けます。
+
+```kotlin
+fun layoutInflater(): LayoutInflater = activity.layoutInflater
+```
+
+実際にはActivity内に`layoutInflater`というプロパティは存在していませんが、Kotlinが解釈してくれます。
+
+もちろんですが、以下のようにも書けます。
+
+```kotlin
+fun layoutInflater(): LayoutInflater = activity.getLayoutInflater()
+```
+
+ただ、Android Studioさんが「これプロパティアクセスに変えな？」というサジェストが出ます。
+
+**画像**
+
+Javaっぽいコードを書くとこのようにワーニングを出してくれるので、都度修正していくとKotlinらしい文法の勉強も捗ります。
+
+## キャストで括弧少ない
+
+Javaでキャストする場合、括弧が多くなりがちです。PagerAdapterの`destroyItem`を実装してみます。
+
+```java
+＠Override public void destroyItem(ViewGroup container, int position, Object obj) {
+    ((ViewPager) container).removeView((View) obj)
+}
+```
+
+Kotlinだと`as`を使ってキャストします。文法的にも括弧が減り、どこで括弧が終わっているのかがわかりやすくなります。
+
+```kotlin
+override fun destroyItem(container: ViewGroup?, position: Int, obj: Any?) {
+    (container as ViewPager).removeView(obj as View)
+}
+```
+
+### キャスト失敗時に何する？
+
+null時に何する？との組み合わせることでキャスト失敗時に何するかの定義も簡単にできます。
+
+```kotlin
+override fun destroyItem(container: ViewGroup?, position: Int, obj: Any?) {
+    container as? ViewPager ?: return
+    // ...
+}
+```
+
+また、readonlyの変数のキャストに成功すると自動的にその変数をキャストしてくれます。メソッドパラメータはreadonly。各所に出てくる`val`と定義されている変数もreadonlyです。(余談ですが、immutableではありませんので注意して下さい。)
+
+```kotlin
+override fun destroyItem(container: ViewGroup?, position: Int, obj: Any?) {
+    container as? ViewPager ?: return
+    obj as? View ?: return
+    container.removeView(obj)
+}
+```
+
+mutable変数`var`の場合、`as?`後に変更可能なので、自動的にキャストしてもらえないので注意。Kotlinでは理由がない限り、`var`を使わないほうが良いです。
+
 ## Util系
 
-XxxUtilsとか作って、全メソッドをstaticにして、privateコンストラクタを作って・・・みたいなやり方をちょくちょくしていました
+XxxUtilsとか作って、全メソッドをstaticにして、privateコンストラクタを作って・・・みたいなやり方をJavaではちょくちょくしていました。
 
 ```java
 public class LogUtil {
@@ -98,7 +222,7 @@ public class LogUtil {
 }
 ```
 
-kotlinではTopレベルにメソッドを書けば、そういったUtil系のメソッドを書くことが出来ます。
+kotlinではTopレベルにメソッドを書けば、このようなUtil系のメソッドを書くことが出来ます。
 
 ```kotlin
 fun initLog(tag: String) = Timber.plant(ExtTree(tag))
@@ -113,6 +237,19 @@ fun foo() {
   initLog("MyApp")
 }
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+クラスのstaticメソッドは後述します。
 
 ## rx.ObservableのThread指定方法
 
@@ -315,6 +452,12 @@ object MoshiHelper {
 }
 ```
 
+## get省略
+
+```kotlin
+fun layoutInflater(): LayoutInflater = activity.layoutInflater
+```
+
 ## キャストで括弧少ない
 
 ```kotlin
@@ -350,12 +493,6 @@ private fun copyAssetFileToCache(context: Context, assetFilePath: String, cacheF
     }
 ```
 
-## get省略
-
-```kotlin
-fun layoutInflater(): LayoutInflater = activity.layoutInflater
-```
-
 * default値
 * if/else -> when
 ```kotlin
@@ -376,8 +513,6 @@ if (dyConsumed > 0) {
 ```
 * data class
 * parameter name
-* 空メソッド　`fun foo() = Unit`
-* 空クラス　`class Foo`
 * string template
 ```kotlin
 return originalResponse.newBuilder()
