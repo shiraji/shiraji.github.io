@@ -135,7 +135,7 @@ fun foo() = Unit
 
 気持ちいいですね！
 
-## get/set省略
+## getter/setter省略
 
 Kotlinでは、getter/setterがあった場合、propertyとしてアクセス可能になります。AOSPに書いてあるgetter/setterも同様です。
 
@@ -238,13 +238,86 @@ fun foo() {
 }
 ```
 
+## Stringテンプレート
 
+JavaでStringの結合をする場合、こんな感じになります。
 
+```java
+return originalResponse.newBuilder()
+                    .header("Cache-Control", "public, max-age=" + 60 * 3)
+                    .build();
+```
 
+KotlinにはStringテンプレートとしてString内に`${}`で変数を書くことが出来ます。
 
+```kotlin
+return originalResponse.newBuilder()
+                    .header("Cache-Control", "public, max-age=${60 * 3}")
+                    .build()
+```
 
+変数一つだけである場合、`{}`の省略も出来ます。
 
+```kotlin
+val foo = 1
+val bar = "Text$foo" // <= "Text1"という文字列に
+```
 
+## 複数行のString
+
+JavaのStringで複数行を生成する場合、結構辛いです。
+
+```java
+String text = "aaa\nbbb\nccc";
+```
+
+Kotlinでは`"""`を使うことで複数行のStringの定義を出来ます。
+
+```kotlin
+val text = """aaa
+              bbb
+              ccc""".trimMargin();
+```
+
+.trimMargin()のこととか、マージンの開始位置とか複数行のStringは結構多機能ですが、詳細知りたければ[公式のstring-literals](https://kotlinlang.org/docs/reference/basic-types.html#string-literals)を確認してね。
+
+## 複数if -> when
+
+Javaではifが複数ある場合、ちょっとつらいです。
+
+例えば以下のようなコードがあったとします。(Javaでbehaviorを独自実装したときに使っていたコード)
+
+```java
+if (isAnimating) return;
+if (consumed > 0) {
+    hide(child);
+} else {
+    show(child);
+}
+```
+
+これをKotlinだとそのまま書けます。
+
+```kotlin
+if (isAnimating) return
+if (consumed > 0) {
+    hide(child)
+} else {
+    show(child)
+}
+```
+
+しかし、もう少し簡単にwhenでまとめることも可能です。
+
+```kotlin
+when {
+    isAnimating -> return
+    consumed > 0 -> animateHide(child)
+    else -> animateShow(child)
+}
+```
+
+whenはJavaでいうSwitch文に近いですが、上記のようにwhenの後に条件を付けなかったり、変数の型のcase文に出来たりとめちゃくちゃ気持ちよくなれます。
 
 
 
@@ -513,10 +586,3 @@ if (dyConsumed > 0) {
 ```
 * data class
 * parameter name
-* string template
-```kotlin
-return originalResponse.newBuilder()
-                    .header("Cache-Control", "public, max-age=${60 * 3}")
-                    .build()
-```
-* multiline string template
