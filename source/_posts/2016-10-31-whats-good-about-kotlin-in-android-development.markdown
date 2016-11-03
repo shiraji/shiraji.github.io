@@ -218,7 +218,7 @@ class @JvmOverloads CustomView(context: Context, attrs: AttributeSet = null, def
 }
 ```
 
-(Kotlinのコンストラクタは個人的にあまり気持ちよくないので省略します。)
+(Kotlinのコンストラクタ自体は気持ちよくないので省略します。)
 
 ## キャストで括弧少ない
 
@@ -425,10 +425,6 @@ object MoshiUtil {
 ```kotlin
 MoshiUtil.moshi.adapter(BlackjackHand::java.class)
 ```
-
-
-
-クラスのstaticメソッドは後述します。
 
 ## rx.ObservableのThread指定方法
 
