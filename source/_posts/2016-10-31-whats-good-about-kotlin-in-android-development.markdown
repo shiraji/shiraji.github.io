@@ -8,15 +8,13 @@ keywords: Android Kotlin Rx Databinding
 description: describe what's good about choosing Kotlin for Android development in Japanese
 ---
 
-Kotlinの文法紹介というより、Javaで書いてた辛い文法をこんな感じでKotlinで書くこと出来るよ！紹介です。
-
-基本的に短くなりますが、長くなる書き方もあります。またこれが最強だ！と言ってるわけではなく、自分がこう書くとキモチイイ！だけです。(という予防線を張っておきます)
+Kotlinの文法紹介というより、Javaで書いてた辛い文法をこんな感じでKotlinで書くこと出来るよ！紹介です。これが最強だ！と言ってるわけではなく、自分がこう書くとキモチイイ！だけです。(という予防線を張っておこう・・・)
 
 # 自己紹介
 
-[Kotlin 1.0.4](https://blog.jetbrains.com/kotlin/2016/09/kotlin-1-0-4-is-here/)のexternal Contributorsの一人です。主に静的解析のところにコントリビュートしています。
+[Kotlin 1.0.4](https://blog.jetbrains.com/kotlin/2016/09/kotlin-1-0-4-is-here/)のExternal Contributorsの一人です。主にKotlin Pluginの静的解析にコントリビュートしています。
 
-Android開発もちょくちょくしており、絶賛Kotlinで開発中です。
+AndroidもKotlinで開発しています。
 
 # 前提条件と想定読者
 
@@ -30,11 +28,11 @@ Kotlinの文法はJavaコードと比較すればだいたいわかる感じで�
 
 Kotlinは書きやすいとよく耳にしますが、実際どういうところでどういう文法にすると「書きやすい」になるのかJavaとの比較があまりありません。そこで独断と偏見で気持ちいい文法だこれ！と思った文法や書き方を紹介したいと思います。
 
-Null安全やセミコロンレスに関しては多くのドキュメントやブログがありますので省略します。
+Kotlinで一番有名であろう、Null安全やセミコロンレスに関しては多くのドキュメントやブログがありますので割愛します。
 
 ## 一行メソッド
 
-例えば、そのある特定のテキストを返すだけのメソッドがあるとします。Javaで書くとこんな感じになります。
+ある特定のテキストを返すだけのメソッドを作る時、Javaで書くとこんな感じになります。
 
 ```java
 public String getName() {
@@ -42,7 +40,7 @@ public String getName() {
 }
 ```
 
-これをKotlinだと同じように書けます。
+Kotlinでも同じように書けます。
 
 ```kotlin
 fun getName(): String {
@@ -56,13 +54,15 @@ fun getName(): String {
 fun getName(): String = "MyApp"
 ```
 
-さらに、戻りの型が明らかな場合、型の指定しなくても良いので
+さらに、戻り値の型が明らかな場合、型の指定しなくても良いので
 
 ```kotlin
 fun getName() = "MyApp"
 ```
 
-短いですね！
+短くてだいぶ気持ちいいですね。
+
+こんな感じで、以下もJavaの例文を出して、Kotlinで気持ち良くなっていきます。それではどんどんいきます。
 
 ## null時何する？
 
@@ -77,7 +77,7 @@ public void foo(@Nullable String text) {
 }
 ```
 
-Kotlinはnull時にこれをしてくれという`?:`文法が用意されています。
+Kotlinはnull時にこれをしてくれという`?:`文法が用意されています。それを使うと一行で書けちゃいます。
 
 ```kotlin
 fun foo(text: String?) {
@@ -90,21 +90,20 @@ null時に別値を代入ということも可能です。
 
 ```kotlin
 fun foo(text: String?) {
-    // textをbarに代入する。textがnullだった場合、空文字とする。
-    val bar = text ?: ""
+    val bar = text ?: "" // textをbarに代入する。textがnullだった場合、空文字とする。
     // ...
 }
 ```
 
 ## 空クラス
 
-Javaでは空クラスだろうと、`{}`を書かなくてはなりません。特に目印用のinterfaceとかでありますが
+Javaでは空クラスだろうと、`{}`を書かなくてはなりません。特に目印用のinterfaceとかであると思いますが
 
 ```java
 interface Foo {}
 ```
 
-Kotlinでは空クラスの場合、`{}`を書かなくて良いので
+Kotlinではボディが空のクラスの場合、`{}`を書かなくて良いので
 
 ```kotlin
 interface Foo
@@ -169,7 +168,57 @@ Javaっぽいコードを書くとこのようにワーニングを出してく�
 
 ## パラメータのデフォルト値
 
+ここのパラメータだいたい同じ値なのだけど、時々違うから、overloadメソッドを用意するか！ってことありませんか？
 
+```java
+  public static boolean maybeStartActivity(Context context, Intent intent) {
+    return maybeStartActivity(context, intent, false);
+  }
+
+  private static boolean maybeStartActivity(Context context, Intent intent, boolean chooser) {
+      // ...
+  }
+```
+
+かの有名な[u2020](https://github.com/JakeWharton/u2020/blob/70dd9572f45afb21a62ff414d19b7c095d737372/src/main/java/com/jakewharton/u2020/util/Intents.java)にもありました。
+
+Kotlinはパラメータのデフォルト値を定義出来ます。
+
+```kotlin
+  fun maybeStartActivity(context: Context, intent: Intent, chooser: Boolean = false): Boolean {
+      // ...
+  }
+```
+
+### カスタムViewのコンストラクタ
+
+パラメータのデフォルト値に関連して、カスタムViewのコンストラクタの定義って大変だと思います。
+
+```java
+    public CustomView(Context context) {
+        this(context, null);
+    }
+
+    public CustomView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public CustomView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.custom_view, this, true);
+    }
+```
+
+Kotlinはデフォルト値を定義したメソッドを上記のようにJavaから見たら複数あるようにする`@JvmOverloads`というアノテーションがあります。
+
+これを使うと、カスタムViewのコンストラクタは一行定義するだけで書けます。
+
+```kotlin
+class @JvmOverloads CustomView(context: Context, attrs: AttributeSet = null, defStyleAttr: Int = 0) {
+}
+```
+
+(Kotlinのコンストラクタは個人的にあまり気持ちよくないので省略します。)
 
 ## キャストで括弧少ない
 
@@ -344,16 +393,37 @@ annotation class ActivityScope
 
 `Retention`のデフォルト値が`RetentionPolicy.RUNTIME`なので、指定を省略出来るのもスッキリしていて気持ち良いです。
 
-
-
 ## Singleton
 
+Javaでは(簡易的な)シングルトンを作成する場合、以下のように書く必要がありました。
+
+```java
+public class MoshiUtil {
+    private static Moshi moshi;
+
+    public static Moshi getMoshi() {
+        if (moshi == null) {
+            moshi = Moshi.Builder().add(DateAdapter()).build();
+        }
+        return moshi;
+    }
+}
+```
+
+Kotlinでは、`object`として定義すればアプリ内でシングルトンとして利用可能です。
+
 ```kotlin
-object MoshiHelper {
+object MoshiUtil {
     val moshi: Moshi by lazy {
         Moshi.Builder().add(DateAdapter()).build()
     }
 }
+```
+
+使い方もJavaの時と同じです。
+
+```kotlin
+MoshiUtil.moshi.adapter(BlackjackHand::java.class)
 ```
 
 
@@ -537,34 +607,6 @@ companion object {
     }
 ```
 
-## Singleton
-
-Javaでは(簡易的な)シングルトンを作成する場合、以下のように書く必要がありました。
-
-```java
-public class MoshiUtil {
-    private static Moshi moshi;
-
-    public static Moshi getMoshi() {
-        if (moshi == null) {
-            moshi = Moshi.Builder().add(DateAdapter()).build();
-        }
-        return moshi;
-    }
-}
-```
-
-Kotlinではこういうケースの場合、アプリ内でシングルトンにするため`object`定義します。
-
-```kotlin
-object MoshiHelper {
-    val moshi: Moshi by lazy {
-        Moshi.Builder().add(DateAdapter()).build()
-    }
-}
-```
-
-
 ## OutputStream
 
 ```kotlin
@@ -588,23 +630,8 @@ private fun copyAssetFileToCache(context: Context, assetFilePath: String, cacheF
     }
 ```
 
-* default値
-* if/else -> when
-```kotlin
-if (mIsAnimating) return
-if (dyConsumed > 0) {
-    animateHide(child)
-} else {
-    animateShow(child)
-}
-```
-
-```kotlin
-        when {
-            mIsAnimating -> return
-            dyConsumed > 0 -> animateHide(child)
-            else -> animateShow(child)
-        }
-```
 * data class
 * parameter name
+* if式
+
+builder.beginControlFlow("if (\$N\$T.shouldShowRequestPermissionRationale(\$N, \$N))", if (isPositiveCondition) "" else "!", PERMISSION_UTILS, targetParam, permissionField)
