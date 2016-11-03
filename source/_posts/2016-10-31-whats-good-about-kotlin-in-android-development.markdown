@@ -163,9 +163,13 @@ fun layoutInflater(): LayoutInflater = activity.getLayoutInflater()
 
 ただ、Android Studioさんが「これプロパティアクセスに変えな？」というサジェストが出ます。
 
-**画像**
+![getter_setter](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/whats-good-about-kotlin-in-android-development/getter_setter.png)
 
 Javaっぽいコードを書くとこのようにワーニングを出してくれるので、都度修正していくとKotlinらしい文法の勉強も捗ります。
+
+## パラメータのデフォルト値
+
+
 
 ## キャストで括弧少ない
 
@@ -319,6 +323,38 @@ when {
 
 whenはJavaでいうSwitch文に近いですが、上記のようにwhenの後に条件を付けなかったり、変数の型のcase文に出来たりとめちゃくちゃ気持ちよくなれます。
 
+## Annotation
+
+Dagger2を使う場合、ActivityやFragmentスコープを作るためにカスタムのAnnotation作ったりします。
+
+```java
+@Scope
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ActivityScope {
+}
+```
+
+`@interface`というキーワードを使っていましたが、Kotlinでは`annotation`と表現します。
+
+```kotlin
+@Scope
+@Retention
+annotation class ActivityScope
+```
+
+`Retention`のデフォルト値が`RetentionPolicy.RUNTIME`なので、指定を省略出来るのもスッキリしていて気持ち良いです。
+
+
+
+## Singleton
+
+```kotlin
+object MoshiHelper {
+    val moshi: Moshi by lazy {
+        Moshi.Builder().add(DateAdapter()).build()
+    }
+}
+```
 
 
 
@@ -501,21 +537,24 @@ companion object {
     }
 ```
 
-## Util系
-
-```kotlin
-fun initLog(tag: String) = Timber.plant(K3ExtTree(tag))
-```
-
-## Annotation
-
-```kotlin
-@Scope
-@kotlin.annotation.Retention
-annotation class ActivityScope
-```
-
 ## Singleton
+
+Javaでは(簡易的な)シングルトンを作成する場合、以下のように書く必要がありました。
+
+```java
+public class MoshiUtil {
+    private static Moshi moshi;
+
+    public static Moshi getMoshi() {
+        if (moshi == null) {
+            moshi = Moshi.Builder().add(DateAdapter()).build();
+        }
+        return moshi;
+    }
+}
+```
+
+Kotlinではこういうケースの場合、アプリ内でシングルトンにするため`object`定義します。
 
 ```kotlin
 object MoshiHelper {
@@ -525,23 +564,6 @@ object MoshiHelper {
 }
 ```
 
-## get省略
-
-```kotlin
-fun layoutInflater(): LayoutInflater = activity.layoutInflater
-```
-
-## キャストで括弧少ない
-
-```kotlin
-(activityComponent as DebugActivityComponent).inject(this)
-```
-
-## キャスト失敗即リターン
-
-```kotlin
-val recyclerView = activity.findViewById(R.id.timeline) as? RecyclerView ?: return false
-```
 
 ## OutputStream
 
