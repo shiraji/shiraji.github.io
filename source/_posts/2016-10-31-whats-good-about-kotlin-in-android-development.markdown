@@ -428,6 +428,17 @@ MoshiUtil.moshi.adapter(BlackjackHand::java.class)
 
 ## rx.ObservableのThread指定方法
 
+ちょこっとしたことなのですが、Rxの実行スレッド方法の指定も気持ちよく書けるようになります。
+
+```java
+load()
+  .subscribeOn(AndroidSchedulers.mainThread())
+  .observeOn(AndroidSchedulers.mainThread())
+  .subscribe();
+```
+
+Kotlinの拡張プロパティを利用し、スレッドの指定方法を定義します。
+
 ```kotlin
 val <T> Observable<T>.observeOnUI: Observable<T>
     get() = observeOn(AndroidSchedulers.mainThread())
@@ -448,6 +459,8 @@ val <T> Observable<T>.subscribeOnComputation: Observable<T>
     get() = subscribeOn(Schedulers.computation()).unsubscribeOn(Schedulers.computation())
 ```
 
+この拡張プロパティを利用すると以下のように書けます。
+
 ```kotlin
 load()
   .subscribeOnIO
@@ -455,24 +468,31 @@ load()
   .subscribe()
 ```
 
-```java
-load()
-  .subscribeOn(AndroidSchedulers.mainThread())
-  .observeOn(AndroidSchedulers.mainThread())
-  .subscribe();
-```
-
 ## DatabindingのBindingAdapter指定方法
 
-```kotlin
-@BindingAdapter("customFont")
-fun TextView.setFont(fontName: String) {
-    typeface = FontCaches.fontCache.get(fontName) ?:
-            Typeface.createFromAsset(context.assets, fontName).apply { FontCaches.fontCache.put(fontName, this) }
+次は拡張メソッドを活用してみます。
+
+DatabindingのBindingAdapterの[公式ドキュメントのコード](https://developer.android.com/reference/android/databinding/BindingAdapter.html)をKotlinで書いてみます。
+
+```java
+@BindingAdapter("android:bufferType")
+public static void setBufferType(TextView view, TextView.BufferType bufferType) {
+    view.setText(view.getText(), bufferType);
+}
+```
+
+これがこんな感じになります。`view`が消えました。
+
+```java
+@BindingAdapter("android:bufferType")
+fun TextView.setBufferType(TextView.BufferType bufferType) {
+    setText(getText(), bufferType)
 }
 ```
 
 ## DatabindingのonClickなどのイベント指定方法
+
+これも拡張メソッドでいきます。
 
 ```xml
 <android.support.design.widget.FloatingActionButton
@@ -487,43 +507,81 @@ fun TextView.setFont(fontName: String) {
                 app:srcCompat="@drawable/plus"/>
 ```
 
+```java
+fun onClickFab(View view) {
+    Toast.makeText(view.getContext(), R.string.message_fab, Toast.LENGTH_LONG).show();
+}
+```
+
+kotlinではこんな感じ。Toast表示用の拡張メソッドも定義しています。
+
 ```kotlin
+fun View.onClickFab() {
+    Toast.makeText(context, R.string.message_fab, Toast.LENGTH_LONG).show()
+}
+```
+
+ちょっとやりすぎると
+
+```kotlin
+fun Context.showLongToast(@StringRes id: Int) {
+    Toast.makeText(this, id, Toast.LENGTH_LONG).show()
+}
+
 fun View.onClickFab() {
     context.showLongToast(R.string.message_fab)
 }
 ```
 
-## カスタムViewのコンストラクタ
-
-```kotlin
-class SingleLineTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : TextView(context, attrs, defStyle) {
-    init {
-        maxLines = 1
-        ellipsize = TextUtils.TruncateAt.END
-        setHorizontallyScrolling(true)
-    }
-}
-```
+拡張メソッドは用法・用量を守って正しくお使い下さい。
 
 ## createIntent/newInstance
 
-```kotlin
-    companion object {
-        fun createIntent(context: Context)
-            = Intent(context, MyActivity::class.java).apply { }
-    }
- ```
+自分はcreateIntent/newInstanceパターン大好きです。
 
- ```kotlin
- fun newInstance(entity: DialogFragmentEntity) =
+これも気持ちよくなれます。
+
+```java
+public static Intent createIntent(Context context) {
+    Intent intent = new Intent(context, MyActivity.class);
+    return intent;
+}
+```
+
+applyを使って、一行に。
+
+```kotlin
+companion object {
+    fun createIntent(context: Context) = Intent(context, MyActivity::class.java).apply { }
+}
+```
+
+newInstanceもやってみます。
+
+```java
+public static SimpleDialogFragment newInstance(MyPacel entity) {
+    SimpleDialogFragment fragment = new SimpleDialogFragment();
+    Bundle bundle = new Bundle();
+    bundle.putParcelable(PARCELABLE_KEY, entity);
+    fragment.setArguments(bundle);
+    return fragment;
+}
+```
+
+パラメータセットしたインスタンスを作りたいだけなのですが、結構冗長的で辛い。。。
+
+Kotlinで短くしてみます。
+
+```kotlin
+ fun newInstance(entity: MyPacel) =
       SimpleDialogFragment().apply {
           arguments = Bundle().apply {
-              putParcelable(PARCELABLE_KEY, DialogFragmentEntityParcel(entity))
+              putParcelable(PARCELABLE_KEY, entity)
           }
       }
 ```
 
-nestが激しいのでこう書くともっと気持ちいい
+nestが激しいので拡張メソッドを利用してバラしちゃいます。
 
 ```kotlin
 fun newInstance(entity: Entity) = MyFragment().entity(entity)
@@ -532,6 +590,8 @@ private fun MyFragment.entity(entity: Entity) = apply { arguments = Bundle().ent
 
 private fun Bundle.entity(entity: Entity) = apply { putParcelable(KEY, entity) }
 ```
+
+ヨイですね。
 
 ## setVisibleOrGone
 
