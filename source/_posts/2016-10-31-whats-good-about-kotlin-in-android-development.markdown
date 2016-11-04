@@ -663,6 +663,34 @@ companion object {
     }
 ```
 
+by lazy
+
+```kotlin
+
+abstract class MutableListRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(private val list: MutableList<T>) :
+        RecyclerView.Adapter<VH>(), Iterable<T>, MutableList<T> by list {
+
+    var itemClickListener: View.OnClickListener? = null
+
+    override fun getItemCount() = list.size
+
+    @UiThread fun addAllWithNotification(items: Collection<T>) {
+        val position = itemCount
+        addAll(items)
+        notifyItemChanged(position)
+    }
+
+    @UiThread fun reset(items: Collection<T>) {
+        clear()
+        addAll(items)
+        notifyDataSetChanged()
+    }
+}
+
+```
+
+こんなこともできるけど、余計なメソッドも生えるので、用法と用量を守ってお使い下さい。
+
 ## OutputStream
 
 ```kotlin
@@ -691,3 +719,17 @@ private fun copyAssetFileToCache(context: Context, assetFilePath: String, cacheF
 * if式
 
 builder.beginControlFlow("if (\$N\$T.shouldShowRequestPermissionRationale(\$N, \$N))", if (isPositiveCondition) "" else "!", PERMISSION_UTILS, targetParam, permissionField)
+
+* for-loop (index - 1)
+
+for (i in 0 until tabBindings.size()) {
+
+SparseArrayとか
+
+* 日本語使える。
+
+testメソッド名とかで
+
+fun `クレジットカード決済`() {
+}
+
