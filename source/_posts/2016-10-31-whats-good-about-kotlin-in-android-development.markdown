@@ -581,7 +581,28 @@ Kotlinで短くしてみます。
       }
 ```
 
-nestが激しいので拡張メソッドを利用してバラしちゃいます。
+nestが激しいので拡張メソッドを利用してバラします。一個一個やっていきます。
+
+まず
+
+```kotlin
+arguments = Bundle().apply {
+    putParcelable(PARCELABLE_KEY, entity)
+}
+```
+
+これをprivateのBundleの拡張メソッドにします。
+
+```kotlin
+ fun newInstance(entity: MyPacel) =
+      SimpleDialogFragment().apply {
+          arguments = Bundle().entity(entity)
+      }
+
+private fun Bundle.entity(entity: MyPacel) = apply { putParcelable(KEY, entity) }
+```
+
+次に、SimpleDialogFragmentの部分も拡張メソッドを使って書くと。
 
 ```kotlin
 fun newInstance(entity: Entity) = MyFragment().entity(entity)
@@ -591,7 +612,7 @@ private fun MyFragment.entity(entity: Entity) = apply { arguments = Bundle().ent
 private fun Bundle.entity(entity: Entity) = apply { putParcelable(KEY, entity) }
 ```
 
-ヨイですね。
+だいぶシンプルになりました。ヨイヨヨイヨ。
 
 ## setVisibleOrGone
 
