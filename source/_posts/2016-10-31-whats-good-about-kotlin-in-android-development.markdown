@@ -828,7 +828,11 @@ companion object {
 }
 ```
 
-## OutputStream
+## try-with-resources
+
+*Java7から使えるので、あんまりインパクトない*
+
+Java7から利用出来る(Androidでは無理だけど)try-with-resources、Kotlinにもあって、`use`で書けます。
 
 ```kotlin
 private fun copyAssetFileToCache(context: Context, assetFilePath: String, cacheFileName: String) {
@@ -851,19 +855,86 @@ private fun copyAssetFileToCache(context: Context, assetFilePath: String, cacheF
     }
 ```
 
-* data class
-* parameter name
-* if式
+tryの外に出して、finallyでcloseしてと大変だったけど、かなりシンプルに書けます。
+
+## data class
+
+JavaのPOJOクラス。HTTPレスポンス格納したりと結構活躍すると思います。
+
+```java
+public class User {
+    private String name;
+    private int age;
+
+    public User(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public boolean equals(Object obj) {
+        // 省略
+    }
+
+    public int hashCode() {
+        // 省略
+    }
+
+    public String toString() {
+        // 省略
+    }
+
+    // その他便利メソッド省略
+}
+```
+
+コード書きすぎて手痛くなってきた・・・Kotlinでも書いてみます。
+
+```kotlin
+data class User(val name: String, val age: Int)
+```
+
+・・・気持ち良すぎる。
+
+Javaをどうしても使いたいのであれば、[auto-value](https://github.com/google/auto/tree/master/value)もありますので、腱鞘炎になる前にそちらを利用することを強くおすすめします。
+
+## parameter name
+
+*サンプルがない*
+
+## if式
 
 builder.beginControlFlow("if (\$N\$T.shouldShowRequestPermissionRationale(\$N, \$N))", if (isPositiveCondition) "" else "!", PERMISSION_UTILS, targetParam, permissionField)
 
-* for-loop (index - 1)
+## for-loop (index - 1)
 
-for (i in 0 until tabBindings.size()) {
+*インパクト薄い*
 
-SparseArrayとか
+あんまりやって良い例ではないのだけど・・・`SparseArray`をループしたい場合、結構辛くて[StackOverFlow](http://stackoverflow.com/questions/7999211/how-to-iterate-through-sparsearray)からコードを借りると
 
-* 日本語使える。
+```java
+for(int i = 0; i < sparseArray.size(); i++) {
+```
+
+これをKotlinで書くと
+
+```kotlin
+for (i in 0 until sparseArray.size()) {
+```
+
+他にもdownToとかstepとかいっぱいあるから[公式](https://kotlinlang.org/docs/reference/ranges.html)見てね。
+
+
+## 日本語使える
+
+*サンプルがない*
 
 testメソッド名とかで
 
