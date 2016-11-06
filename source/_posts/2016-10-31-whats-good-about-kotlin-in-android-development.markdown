@@ -281,7 +281,7 @@ kotlinではTopレベルにメソッドを書けば、このようなUtil系の�
 fun initLog(tag: String) = Timber.plant(ExtTree(tag))
 ```
 
-使い方
+使い方もJavaのときと変わりません。
 
 ```kotlin
 import package.initLog
@@ -616,6 +616,26 @@ private fun Bundle.entity(entity: Entity) = apply { putParcelable(KEY, entity) }
 
 ## setVisibleOrGone
 
+Databinding前には結構使うことが多かったのですが・・・一応。
+
+ViewをGoneするか表示するかをBoolean値で判別するようなUtil系のメソッドを書くとすると
+
+```java
+public static void setVisibleOrGone(View view, boolean isVisible) {
+    if(view == null) {
+        return;
+    }
+
+    if(isVisible) {
+        view.setVisiblity(View.VISIBLE);
+    } else {
+        view.setVisiblity(View.GONE);
+    }
+}
+```
+
+これをkotlinで書くと一行でいけます。nullableのViewの拡張メソッド、null安全、setter/getterの省略、if式利用と色々Javaにはない機能を利用しています。
+
  ```kotlin
 fun View?.setVisibleOrGone(isVisible: Boolean) {
     this?.visibility = if (isVisible) View.VISIBLE else View.GONE
@@ -623,6 +643,31 @@ fun View?.setVisibleOrGone(isVisible: Boolean) {
 ```
 
 ## BaseObservable
+
+
+
+```java
+private static class User extends BaseObservable {
+   private String firstName;
+   private String lastName;
+   @Bindable
+   public String getFirstName() {
+       return this.firstName;
+   }
+   @Bindable
+   public String getLastName() {
+       return this.lastName;
+   }
+   public void setFirstName(String firstName) {
+       this.firstName = firstName;
+       notifyPropertyChanged(BR.firstName);
+   }
+   public void setLastName(String lastName) {
+       this.lastName = lastName;
+       notifyPropertyChanged(BR.lastName);
+   }
+}
+```
 
 ```kotlin
 class FooObservable : BaseObservable {
@@ -753,5 +798,4 @@ testメソッド名とかで
 
 fun `クレジットカード決済`() {
 }
-
 
