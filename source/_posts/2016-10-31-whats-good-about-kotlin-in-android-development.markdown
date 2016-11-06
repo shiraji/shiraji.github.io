@@ -573,17 +573,15 @@ public static SimpleDialogFragment newInstance(MyPacel entity) {
 Kotlinで短くしてみます。
 
 ```kotlin
- fun newInstance(entity: MyPacel) =
-      SimpleDialogFragment().apply {
-          arguments = Bundle().apply {
-              putParcelable(PARCELABLE_KEY, entity)
-          }
-      }
+fun newInstance(entity: MyPacel) =
+　   SimpleDialogFragment().apply {
+         arguments = Bundle().apply {
+             putParcelable(PARCELABLE_KEY, entity)
+         }
+     }
 ```
 
-nestが激しいので拡張メソッドを利用してバラします。一個一個やっていきます。
-
-まず
+nestが激しいので拡張メソッドを利用してバラしていきます。まずはこの部分。
 
 ```kotlin
 arguments = Bundle().apply {
@@ -591,18 +589,42 @@ arguments = Bundle().apply {
 }
 ```
 
-これをprivateのBundleの拡張メソッドにします。
+これをメソッド化すると
 
 ```kotlin
- fun newInstance(entity: MyPacel) =
-      SimpleDialogFragment().apply {
-          arguments = Bundle().entity(entity)
-      }
-
-private fun Bundle.entity(entity: MyPacel) = apply { putParcelable(KEY, entity) }
+private fun entity(bundle: Bundle, entity: MyPacel): Bundle {
+    return bundle.apply {
+        putParcelable(PARCELABLE_KEY, entity)
+    }
+}
 ```
 
-次に、SimpleDialogFragmentの部分も拡張メソッドを使って書くと。
+bundle変数に関する処理なので、Bundleの拡張メソッドと考えると良さ気。
+
+```kotlin
+private fun Bundle.entity(entity: MyPacel): Bundle {
+    return this.apply {
+        putParcelable(PARCELABLE_KEY, entity)
+    }
+}
+```
+
+return文一文なので、省略。thisも必要ないので、省略。
+
+```kotlin
+private fun Bundel.entity(entity: MyPacel) = apply { putParcelable(PARCELABLE_KEY, entity) }
+```
+
+```kotlin
+fun newInstance(entity: MyPacel) =
+     SimpleDialogFragment().apply {
+         arguments = Bundle().entity(entity)
+     }
+
+private fun Bundel.entity(entity: MyPacel) = apply { putParcelable(PARCELABLE_KEY, entity) }
+```
+
+次に、SimpleDialogFragmentの部分も同じように拡張メソッドを使って書くと。
 
 ```kotlin
 fun newInstance(entity: Entity) = MyFragment().entity(entity)
@@ -616,9 +638,9 @@ private fun Bundle.entity(entity: Entity) = apply { putParcelable(KEY, entity) }
 
 ## setVisibleOrGone
 
-Databinding前には結構使うことが多かったのですが・・・一応。
+Databinding前には結構使うことが多かったのですが、今となっては・・・でも一応。
 
-ViewをGoneするか表示するかをBoolean値で判別するようなUtil系のメソッドを書くとすると
+Viewを消してしまうか表示するかをBoolean値で判別するようなUtil系のメソッドを書くとすると
 
 ```java
 public static void setVisibleOrGone(View view, boolean isVisible) {
@@ -644,7 +666,7 @@ fun View?.setVisibleOrGone(isVisible: Boolean) {
 
 ## BaseObservable
 
-
+公式にある、以下のコードをKotlinで気持ちよく書いてみます。
 
 ```java
 private static class User extends BaseObservable {
@@ -669,25 +691,59 @@ private static class User extends BaseObservable {
 }
 ```
 
+Kotlinで書く前に、具体的にやることは
+
+* getterに`@Bindable`をつける
+* setterの最後に`notifyPropertyChanged(BR.firstName);`を呼ぶ
+
+*objectクラスでやってみる？*
+
 ```kotlin
-class FooObservable : BaseObservable {
+class User : BaseObservable {
     @get:Bindable
-    var id: ObservableField<String>
+    var firstName: String
         set(value) {
             field = value
-            notifyPropertyChanged(BR.id)
+            notifyPropertyChanged(BR.firstName)
+        }
+
+    @get:Bindable
+    var lastName: String
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.lastName)
         }
 }
 ```
 
+setter/getterを書かなくて良いのでシンプルになってます。
+
+もうちょいキレイになればいいですが、わざわざメソッド書かなくて良いというだけでも気持ちいいです。
+
 ## Delegate
 
-```kotlin
-class MyViewModel @Inject constructor(var context: Context,
-                                         var compositeSubscription: CompositeSubscription) : Subscription by compositeSubscription {
-// ...
+継承するな！移譲しろ！と言われてもJava使ってると継承しちゃいガチなのですが、KotlinのDelegateがあるとこれを積極的に利用したいなと思えるようになります。
+
+ViewModelにRxのSubscriptionの機能を実装し、`Activity#onDestroy`時に`unsubscribe()`したいという時
+
+```java
+public class MyViewModel(CompositeSubscription compositeSubscription) {
+    // ...
+    public void unsubscribe() {
+        compositeSubscription.unsubscribe();
+    }
 }
 ```
+
+Kotlinでdelegateすると`unsubscribe()`は書かなくて良くなります。
+
+```kotlin
+class MyViewModel @Inject constructor(var compositeSubscription: CompositeSubscription) : Subscription by compositeSubscription {
+    // ...
+}
+```
+
+Activityではこんな感じ。`MyViewModel`で実装していないのに`unsubscribe()`を呼ぶことが出来る。
 
 ```kotlin
 class ThirdActivity : AppCompatActivity() {
@@ -701,6 +757,30 @@ class ThirdActivity : AppCompatActivity() {
         super.onDestroy()
         viewModel.unsubscribe()
     }
+```
+
+droidkaigiの[ArrayRecyclerAdapter](https://github.com/konifar/droidkaigi2016/blob/master/app/src/main/java/io/github/droidkaigi/confsched/widget/ArrayRecyclerAdapter.java)を以下のようなにすることもできるけど、余計なメソッドも生えるので、用法と用量を(省略
+
+```kotlin
+abstract class MutableListRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(private val list: MutableList<T>) :
+        RecyclerView.Adapter<VH>(), Iterable<T>, MutableList<T> by list {
+
+    var itemClickListener: View.OnClickListener? = null
+
+    override fun getItemCount() = list.size
+
+    @UiThread fun addAllWithNotification(items: Collection<T>) {
+        val position = itemCount
+        addAll(items)
+        notifyItemChanged(position)
+    }
+
+    @UiThread fun reset(items: Collection<T>) {
+        clear()
+        addAll(items)
+        notifyDataSetChanged()
+    }
+}
 ```
 
 ## Binding(by lazy)
