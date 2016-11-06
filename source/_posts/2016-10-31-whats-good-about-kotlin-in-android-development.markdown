@@ -783,59 +783,50 @@ abstract class MutableListRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(priva
 }
 ```
 
-## Binding(by lazy)
+## 遅延初期化
 
-```kotlin
-    private val binding by lazy {
-        DataBindingUtil.setContentView<MyBinding>(this, R.layout.my)
+Javaで簡単にやる場合、getterを作成し、propertyアクセスは禁止し、そのgetter経由で値を取得するというルールの下かろうじて出来る遅延初期化処理です。
+
+例えば、Databindingの`setContentView`を利用して、`binding`変数を初期化します。
+
+```java
+private MyBinding binding;
+
+private MyBinding getBinding() {
+    if(binding == null) {
+        binding = DataBindingUtil.setContentView<MyBinding>(this, R.layout.my);
     }
+    return binding;
+}
 ```
 
-## Enum逆引き(by lazy)
+Kotlinでは`by lazy`を利用して書きます。一旦`binding`変数にアクセスしたら`by lazy`内の処理が実行され、初期化されます。
+
+```kotlin
+private val binding by lazy {
+    DataBindingUtil.setContentView<MyBinding>(this, R.layout.my)
+}
+```
+
+valであるのも良いです。
+
+ちなみに、enumに`ordinal`ではない数値のidを振ることがあって、そのidから逆引きしたい時にキャッシュした`SparseArray`を利用して逆引きしますが、この時も`by lazy`使います。
 
 ```kotlin
 companion object {
-        private val lookup: SparseArray<VexType> by lazy {
-            SparseArray<VexType>().apply {
-                EnumSet.allOf(VexType::class.java).forEach {
-                    this@apply.put(it.vexId, it)
-                }
+    private val lookup: SparseArray<MyType> by lazy {
+        SparseArray<MyType>().apply {
+            EnumSet.allOf(MyType::class.java).forEach {
+                this@apply.put(it.typeId, it)
             }
         }
-
-        fun fromVexId(vexId: Int): VexType {
-            return lookup.get(vexId)
-        }
-    }
-```
-
-by lazy
-
-```kotlin
-
-abstract class MutableListRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(private val list: MutableList<T>) :
-        RecyclerView.Adapter<VH>(), Iterable<T>, MutableList<T> by list {
-
-    var itemClickListener: View.OnClickListener? = null
-
-    override fun getItemCount() = list.size
-
-    @UiThread fun addAllWithNotification(items: Collection<T>) {
-        val position = itemCount
-        addAll(items)
-        notifyItemChanged(position)
     }
 
-    @UiThread fun reset(items: Collection<T>) {
-        clear()
-        addAll(items)
-        notifyDataSetChanged()
+    fun fromTypeId(typeId: Int): MyType {
+        return lookup.get(typeId)
     }
 }
-
 ```
-
-こんなこともできるけど、余計なメソッドも生えるので、用法と用量を守ってお使い下さい。
 
 ## OutputStream
 
