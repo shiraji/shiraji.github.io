@@ -12,9 +12,9 @@ Kotlinの文法紹介というより、Javaで書いてた辛い文法をこん�
 
 # 自己紹介
 
-[Kotlin 1.0.4](https://blog.jetbrains.com/kotlin/2016/09/kotlin-1-0-4-is-here/)のExternal Contributorsの一人です。主にKotlin Pluginの静的解析にコントリビュートしています。
+[Kotlin 1.0.4](https://blog.jetbrains.com/kotlin/2016/09/kotlin-1-0-4-is-here/)で名前が載ったExternal Contributorsの一人です(嬉しいから自慢)。主にKotlin Pluginの静的解析にコントリビュートしています。
 
-AndroidもKotlinで開発しています。
+AndroidもKotlinで開発しています。Kotlinで書かれている[PermissionsDispatcher](https://github.com/hotchemi/PermissionsDispatcher)の開発にも参加しています。
 
 # 前提条件と想定読者
 
@@ -909,9 +909,46 @@ Javaをどうしても使いたいのであれば、[auto-value](https://github.
 
 *サンプルがない*
 
-## if式
+## 式
 
+Kotlinではifやwhenなど諸々が式です。
+
+例えば、ifの結果を変数に代入する場合、
+
+```java
+int foo;
+if(flag) {
+    foo = 10;
+} else {
+    foo = 100;
+}
+```
+
+kotlinではこんな感じになります。
+
+```kotlin
+val foo = if (flag) { 
+    10 
+}  else {
+    100
+}
+```
+
+単純な場合、`{}`は省略するので一行で書くことが多いです。
+
+```kotlin
+val foo = if (flag) 10 else 100
+```
+
+条件により違った値を代入しているのですが`val`で定義出来るのがポイントです。
+
+ちなみに、[PermissionsDispatcher](https://github.com/hotchemi/PermissionsDispatcher)さんでも利用していて、メソッドの引数として使ったりもしています。
+
+```kotlin
 builder.beginControlFlow("if (\$N\$T.shouldShowRequestPermissionRationale(\$N, \$N))", if (isPositiveCondition) "" else "!", PERMISSION_UTILS, targetParam, permissionField)
+```
+
+ネストさせることも出来るのですが、複雑になるので見にくい場合はローカル変数に切り出すのが良いと思います。
 
 ## for-loop (index - 1)
 
@@ -929,8 +966,7 @@ for(int i = 0; i < sparseArray.size(); i++) {
 for (i in 0 until sparseArray.size()) {
 ```
 
-他にもdownToとかstepとかいっぱいあるから[公式](https://kotlinlang.org/docs/reference/ranges.html)見てね。
-
+他にもdownToとかstepとかいっぱいあるから[公式](https://kotlinlang.org/docs/reference/ranges.html)確認して下さい。
 
 ## 日本語使える
 
