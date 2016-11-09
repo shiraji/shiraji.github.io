@@ -10,7 +10,7 @@ description: Describe what I lean about contributing Swift library
 
 This entry is for Japanese speaker. Those who are interested to contribute R.swift, please refer to [this doc](https://github.com/mac-cain13/R.swift/blob/master/Documentation/Contribute.md)
 
-Swiftでprintlnを書いてハマるレベルのエンジニアが一週間でR.swiftにコントリビュートしたお話。
+Swiftでprintlnを書いてハマるレベルのエンジニアが一週間(稼働時間約8時間)でR.swiftにコントリビュートしたお話。
 
 Swift開発している人にとっては常識な話が多数だと思いますが、Android開発してて、Swiftもやってみたい！とかSwiftのライブラリ開発してみたい！という人向けです。
 
@@ -35,63 +35,14 @@ iOS開発は素人に毛が生えた程度のレベルの人間ということ�
 
 プルリク駆動開発のルールに則って、勉強できそうな星多いライブラリを探してみた。
 
-
-| 名前 | ライブラリ概要 | 検討した理由 | 検討した理由 |
+| 名前 | ライブラリ概要 | 検討した理由 | 検討結果 |
 |:------------:|:------------:|:------------:|:------------:|
-|[Himotoki](https://github.com/ikesyo/Himotoki)|タイプセーフなJSONデコードライブラリ|メンテナーが日本人のikesyoさんという安心感から。(恐れ多くて関わったことがないのですが・・・)|* issueなし！(スゲェ・・・。|
-|[Kingfisher](https://github.com/onevcat/Kingfisher)|Imageのダウンロード・キャッシングライブラリ|なんか名前がかっこよかった|*  開発活発 * ラベリングがない|
-|||||
-|||||
+|[Himotoki](https://github.com/ikesyo/Himotoki)|タイプセーフなJSONデコードライブラリ|メンテナーが日本人のikesyoさんという安心感から。<br>(恐れ多くて関わったことがないのですが・・・)|issueなし！(スゲェ・・・。|
+|[Kingfisher](https://github.com/onevcat/Kingfisher)|Imageのダウンロード・キャッシングライブラリ|なんか名前がかっこよかった|開発活発<br>ラベリングがない|
+|[Alamofire](https://github.com/Alamofire/Alamofire)|Swift版HTTPネットワーク|Swiftやるならこれでしょという短絡的な発想|開発活発<br>ラベリングあり<br>メインテナー多そう<br>HTTP周りの知識必須っぽい|
+|[R.swift](https://github.com/mac-cain13/R.swift)|コンパイルタイムでコード生成<br>Androidで言うRクラスを使えるようにするライブラリ|自分がAndroid出身者だから|ラベリングがしっかり<br>メインテナーが複数いるっぽい<br>自分が持っている知識でいけるっぽい|
 
-## [Kingfisher](https://github.com/onevcat/Kingfisher)
-
-### ライブラリ概要
-
-Imageのダウンロード・キャッシングライブラリ
-
-### 検討した理由
-
-なんか名前がかっこよかった
-
-### 検討結果
-
-*  開発活発
-* ラベリングがない
-
-## [Alamofire](https://github.com/Alamofire/Alamofire)
-
-### ライブラリ概要
-
-Swift版HTTPネットワーク
-
-### 検討した理由
-
-Swiftやるならこれでしょという短絡的な発想
-
-### 検討結果
-
-* 開発活発
-* ラベリングあり
-* メインテナー多そう
-* HTTP周りの知識必須っぽい
-
-## [R.swift](https://github.com/mac-cain13/R.swift)
-
-### ライブラリ概要
-
-コンパイルタイムでコード生成し、Androidで言うRクラスを使えるようにするライブラリ。
-
-### 検討した理由
-
-自分がAndroid出身者だから。
-
-### 検討結果
-
-* ラベリングがしっかり
-* メインテナーが複数いるっぽい
-* 自分が持っている知識でいけるっぽい
-
-ということで、[R.swift](https://github.com/mac-cain13/R.swift)を選択しました。
+ということで今回は[R.swift](https://github.com/mac-cain13/R.swift)を選択しました。
 
 # 実際に勉強出来た事
 
@@ -106,8 +57,14 @@ Swiftやるならこれでしょという短絡的な発想
 ## class/struct
 ## Cライブラリの導入方法
 ## リフレクション？
+
+[Mirror](https://developer.apple.com/reference/swift/mirror)を使います。
+
+残念ながら、採用しなかったのですが、テストを書くときに特定のプロパティが存在しているかのチェックを行いたく、色々調べました。
+
+
+
 ## XCTestの書き方
-##
 
 # 感想
 
