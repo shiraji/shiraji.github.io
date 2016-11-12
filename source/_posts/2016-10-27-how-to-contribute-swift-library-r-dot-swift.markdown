@@ -12,11 +12,11 @@ This entry is for Japanese speaker. Those who are interested to contribute R.swi
 
 Swiftでprintlnを書いてハマるレベルのエンジニアが一週間(実稼働時間 約8時間)でR.swiftにコントリビュートしたお話。
 
-Swift開発している人にとっては常識な話が多数だと思いますが、Android開発してて、Swiftもやってみたい！とかSwiftのライブラリ開発してみたい！という人向けです。
+Swift開発している人にとっては常識な話が多数だと思いますが、Android開発やKotlin触っていて、Swiftもやってみたい！とかSwiftのライブラリ開発してみたい！という人向けです。
 
 # 想定読者
 
-* Android開発はしていて、iOSの開発も興味がある
+* Android開発やKotlin触っていいて、iOSの開発も興味がある
 * Swiftのライブラリにコントリビュートしてみたいけど、したことがない
 
 申し訳ないですが、iOS/Swift開発経験が長い人は想定外です。
@@ -40,14 +40,23 @@ iOS開発は素人に毛が生えた程度のレベルの人間ということ�
 
 # コントリビュートできそうなプロジェクト選定
 
-プルリク駆動開発のルールに則って、勉強できそうな星多いライブラリを探してみた。
+プルリク駆動開発のルールは以下です。
+
+* GitHubのスターが500以上。出来れば5000以上
+* 開発が活発
+* Issueがラベルなどで管理されている
+* 放置されているpull requestが少ない
+* GitHubで完結している
+* 使ったことあるなしは気にしない
+
+これに則って、勉強できそうな星多い(自社で採用しそうな)ライブラリを探してみました。
 
 | 名前 | ライブラリ概要 | 検討した理由 | 検討結果 |
 |:------------:|:------------:|:------------:|:------------:|
-|[Himotoki](https://github.com/ikesyo/Himotoki)|タイプセーフなJSONデコードライブラリ|メンテナーが日本人のikesyoさんという安心感から。<br>(恐れ多くて関わったことがないのですが・・・)|issueなし！(スゲェ・・・。|
-|[Kingfisher](https://github.com/onevcat/Kingfisher)|Imageのダウンロード・キャッシングライブラリ|なんか名前がかっこよかった|開発活発<br>ラベリングがない|
-|[Alamofire](https://github.com/Alamofire/Alamofire)|Swift版HTTPネットワーク|Swiftやるならこれでしょという短絡的な発想|開発活発<br>ラベリングあり<br>メインテナー多そう<br>HTTP周りの知識必須っぽい|
-|[R.swift](https://github.com/mac-cain13/R.swift)|コンパイルタイムでコード生成<br>Androidで言うRクラスを使えるようにするライブラリ|自分がAndroid出身者だから|ラベリングがしっかり<br>メインテナーが複数いるっぽい<br>自分が持っている知識でいけるっぽい|
+|[Himotoki](https://github.com/ikesyo/Himotoki)|タイプセーフなJSONデコードライブラリ|メンテナーが日本人のikesyoさんという安心感から。<br>(恐れ多くて関わったことがないのですが・・・)|issueなし！(スゲェ・・・|
+|[Kingfisher](https://github.com/onevcat/Kingfisher)|Imageのダウンロード・キャッシングライブラリ|なんか名前がかっこよかった|開発活発○<br>ラベリングがない☓|
+|[Alamofire](https://github.com/Alamofire/Alamofire)|Swift版HTTPネットワーク|Swiftやるならこれでしょという短絡的な発想|開発活発○<br>ラベリングあり○<br>メインテナー多そう○<br>HTTP周りの知識必須っぽい△|
+|[R.swift](https://github.com/mac-cain13/R.swift)|コンパイルタイムでコード生成<br>Androidで言うRクラスを使えるようにするライブラリ|自分がAndroid出身者だから|開発活発○<br>ラベリングがしっかり○<br>メインテナーが複数いるっぽい○<br>自分が持っている知識でいけるっぽい○|
 
 ということで今回は[R.swift](https://github.com/mac-cain13/R.swift)を選択しました。
 
@@ -68,15 +77,19 @@ iOS開発は素人に毛が生えた程度のレベルの人間ということ�
 
 ここをrswiftに変える。
 
-*スクショ*
+![change_to_rswift_scheme.png](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-contribute-swift-library-r-dot-swift/change_to_rswift_scheme.png)
+
+![change_scheme.png](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-contribute-swift-library-r-dot-swift/change_scheme.png)
 
 Runではなく、BuildでOK
+
+![build_rswift.png](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-contribute-swift-library-r-dot-swift/build_rswift.png)
 
 ## サンプルアプリのビルド方法
 
 ここをResourceAppに変える。
 
-*スクショ*
+![change_to_rswift_scheme2.png](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-contribute-swift-library-r-dot-swift/change_to_rswift_scheme2.png)
 
 ライブラリのコード内に`print()`を書けば`rswift.log`というところにログが出力されるように設定されています。これを利用して、変更を確認していきます。
 
@@ -92,11 +105,15 @@ Swiftの文法も書きながら覚えていきましたが、ちょくちょく
 
 Androidであれば、NDKを入れて、Cコードとjnlを用意してーと本当に多くのことをやらないとCコードを利用することは出来ません。
 
-ここはObjCの強みで、
+ここはObjCの強みで、比較的簡単に利用出来ます。
 
-Cライブラリはここここ
+今回採用はされなかったのですが、Cコードの導入を試みました。
 
-Cコードだけここここ
+導入方法としては
+
+1. .h/.cファイルをプロジェクトに追加します。今回は`wildmatch.h`/`wildmatch.c`
+1. rswift-Bridging-Header.hファイルを作成し、利用したい.hをimportします。`#import "wildmatch.h"`
+1. Swiftで`wildmatch.h`にあるメソッドを呼び出します
 
 こんなことで利用出来てしまうんか！と驚愕しました。
 
@@ -105,21 +122,66 @@ Cコードだけここここ
 SwiftにもJavaのリフレクションがありました。`Mirror`というクラスを利用します。実はこれ使い方が間違っていたのかうまく動きませんでした。
 
 ```swift
+let imageMirror = Mirror(reflecting: R.image.self)
+print(imageMirror.children.count) // show 0.
 ```
 
 ちなみにこのコードであれば動きます。
 
 ```swift
+let imageMirror = Mirror(reflecting: R.image.settings)
+print(imageMirror.children.count) // show children count.
 ```
 
-たぶんthisとかのせいだろうなーと思いましたが、深追いはせず。
+たぶんselfとかのせいだろうなーと思いましたが、深追いはせず。
 
-# R.swiftの開発方法
+## XCTestの書き方
 
+JUnit3と同じです。
 
+* `setup`/`tearDown`メソッドが存在している
+* `test`prefixをそれぞれのテストメソッドにつける
 
-ある程度開発した後に気づいたので、今回は利用しなかったのですが、XCTestもあり、TDD開発も可能です。
+BuildしたところにTestという選択肢があるので、それを選らんで実行。Java開発に慣れているなら特に問題なかったです。
 
-メインテナさんがPRを最初に投げて、昇華していこうぜスタイルの自分にとって理想的な人でした。これのおかげで、わかる点までやってみて結果を貼って、質問するスタイルで勉強しつつコードを完成させることが出来ました。
+ある程度開発した後に気づいたので、今回は利用しなかったのですが、XCTestでのTDD開発も可能です。たぶんそちらのほうが推奨されているのではないだろうか・・・
+
+# 苦戦したところ
+
+メンテナさんにも指摘を受けたのですが、やっぱりところどころSwiftらしくない書き方をしてしまっているようです。たぶんKotlinの癖が出ているのではないかと。まだSwift力が低すぎてどこのことを言っているのか不明でした。
+
+また、Swiftの`if let`や`guard`には結構苦戦しました。例えば今回こんな感じで、`ignoreFile`という変数を初期化するコードを書きました。
+
+```swift
+  if let rswiftignoreURL = callInformation.rswiftignoreURL {
+    ignoreFile = try IgnoreFile(ignoreFileURL: rswiftignoreURL) // Exceptionキャッチは別途している
+  } else {
+    ignoreFile = IgnoreFile()
+  }
+```
+
+`let rswiftignoreURL`が
+
+```swift
+if let rswiftignoreURL = callInformation.rswiftignoreURL {
+    ignoreFile = try IgnoreFile(ignoreFileURL: rswiftignoreURL) // Exceptionキャッチは別途している
+}
+```
+
+このスコープ内で使えることに違和感があり、この文法が正しいのかすらイマイチ理解出来ませんでした。
+
+Kotlinの場合は`?.let`を利用した場合、lambdaの`{}`内で変数定義します。(上記Swiftコードは`else`もあるので再現するには、`?.let`ではだめだけど。あと`it`もあるけど、それは省略。)
+
+```kotlin
+val ignoreFile = callInformation.rswiftignoreURL?.let { ignoreFileURL ->
+    IgnoreFile(ignoreFileURL: ignoreFileURL)
+}
+```
+
+# 最後に
+
+メインテナさんがPR投げてから、昇華していこうぜスタイルの自分にとって理想的な人でした。彼？のおかげで、わかる点までやってみて結果を貼って、質問するスタイルで勉強しつつコードを完成させることが出来ました。
+
+あと、SwiftとKotlinが似ているという点は正直疑問です。個人的にはこんな嘘がなんで流布されてるんだ？という感想を持っています。
 
 みんな使ってね！
