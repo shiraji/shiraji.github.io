@@ -28,4 +28,24 @@ Intentionだけではなく、Inspectionなども作成しており、Kotlinの�
 
 * Intentionを作ってみたい・プラグイン開発に興味がある
 * Intellijの機能をある程度理解している
+* kotlinの文法がそれなりに理解できる
+
+# 参考リンク
+
+プラグインプロジェクトの作成手順は以下
+http://www.jetbrains.org/intellij/sdk/docs/index.html
+
+gradleを使う場合はこちらを参考にして下さい。
+http://www.jetbrains.org/intellij/sdk/docs/tutorials/build_system.html?search=gradle
+
+このプラグインのセットアップウィザードはないので、以下のプラグインを使うと便利だよ(ステマ)
+gradle-intellij-plugin wizard
+https://plugins.jetbrains.com/plugin/8450
+
+# Custom Intentionを作ってみる
+
+今回サンプルとして、Intention周りのプラグインをリリースしました。
+https://github.com/shiraji/databinding-support
+
+これをベースにXMLファイルに対してのIntentionの説明をします。(もちろん他のファイルタイプでも利用可能です。)
 
