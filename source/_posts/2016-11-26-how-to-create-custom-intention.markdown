@@ -123,7 +123,7 @@ https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/resources/MET
 
 ![intention_desc](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-create-custom-intention/intention_desc.png)
 
-例えば、JavaファイルののIntentionだった場合、`after.java.template`のようにファイル名を
+例えば、JavaファイルののIntentionだった場合、`after.java.template`のようにファイル名を`after.{拡張子}.template`とすれば良いです。`before`のほうも同じです。
 
 配置箇所は`resourcesフォルダ/intentionDescriptions/INTENSION名/`に配置します。
 
