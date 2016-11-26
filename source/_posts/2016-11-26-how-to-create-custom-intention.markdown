@@ -111,7 +111,7 @@ https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/resources/MET
 
 こんな感じで設定画面に説明文を書くことが可能です。
 
-gif
+![intention_settings](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-create-custom-intention/intention_setting.gif)
 
 以下の3つのファイルを作成します。
 
@@ -121,7 +121,7 @@ gif
 
 それぞれが表示されるのはここです。
 
-png
+![intention_desc](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-create-custom-intention/intention_desc.png)
 
 例えば、JavaファイルののIntentionだった場合、`after.java.template`のようにファイル名を
 
