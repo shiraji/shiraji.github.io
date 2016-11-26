@@ -45,7 +45,81 @@ https://plugins.jetbrains.com/plugin/8450
 # Custom Intentionを作ってみる
 
 今回サンプルとして、Intention周りのプラグインをリリースしました。
+https://plugins.jetbrains.com/plugin/9271
+
+ソースコード
 https://github.com/shiraji/databinding-support
 
 これをベースにXMLファイルに対してのIntentionの説明をします。(もちろん他のファイルタイプでも利用可能です。)
 
+今回はレイアウトファイルであり、`<layout>`タグがrootタグではなかった場合、`<layout>`タグでラップするというIntentionを作成します。
+
+## Intentionクラス
+
+`IntentionAction`を継承します。
+
+以下のメソッドを継承します。
+
+* `getText(): String`: popupで表示される時の文字列
+* `getFamilyName(): String`: よくわからねｗ(intellij-community/kotlin repo内でもgetText呼び出してるだけのところが多い。)
+* `startInWriteAction(): Boolean`: Write Action内で実行されるかどうか。書き込みするならtrueで。
+* `isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean`: そのIntentionを利用可能かどうか判定する
+* `invoke(project: Project, editor: Editor?, file: PsiFile?)`: Intentionが選択時に実行されるメソッド。
+
+```kotlin
+package com.github.shiraji.databindinglayout.intentions
+
+class ConvertToDatabindingLayoutIntention : IntentionAction {
+
+    override fun getText() = "Convert to databinding layout"
+    override fun getFamilyName() = "Convert to databinding layout"
+    override fun startInWriteAction() = true
+
+    override fun isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean {
+        // rootタグがlayoutではなく、androidのレイアウトファイルかどうかを判定。
+    }
+
+    override fun invoke(project: Project, editor: Editor?, file: PsiFile?) {
+        // 新規<layout>タグを作成し、必要なattributeを追加し、root tagとする。
+    }
+
+}
+```
+
+https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/kotlin/com/github/shiraji/databindinglayout/intentions/ConvertToDatabindingLayoutIntention.kt
+
+## plugin.xml
+
+Intentionクラスをplugin.xmlに定義します。
+
+```xml
+        <intentionAction>
+            <className>com.github.shiraji.databindinglayout.intentions.ConvertToDatabindingLayoutIntention</className>
+            <category>Android</category>
+        </intentionAction>
+```
+
+https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/resources/META-INF/plugin.xml#L31-L34
+
+
+## Intentionの説明文を書く
+
+自分はちょくちょく忘れるのですが・・・(実際これを忘れて、1.0.1->1.0.2のバージョン更新をした。)
+
+こんな感じで設定画面に説明文を書くことが可能です。
+
+gif
+
+以下の3つのファイルを作成します。
+
+* after.xml.template
+* before.xml.template
+* description.html
+
+それぞれが表示されるのはここです。
+
+png
+
+
+
+https://github.com/shiraji/databinding-support/tree/1.0.2/src/main/resources/intentionDescriptions/ConvertToDatabindingLayoutIntention
