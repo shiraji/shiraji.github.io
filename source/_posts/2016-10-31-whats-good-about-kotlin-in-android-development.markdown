@@ -24,9 +24,11 @@ Kotlinの文法紹介というより、Javaで書いてた辛い文法をこん�
 
 # 自己紹介
 
-[Kotlin 1.0.4](https://blog.jetbrains.com/kotlin/2016/09/kotlin-1-0-4-is-here/)で名前が載ったExternal Contributorsの一人です(嬉しいから自慢)。主にKotlin Pluginの静的解析にコントリビュートしています。
+[Kotlin 1.0.4](https://blog.jetbrains.com/kotlin/2016/09/kotlin-1-0-4-is-here/), [Kotlin 1.0.5](https://blog.jetbrains.com/kotlin/2016/11/kotlin-1-0-5-is-here/)で名前が載ったExternal Contributorsの一人です(嬉しいから自慢)。主にKotlin Pluginの静的解析にコントリビュートしています。Kotlinで書かれている[PermissionsDispatcher](https://github.com/hotchemi/PermissionsDispatcher)の開発にも参加しています。
 
-AndroidもKotlinで開発しています。Kotlinで書かれている[PermissionsDispatcher](https://github.com/hotchemi/PermissionsDispatcher)の開発にも参加しています。
+Android開発経験3年ほどで、今はAndroidをJavaでもKotlinでも開発しています。
+
+
 
 # 前提条件と想定読者
 
@@ -150,7 +152,7 @@ fun foo() = Unit
 
 Kotlinでは、getter/setterがあった場合、propertyとしてアクセス可能になります。AOSPに書いてあるgetter/setterも同様です。
 
-Activity#getLayoutInflater()を使うようなメソッドを定義する場合
+`Activity#getLayoutInflater()`を使うようなメソッドを定義する場合
 
 ```java
 public LayoutInflater getLayoutInflater() {
@@ -176,7 +178,7 @@ fun layoutInflater(): LayoutInflater = activity.getLayoutInflater()
 
 ![getter_setter](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/whats-good-about-kotlin-in-android-development/getter_setter.png)
 
-Javaっぽいコードを書くとこのようにワーニングを出してくれるので、都度修正していくとKotlinらしい文法の勉強も捗ります。
+Javaっぽいコードを書くとこのようにワーニングを出してくれるので、都度修正していくとKotlinらしい文法の勉強も捗ります。(platform typeにはご注意下さい)
 
 ## パラメータのデフォルト値
 
@@ -230,7 +232,7 @@ class @JvmOverloads CustomView(context: Context, attrs: AttributeSet = null, def
 }
 ```
 
-(Kotlinのコンストラクタ自体は気持ちよくないので省略します。)
+(Kotlinのコンストラクタ自体は気持ちよくないので説明省略します。)
 
 ## キャストで括弧少ない
 
@@ -361,7 +363,7 @@ if (consumed > 0) {
 }
 ```
 
-これをKotlinだとそのまま書けます。
+これをKotlinでもそのままif/else書けます。
 
 ```kotlin
 if (isAnimating) return
@@ -384,9 +386,50 @@ when {
 
 whenはJavaでいうSwitch文に近いですが、上記のようにwhenの後に条件を付けなかったり、変数の型のcase文に出来たりとめちゃくちゃ気持ちよくなれます。
 
+## 式
+
+Kotlinではifやwhenなど諸々が式です。
+
+例えば、ifの結果を変数に代入する場合、
+
+```java
+int foo;
+if(flag) {
+    foo = 10;
+} else {
+    foo = 100;
+}
+```
+
+kotlinではこんな感じになります。
+
+```kotlin
+val foo = if (flag) { 
+    10 
+}  else {
+    100
+}
+```
+
+単純な場合、`{}`は省略するので一行で書くことが多いです。
+
+```kotlin
+val foo = if (flag) 10 else 100
+```
+
+条件により違った値を代入しているのですが`val`で定義出来るのがポイントです。
+
+ちなみに、[PermissionsDispatcher](https://github.com/hotchemi/PermissionsDispatcher)さんでも利用していて、メソッドの引数として使ったりもしています。
+
+```kotlin
+builder.beginControlFlow("if (\$N\$T.shouldShowRequestPermissionRationale(\$N, \$N))", if (isPositiveCondition) "" else "!", PERMISSION_UTILS, targetParam, permissionField)
+```
+
+ネストさせることも出来るのですが、複雑になるので見にくい場合はローカル変数に切り出すのが良いと思います。
+
 ## Annotation
 
-Dagger2を使う場合、ActivityやFragmentスコープを作るためにカスタムのAnnotation作ったりします。
+Dagger2を使う場合、ActivityやFragmentスコープを作るために独自Annotation作ったりします。
 
 ```java
 @Scope
@@ -395,7 +438,7 @@ public @interface ActivityScope {
 }
 ```
 
-`@interface`というキーワードを使っていましたが、Kotlinでは`annotation`と表現します。
+`@interface`というキーワードを使っていましたが、Kotlinでは`annotation`と表現します。直感的で良いです。
 
 ```kotlin
 @Scope
@@ -482,8 +525,6 @@ load()
 
 ## DatabindingのBindingAdapter指定方法
 
-次は拡張メソッドを活用してみます。
-
 DatabindingのBindingAdapterの[公式ドキュメントのコード](https://developer.android.com/reference/android/databinding/BindingAdapter.html)をKotlinで書いてみます。
 
 ```java
@@ -533,7 +574,7 @@ fun View.onClickFab() {
 }
 ```
 
-ちょっとやりすぎると
+ちょっと手が滑ると
 
 ```kotlin
 fun Context.showLongToast(@StringRes id: Int) {
@@ -545,7 +586,7 @@ fun View.onClickFab() {
 }
 ```
 
-拡張メソッドは用法・用量を守って正しくお使い下さい。
+topレベルの拡張メソッドは用法・用量を守って正しくお使い下さい。
 
 ## createIntent/newInstance
 
@@ -593,7 +634,7 @@ fun newInstance(entity: MyPacel) =
      }
 ```
 
-nestが激しいので拡張メソッドを利用してバラしていきます。まずはこの部分。
+nestが激しいのでバラしていきます。まずはこの部分。
 
 ```kotlin
 arguments = Bundle().apply {
@@ -627,6 +668,8 @@ return文一文なので、省略。thisも必要ないので、省略。
 private fun Bundel.entity(entity: MyPacel) = apply { putParcelable(PARCELABLE_KEY, entity) }
 ```
 
+イマココ
+
 ```kotlin
 fun newInstance(entity: MyPacel) =
      SimpleDialogFragment().apply {
@@ -636,7 +679,7 @@ fun newInstance(entity: MyPacel) =
 private fun Bundel.entity(entity: MyPacel) = apply { putParcelable(PARCELABLE_KEY, entity) }
 ```
 
-次に、SimpleDialogFragmentの部分も同じように拡張メソッドを使って書くと。
+SimpleDialogFragmentの部分も同じように拡張メソッドを使って書くと。
 
 ```kotlin
 fun newInstance(entity: Entity) = MyFragment().entity(entity)
@@ -668,13 +711,15 @@ public static void setVisibleOrGone(View view, boolean isVisible) {
 }
 ```
 
-これをkotlinで書くと一行でいけます。nullableのViewの拡張メソッド、null安全、setter/getterの省略、if式利用と色々Javaにはない機能を利用しています。
+これをkotlinで書くと一行でいけます。
 
- ```kotlin
+```kotlin
 fun View?.setVisibleOrGone(isVisible: Boolean) {
     this?.visibility = if (isVisible) View.VISIBLE else View.GONE
 }
 ```
+
+nullableのViewの拡張メソッド、null安全、setter/getterの省略、if式利用と色々Javaにはない機能を利用しています。
 
 ## BaseObservable
 
@@ -703,12 +748,10 @@ private static class User extends BaseObservable {
 }
 ```
 
-Kotlinで書く前に、具体的にやることは
+Kotlinで書く前に、そもそも具体的にやることは以下
 
 * getterに`@Bindable`をつける
 * setterの最後に`notifyPropertyChanged(BR.firstName);`を呼ぶ
-
-*objectクラスでやってみる？*
 
 ```kotlin
 class User : BaseObservable {
@@ -771,7 +814,7 @@ class ThirdActivity : AppCompatActivity() {
     }
 ```
 
-droidkaigiの[ArrayRecyclerAdapter](https://github.com/konifar/droidkaigi2016/blob/master/app/src/main/java/io/github/droidkaigi/confsched/widget/ArrayRecyclerAdapter.java)を以下のようなにすることもできるけど、余計なメソッドも生えるので、用法と用量を(省略
+droidkaigi2016の[ArrayRecyclerAdapter](https://github.com/konifar/droidkaigi2016/blob/master/app/src/main/java/io/github/droidkaigi/confsched/widget/ArrayRecyclerAdapter.java)を以下のようなにすることもできるけど、余計なメソッドも生えるので、用法と用量を(省略
 
 ```kotlin
 abstract class MutableListRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(private val list: MutableList<T>) :
@@ -840,152 +883,43 @@ companion object {
 }
 ```
 
-## try-with-resources
+## parameter name
 
-*Java7から使えるので、あんまりインパクトない*
-
-Java7から利用出来る(Androidでは無理だけど)try-with-resources、Kotlinにもあって、`use`で書けます。
-
-```kotlin
-private fun copyAssetFileToCache(context: Context, assetFilePath: String, cacheFileName: String) {
-        val cachedModelFile = File(context.cacheDir, cacheFileName)
-        if (cachedModelFile.exists()) {
-            cachedModelFile.delete()
-        }
-        FileOutputStream(cachedModelFile).use { outputStream ->
-            context.resources.assets.open(assetFilePath).use { inputStream ->
-                inputStream.copyTo(outputStream)
-            }
-        }
-    }
-```
-
-```kotlin
-    contentResolver.query(this.data, arrayOf(MediaStore.Images.Media.DATA), null, null, null).use {
-        it.moveToFirst()
-        return it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
-    }
-```
-
-tryの外に出して、finallyでcloseしてと大変だったけど、かなりシンプルに書けます。
-
-## data class
-
-JavaのPOJOクラス。HTTPレスポンス格納したりと結構活躍すると思います。
+Javaではそもそも出来ないのですが、こんなPOJOクラスがあったとします。
 
 ```java
 public class User {
-    private String name;
-    private int age;
+    private String firstName;
+    private String lastName;
 
-    public User(name, age) {
-        this.name = name;
-        this.age = age;
+    public User(firstName, lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public boolean equals(Object obj) {
-        // 省略
-    }
-
-    public int hashCode() {
-        // 省略
-    }
-
-    public String toString() {
-        // 省略
-    }
-
-    // その他便利メソッド省略
+    // その他メソッド省略
 }
 ```
-
-コード書きすぎて手痛くなってきた・・・Kotlinでも書いてみます。
-
-```kotlin
-data class User(val name: String, val age: Int)
-```
-
-・・・気持ち良すぎる。
-
-Javaをどうしても使いたいのであれば、[auto-value](https://github.com/google/auto/tree/master/value)もありますので、腱鞘炎になる前にそちらを利用することを強くおすすめします。
-
-## parameter name
-
-*サンプルがない*
-
-## 式
-
-Kotlinではifやwhenなど諸々が式です。
-
-例えば、ifの結果を変数に代入する場合、
 
 ```java
-int foo;
-if(flag) {
-    foo = 10;
-} else {
-    foo = 100;
-}
+new User("名", "姓"); 
+new User("姓", "名"); // 間違っているけど、コンパイルOK
 ```
 
-kotlinではこんな感じになります。
+第一引数と第二引数がfirstなのか、lastなのかわからなくなります。ランタイムでしか検知できないのが辛いです。
 
 ```kotlin
-val foo = if (flag) { 
-    10 
-}  else {
-    100
-}
+User(firstName = "名", lastName = "姓")
 ```
 
-単純な場合、`{}`は省略するので一行で書くことが多いです。
+引数に名前を設定して、メソッドを呼び出せます。こんなことしても叱られませんし、間違った挙動を起こしません。同じような型が多いメソッド呼び出しでは積極的に使うと気持ち良いです。
 
 ```kotlin
-val foo = if (flag) 10 else 100
+User(lastName = "姓", firstName = "名")
 ```
 
-条件により違った値を代入しているのですが`val`で定義出来るのがポイントです。
+## 最後に
 
-ちなみに、[PermissionsDispatcher](https://github.com/hotchemi/PermissionsDispatcher)さんでも利用していて、メソッドの引数として使ったりもしています。
+リストアップしてみたら結構出てきました。。。
 
-```kotlin
-builder.beginControlFlow("if (\$N\$T.shouldShowRequestPermissionRationale(\$N, \$N))", if (isPositiveCondition) "" else "!", PERMISSION_UTILS, targetParam, permissionField)
-```
-
-ネストさせることも出来るのですが、複雑になるので見にくい場合はローカル変数に切り出すのが良いと思います。
-
-## for-loop (index - 1)
-
-*インパクト薄い*
-
-あんまりやって良い例ではないのだけど・・・`SparseArray`をループしたい場合、結構辛くて[StackOverFlow](http://stackoverflow.com/questions/7999211/how-to-iterate-through-sparsearray)からコードを借りると
-
-```java
-for(int i = 0; i < sparseArray.size(); i++) {
-```
-
-これをKotlinで書くと
-
-```kotlin
-for (i in 0 until sparseArray.size()) {
-```
-
-他にもdownToとかstepとかいっぱいあるから[公式](https://kotlinlang.org/docs/reference/ranges.html)確認して下さい。
-
-## 日本語使える
-
-*サンプルがない*
-
-testメソッド名とかで
-
-fun `クレジットカード決済`() {
-}
-
+長すぎたので、落選した項目は[gist](https://gist.github.com/shiraji/2caf8190d282ab3594a21b467980267e)で公開しています。
