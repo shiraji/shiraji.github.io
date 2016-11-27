@@ -14,6 +14,18 @@ Swiftでprintlnを書いてハマるレベルのエンジニアが一週間(実�
 
 Swift開発している人にとっては常識な話が多数だと思いますが、Android開発やKotlin触っていて、Swiftもやってみたい！とかSwiftのライブラリ開発してみたい！という人向けです。
 
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<!-- more -->
+
 # 想定読者
 
 * Android開発やKotlin触っていいて、iOSの開発も興味がある
@@ -33,8 +45,7 @@ iOS開発は素人に毛が生えた程度のレベルの人間ということ�
 
 # 経緯
 
-* 会社でiOSチームがSwift3を検証していた。
-* 自分もやりたいけど業務中に勉強する時間がない。
+* Swift3の勉強したい。
 * あ、そういえば、こんな[記事](http://shiraji.github.io/blog/2016/01/10/pull_req_study/)が・・・
 * やるか！
 

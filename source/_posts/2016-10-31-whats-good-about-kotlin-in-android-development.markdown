@@ -10,6 +10,18 @@ description: describe what's good about choosing Kotlin for Android development 
 
 Kotlinの文法紹介というより、Javaで書いてた辛い文法をこんな感じでKotlinで書くこと出来るよ！紹介です。これが最強だ！と言ってるわけではなく、自分がこう書くとキモチイイ！だけです。(という予防線を張っておこう・・・)
 
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<!-- more -->
+
 # 自己紹介
 
 [Kotlin 1.0.4](https://blog.jetbrains.com/kotlin/2016/09/kotlin-1-0-4-is-here/)で名前が載ったExternal Contributorsの一人です(嬉しいから自慢)。主にKotlin Pluginの静的解析にコントリビュートしています。

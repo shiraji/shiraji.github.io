@@ -3,20 +3,24 @@ layout: post
 title: "How to create custom Intention"
 date: 2016-11-26 10:26:25 +0900
 comments: false
-categories: Intellij plugin Kotlin 
+categories: Intellij plugin Kotlin
 keywords: Intellij plugin kotlin Kotlin Intention custom
 description: Describe how to create Intellij custom Intention
 ---
 
 Intellij IDEAだけではないのですが、Intentionは自分でカスタムしたものを作ることが可能です。
 
-Intentionが何か？というのは以下の記事に説明があります。
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
-IntelliJ IDEAクイックスタート – インテンション
-http://samuraism.com/products/jetbrains/intellij-idea/quickstart/intentions
-
-元々Android Studio出身のためでもあるのですが、以下の記事でIntentionの利用シーンが書いてあります。
-http://qiita.com/yuya_presto/items/813c19513c2771815b28
+<!-- more -->
 
 # 自己紹介
 
@@ -32,14 +36,25 @@ Intentionだけではなく、Inspectionなども作成しており、Kotlinの�
 
 # 参考リンク
 
+IntelliJ IDEAクイックスタート – インテンション
+
+http://samuraism.com/products/jetbrains/intellij-idea/quickstart/intentions
+
+元々Android Studio出身のためでもあるのですが、以下の記事でIntentionの利用シーンが書いてあります。
+
+http://qiita.com/yuya_presto/items/813c19513c2771815b28
+
 プラグインプロジェクトの作成手順は以下
-* http://www.jetbrains.org/intellij/sdk/docs/index.html
+
+http://www.jetbrains.org/intellij/sdk/docs/index.html
 
 gradleを使う場合はこちらを参考にして下さい。
-* http://www.jetbrains.org/intellij/sdk/docs/tutorials/build_system.html?search=gradle
+
+http://www.jetbrains.org/intellij/sdk/docs/tutorials/build_system.html?search=gradle
 
 このgradleプラグインのセットアップウィザードはないので、以下のプラグインを使うと便利だよ(ステマ)
-* gradle-intellij-plugin wizard https://plugins.jetbrains.com/plugin/8450
+
+gradle-intellij-plugin wizard https://plugins.jetbrains.com/plugin/8450
 
 # Custom Intentionを作ってみる
 
