@@ -30,31 +30,10 @@ Intentionだけではなく、Inspectionなども作成しており、Kotlinの�
 
 # 想定読者
 
-* Intentionを作ってみたい・プラグイン開発に興味がある
+* Intentionを作ってみたい
+* プラグイン開発に興味がある
 * Intellijの機能をある程度理解している
 * kotlinの文法がそれなりに理解できる
-
-# 参考リンク
-
-IntelliJ IDEAクイックスタート – インテンション
-
-http://samuraism.com/products/jetbrains/intellij-idea/quickstart/intentions
-
-元々Android Studio出身のためでもあるのですが、以下の記事でIntentionの利用シーンが書いてあります。
-
-http://qiita.com/yuya_presto/items/813c19513c2771815b28
-
-プラグインプロジェクトの作成手順は以下
-
-http://www.jetbrains.org/intellij/sdk/docs/index.html
-
-gradleを使う場合はこちらを参考にして下さい。
-
-http://www.jetbrains.org/intellij/sdk/docs/tutorials/build_system.html?search=gradle
-
-このgradleプラグインのセットアップウィザードはないので、以下のプラグインを使うと便利だよ(ステマ)
-
-gradle-intellij-plugin wizard https://plugins.jetbrains.com/plugin/8450
 
 # Custom Intentionを作ってみる
 
@@ -64,21 +43,39 @@ https://plugins.jetbrains.com/plugin/9271
 ソースコード
 https://github.com/shiraji/databinding-support
 
-これをベースにXMLファイルに対してのIntentionの説明をします。(もちろん他のファイルタイプでも利用可能です。)
+これをベースにXMLファイルに対してのIntentionの説明をします。
 
 今回はレイアウトファイルであり、`<layout>`タグがrootタグではなかった場合、`<layout>`タグでラップするというIntentionを作成します。
 
+![wrap](https://raw.githubusercontent.com/shiraji/databinding-support/master/websites/images/wrap.gif)
+
+プラグインの作成方法などは参考リンクにまとめてありますので、そちらを参照して下さい。
+
 ## Intentionクラス
 
-`IntentionAction`を継承します。
+`IntentionAction`を継承します。以下のメソッドを実装する必要があります。
 
-以下のメソッドを継承します。
+### `getText(): String`
 
-* `getText(): String`: popupで表示される時の文字列
-* `getFamilyName(): String`: よくわからねｗ(intellij-community/kotlin repo内でもgetText呼び出してるだけのところが多い。)
-* `startInWriteAction(): Boolean`: Write Action内で実行されるかどうか。書き込みするならtrueで。
-* `isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean`: そのIntentionを利用可能かどうか判定する
-* `invoke(project: Project, editor: Editor?, file: PsiFile?)`: Intentionが選択時に実行されるメソッド。
+popupで表示される時の文字列
+
+### `getFamilyName(): String`
+
+よくわからねｗ(intellij-community/kotlin repo内でもgetText呼び出してるだけのところが多い。)
+
+### `startInWriteAction(): Boolean`
+
+Write Action内で実行するかどうか。
+
+### `isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean` 
+
+そのIntentionを利用可能かどうか判定する
+
+### `invoke(project: Project, editor: Editor?, file: PsiFile?)`
+
+Intentionが選択時に実行されるメソッド。
+
+今回は実際に以下のようなイメージになりました。
 
 ```kotlin
 package com.github.shiraji.databindinglayout.intentions
@@ -149,3 +146,21 @@ https://github.com/shiraji/databinding-support/tree/1.0.2/src/main/resources/int
 # 最後に
 
 Happy `alt+enter` life!
+
+# 参考リンク
+
+IntelliJ IDEAクイックスタート – インテンション
+
+http://samuraism.com/products/jetbrains/intellij-idea/quickstart/intentions
+
+プラグインプロジェクトの作成手順
+
+http://www.jetbrains.org/intellij/sdk/docs/index.html
+
+gradleを使う場合
+
+http://www.jetbrains.org/intellij/sdk/docs/tutorials/build_system.html?search=gradle
+
+このgradleプラグインのセットアップウィザードはないので、gradle-intellij-plugin wizardを使うと便利だよ(ステマ)
+
+https://plugins.jetbrains.com/plugin/8450
