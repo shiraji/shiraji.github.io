@@ -103,6 +103,8 @@ https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/kotlin/com/gi
 
 唯一ある共通点としてはファイルなどの読み込みや解析はPsiを使います。例えば、xmlタグだったら[XmlTag](https://github.com/JetBrains/intellij-community/blob/master/xml/xml-psi-api/src/com/intellij/psi/xml/XmlTag.java)、[XmlAttribute](https://github.com/JetBrains/intellij-community/blob/master/xml/xml-psi-api/src/com/intellij/psi/xml/XmlAttribute.java)を使います。`PsiElement#replace()`でソースコードの置換することが出来ます。
 
+それぞれのElement作成それぞれのファイルタイプ毎にFactoryが用意されています。Xmlなら`XmlElementFactory`で作成しています。Javaの場合だと`PsiElementFactory`だし、Kotlinなら`KtPsiFactory`を使います。
+
 ## plugin.xml
 
 Intentionクラスをplugin.xmlに定義します。
