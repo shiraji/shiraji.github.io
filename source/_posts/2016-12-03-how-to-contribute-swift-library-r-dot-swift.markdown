@@ -10,6 +10,8 @@ description: Describe what I learn about contributing R.swift
 
 This entry is for Japanese speaker. Those who are interested to contribute R.swift, please refer to [this doc](https://github.com/mac-cain13/R.swift/blob/master/Documentation/Contribute.md)
 
+これは[iOS Advent Calendar 2016](http://qiita.com/advent-calendar/2016/ios)の12/3の記事です。
+
 Swiftでprintlnを書いてハマるレベルのエンジニアが一週間(実稼働時間 約8時間)でR.swiftにコントリビュートしたお話。(だったけど、メンテナさんが別プロジェクト始めちゃってまだマージされていない。)
 
 Swift開発している人にとっては常識な話が多数だと思いますが、Android開発やKotlin触っていて、Swiftもやってみたい！とかSwiftのライブラリ開発してみたい！という人向けです。R.swiftのコントリビュート方法として紹介していますが、他のライブラリも同じ感じなのではないかなーと思ってます。
