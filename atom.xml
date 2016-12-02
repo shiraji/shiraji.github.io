@@ -4,7 +4,7 @@
   <title><![CDATA[Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-10-15T01:41:14+09:00</updated>
+  <updated>2016-12-02T23:27:08+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -12,6 +12,276 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How to Contribute R.swift (for Japanese Android Engineer)]]></title>
+    <link href="http://shiraji.github.io/blog/2016/12/03/how-to-contribute-swift-library-r-dot-swift/"/>
+    <updated>2016-12-03T00:00:00+09:00</updated>
+    <id>http://shiraji.github.io/blog/2016/12/03/how-to-contribute-swift-library-r-dot-swift</id>
+    <content type="html"><![CDATA[<p>This entry is for Japanese speaker. Those who are interested to contribute R.swift, please refer to <a href="https://github.com/mac-cain13/R.swift/blob/master/Documentation/Contribute.md">this doc</a></p>
+
+<p>Swiftでprintlnを書いてハマるレベルのエンジニアが一週間(実稼働時間 約8時間)でR.swiftにコントリビュートしたお話。(だったけど、メンテナさんが別プロジェクト始めちゃってまだマージされていない。)</p>
+
+<p>Swift開発している人にとっては常識な話が多数だと思いますが、Android開発やKotlin触っていて、Swiftもやってみたい！とかSwiftのライブラリ開発してみたい！という人向けです。R.swiftのコントリビュート方法として紹介していますが、他のライブラリも同じ感じなのではないかなーと思ってます。</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<p>(これを書き始めたのが10/27で、さすがに一ヶ月あればマージされるだろうとタカをくくって書き出したのですが、残念ながらまだマージされておらずです。マージされた体で偉そうにエントリーを書いていたので、優しい目で見て頂ければと。。。)</p>
+
+<h1>想定読者</h1>
+
+<ul>
+<li>Android開発やKotlin触っていいて、iOSの開発も興味がある</li>
+<li>Swiftのライブラリにコントリビュートしてみたいけど、したことがない</li>
+</ul>
+
+
+<p>申し訳ないですが、iOS/Swift開発経験が長い人は想定外です。</p>
+
+<h1>自己紹介</h1>
+
+<p>Kotlinが好きなAndroidエンジニアです。</p>
+
+<ul>
+<li>Swift力: printlnとか書いて、コンパイルエラーになって、なんでや？って悩むくらい</li>
+<li>Xcode力: 新規ファイル作成は任せろ！</li>
+<li>その他: cocoapodは知ってた。ObjCは書いたことあったけど、ブランクが2年ほどある。</li>
+</ul>
+
+
+<p>iOS開発は素人に毛が生えた程度のレベルの人間ということです。</p>
+
+<h1>経緯</h1>
+
+<ul>
+<li>Swift3の勉強したい。</li>
+<li>あ、そういえば、こんな<a href="http://shiraji.github.io/blog/2016/01/10/pull_req_study/">記事</a>が・・・</li>
+<li>やるか！</li>
+</ul>
+
+
+<h1>プロジェクト選定</h1>
+
+<p>プルリク駆動開発のルールは以下です。</p>
+
+<ul>
+<li>GitHubのスターが500以上。出来れば5000以上</li>
+<li>開発が活発</li>
+<li>Issueがラベルなどで管理されている</li>
+<li>放置されているpull requestが少ない</li>
+<li>GitHubで完結している</li>
+<li>使ったことあるなしは気にしない</li>
+</ul>
+
+
+<p>これに則って、勉強できそうな星多いライブラリを探してみました。</p>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:center;"> 名前 </th>
+<th style="text-align:center;"> ライブラリ概要 </th>
+<th style="text-align:center;"> 検討した理由 </th>
+<th style="text-align:left;"> 検討結果 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;"><a href="https://github.com/ikesyo/Himotoki">Himotoki</a></td>
+<td style="text-align:center;">タイプセーフなJSONデコードライブラリ</td>
+<td style="text-align:center;">メンテナーが日本人のikesyoさんという安心感から。<br>(恐れ多くて関わったことがないのですが・・・)</td>
+<td style="text-align:left;">issueなし！(スゲェ・・・</td>
+</tr>
+<tr>
+<td style="text-align:center;"><a href="https://github.com/onevcat/Kingfisher">Kingfisher</a></td>
+<td style="text-align:center;">Imageのダウンロード・キャッシングライブラリ</td>
+<td style="text-align:center;">なんか名前がかっこよかった</td>
+<td style="text-align:left;">開発活発○<br>ラベリングがない☓</td>
+</tr>
+<tr>
+<td style="text-align:center;"><a href="https://github.com/Alamofire/Alamofire">Alamofire</a></td>
+<td style="text-align:center;">Swift版HTTPネットワーク</td>
+<td style="text-align:center;">Swiftやるならこれでしょという短絡的な発想</td>
+<td style="text-align:left;">開発活発○<br>ラベリングあり○<br>メインテナー多そう○<br>HTTP周りの知識必須っぽい△</td>
+</tr>
+<tr>
+<td style="text-align:center;"><a href="https://github.com/mac-cain13/R.swift">R.swift</a></td>
+<td style="text-align:center;">コンパイルタイムでコード生成<br>Androidで言うRクラスを使えるようにするライブラリ</td>
+<td style="text-align:center;">自分がAndroid出身者だから</td>
+<td style="text-align:left;">開発活発○<br>ラベリングがしっかり○<br>メインテナーが複数いるっぽい○<br>自分が持っている知識でいけるっぽい○</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>ということで今回は<a href="https://github.com/mac-cain13/R.swift">R.swift</a>を選択しました。</p>
+
+<h1>実際に勉強出来た事</h1>
+
+<p>今回のコントリビュートで以下の項目を勉強しました。</p>
+
+<ul>
+<li>ライブラリのビルド方法</li>
+<li>サンプルアプリのビルド方法</li>
+<li>Swiftの文法(optional/guard/コレクション処理など)</li>
+<li>Cライブラリ/Cコードの導入方法</li>
+<li>リフレクション?(Mirror)</li>
+<li>XCTestの書き方</li>
+</ul>
+
+
+<p>なかなか濃い一週間でした。</p>
+
+<h2>ライブラリのビルド方法</h2>
+
+<p>ここをrswiftに変える。</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-contribute-swift-library-r-dot-swift/change_to_rswift_scheme.png" alt="change_to_rswift_scheme.png" /></p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-contribute-swift-library-r-dot-swift/change_scheme.png" alt="change_scheme.png" /></p>
+
+<p>Runではなく、BuildでOK</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-contribute-swift-library-r-dot-swift/build_rswift.png" alt="build_rswift.png" /></p>
+
+<h2>サンプルアプリのビルド方法</h2>
+
+<p>ここをResourceAppに変える。</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-contribute-swift-library-r-dot-swift/change_to_rswift_scheme2.png" alt="change_to_rswift_scheme2.png" /></p>
+
+<p>ライブラリのコード内に<code>print()</code>を書けば<code>rswift.log</code>というところにログが出力されるように設定されています。これを利用して、変更を確認していきます。</p>
+
+<h2>Swiftの文法</h2>
+
+<p>自分は本を読んで勉強するというタイプではなく、try-errorで実際に触って勉強するタイプです。</p>
+
+<p>Swiftの文法も書きながら覚えていきましたが、ちょくちょくこれどうやればいいの？っていうのにぶつかりました。特にKotlinのsmartcastの知識が邪魔してきました。。。<code>if let guard</code>などは文法が結構特殊なので最後まで慣れませんでした。あと、一番の問題はSwift3を調べたいのですが、大量にSwift2などの古い日本語ドキュメントが出てきます。iOS開発者辛いなーという感じでした。OptionalもコンセプトはKotlinと似ているのですが・・・。この辺りでKotlinとSwiftが似ていると言っていた人を罵りたくなってました。</p>
+
+<p>コレクション処理に関してはRubyやJava8、Kotlinなど他の言語でもよくあるものなので、そこまで苦しまなかったです。</p>
+
+<h2>Cライブラリ/Cコードの導入方法</h2>
+
+<p>残念ながら今回採用はしなかったのですが、Cコードの導入を試みました。</p>
+
+<p>Androidであれば、NDKを入れて、Cコードとjnlを用意してーと本当に多くのことをやらないとCコードを利用することは出来ません。iOS開発のこれは強みで、比較的簡単に利用出来ます。</p>
+
+<p>導入方法としては</p>
+
+<ol>
+<li>.h/.cファイルをプロジェクトに追加します。今回は<code>wildmatch.h</code>/<code>wildmatch.c</code></li>
+<li>rswift-Bridging-Header.hファイルを作成し、利用したい.hをimportします。<code>#import "wildmatch.h"</code></li>
+<li>Swiftで<code>wildmatch.h</code>にあるメソッドを呼び出します</li>
+</ol>
+
+
+<p>こんなことで利用出来てしまうんか！と驚愕しました。Xcodeのコンテントアシストにも即時反映されるし、驚きっぱなしでした。</p>
+
+<h2>リフレクション?(Mirror)</h2>
+
+<p>SwiftにもJavaのリフレクションがありました。<code>Mirror</code>というクラスを利用します。実はこれ使い方が間違っていたのかうまく動きませんでした。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="n">imageMirror</span> <span class="o">=</span> <span class="n">Mirror</span><span class="p">(</span><span class="nl">reflecting</span><span class="p">:</span> <span class="n">R</span><span class="p">.</span><span class="n">image</span><span class="p">.</span><span class="nb">self</span><span class="p">)</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">imageMirror</span><span class="p">.</span><span class="n">children</span><span class="p">.</span><span class="n">count</span><span class="p">)</span> <span class="c1">// show 0.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ちなみにこのコードであれば動きます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="n">imageMirror</span> <span class="o">=</span> <span class="n">Mirror</span><span class="p">(</span><span class="nl">reflecting</span><span class="p">:</span> <span class="n">R</span><span class="p">.</span><span class="n">image</span><span class="p">.</span><span class="n">settings</span><span class="p">)</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">imageMirror</span><span class="p">.</span><span class="n">children</span><span class="p">.</span><span class="n">count</span><span class="p">)</span> <span class="c1">// show children count.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>たぶんselfとかのせいだろうなーと思いましたが、深追いはせず。</p>
+
+<h2>XCTestの書き方</h2>
+
+<p>ざっくりですが、JUnit3とほぼ同じです。</p>
+
+<ul>
+<li><code>setup</code>/<code>tearDown</code>メソッドが存在している</li>
+<li><code>test</code>prefixをそれぞれのテストメソッドにつける</li>
+</ul>
+
+
+<p>BuildしたところにTestという選択肢があるので、それを選らんで実行。Java開発に慣れているなら特に問題なかったです。</p>
+
+<p>ある程度開発した後に気づいたので、今回は利用しなかったのですが、XCTestでのTDD開発も可能です。たぶんそちらのほうが推奨されているのではないでしょうか。</p>
+
+<h1>苦戦したところ</h1>
+
+<p>メンテナさんにも指摘を受けたのですが、やっぱりところどころSwiftらしくない書き方をしてしまっているようです。たぶんKotlinの癖が出ているのではないかと。まだSwift力が低すぎてどこのことを言っているのか不明でした。</p>
+
+<p>また、Swiftの<code>if let</code>や<code>guard</code>には結構苦戦しました。例えば今回こんな感じで、<code>ignoreFile</code>という変数を初期化するコードを書きました。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'>  <span class="k">if</span> <span class="k">let</span> <span class="n">rswiftignoreURL</span> <span class="o">=</span> <span class="n">callInformation</span><span class="p">.</span><span class="n">rswiftignoreURL</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">ignoreFile</span> <span class="o">=</span> <span class="n">try</span> <span class="n">IgnoreFile</span><span class="p">(</span><span class="nl">ignoreFileURL</span><span class="p">:</span> <span class="n">rswiftignoreURL</span><span class="p">)</span> <span class="c1">// Exceptionキャッチは別途している</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">ignoreFile</span> <span class="o">=</span> <span class="n">IgnoreFile</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>let rswiftignoreURL</code>が</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">if</span> <span class="k">let</span> <span class="n">rswiftignoreURL</span> <span class="o">=</span> <span class="n">callInformation</span><span class="p">.</span><span class="n">rswiftignoreURL</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">ignoreFile</span> <span class="o">=</span> <span class="n">try</span> <span class="n">IgnoreFile</span><span class="p">(</span><span class="nl">ignoreFileURL</span><span class="p">:</span> <span class="n">rswiftignoreURL</span><span class="p">)</span> <span class="c1">// Exceptionキャッチは別途している</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このスコープ内で使えることに違和感がありました。</p>
+
+<p>Kotlinの場合は<code>?.let</code>を利用した場合、lambdaの<code>{}</code>内で変数定義します。(上記Swiftコードは<code>else</code>もあるので再現するには、<code>?.let</code>ではだめだけど。あと<code>it</code>もあるけど、それは省略。)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">ignoreFile</span> <span class="p">=</span> <span class="n">callInformation</span><span class="p">.</span><span class="n">rswiftignoreURL</span><span class="o">?.</span><span class="n">let</span> <span class="p">{</span> <span class="n">ignoreFileURL</span> <span class="p">-&gt;</span>
+</span><span class='line'>    <span class="n">IgnoreFile</span><span class="p">(</span><span class="n">ignoreFileURL</span><span class="p">:</span> <span class="n">ignoreFileURL</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>最後に</h1>
+
+<p>メインテナさんがPR投げてから、昇華していこうぜスタイルの自分にとって理想的な人でした。彼？のおかげで、わかる点までやってみて結果を貼って、質問するスタイルで勉強しつつコードを完成させることが出来ました。(マージされてないけど)</p>
+
+<p>みんな使ってね！</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Tips for Creating Intellij Plugin in Kotlin]]></title>
