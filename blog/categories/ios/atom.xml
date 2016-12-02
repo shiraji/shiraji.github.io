@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ios | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/ios/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-12-02T23:27:08+09:00</updated>
+  <updated>2016-12-02T23:30:00+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -19,6 +19,8 @@
     <updated>2016-12-03T00:00:00+09:00</updated>
     <id>http://shiraji.github.io/blog/2016/12/03/how-to-contribute-swift-library-r-dot-swift</id>
     <content type="html"><![CDATA[<p>This entry is for Japanese speaker. Those who are interested to contribute R.swift, please refer to <a href="https://github.com/mac-cain13/R.swift/blob/master/Documentation/Contribute.md">this doc</a></p>
+
+<p>これは<a href="http://qiita.com/advent-calendar/2016/ios">iOS Advent Calendar 2016</a>の12/3の記事です。</p>
 
 <p>Swiftでprintlnを書いてハマるレベルのエンジニアが一週間(実稼働時間 約8時間)でR.swiftにコントリビュートしたお話。(だったけど、メンテナさんが別プロジェクト始めちゃってまだマージされていない。)</p>
 
