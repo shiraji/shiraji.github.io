@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "how to contribute R.swift (for Japanese Android Engineer)"
-date: 2016-10-27 16:55:32 +0900
+date: 2016-12-03 00:00:00 +0900
 comments: false
 categories: iOS Swift OSS iPhone
 keywords: iOS Swift OSS iPhone
-description: Describe what I lean about contributing Swift library
+description: Describe what I learn about contributing R.swift
 ---
 
 This entry is for Japanese speaker. Those who are interested to contribute R.swift, please refer to [this doc](https://github.com/mac-cain13/R.swift/blob/master/Documentation/Contribute.md)
