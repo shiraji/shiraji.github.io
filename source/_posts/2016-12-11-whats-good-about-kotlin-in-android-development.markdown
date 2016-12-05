@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "What's good about Kotlin in Android development"
-date: 2016-10-31 13:56:43 +0900
+date: 2016-12-11 00:00:01 +0900
 comments: false
 categories: Android Kotlin
 keywords: Android Kotlin Rx Databinding
@@ -28,8 +28,6 @@ Kotlinの文法紹介というより、Javaで書いてた辛い文法をこん�
 
 Android開発経験3年ほどで、今はAndroidをJavaでもKotlinでも開発しています。
 
-
-
 # 前提条件と想定読者
 
 * Android開発はある程度知っている
@@ -42,7 +40,7 @@ Kotlinの文法はJavaコードと比較すればだいたいわかる感じで�
 
 Kotlinは書きやすいとよく耳にしますが、実際どういうところでどういう文法にすると「書きやすい」になるのかJavaとの比較があまりありません。そこで独断と偏見で気持ちいい文法だこれ！と思った文法や書き方を紹介したいと思います。
 
-Kotlinで一番有名であろう、Null安全やセミコロンレスに関しては多くのドキュメントやブログがありますので割愛します。
+Kotlinで一番有名であろう機能、Null安全やセミコロンレスに関しては多くのドキュメントやブログがありますので割愛します。
 
 ## 一行メソッド
 
@@ -144,9 +142,7 @@ Kotlinの場合、一行メソッドと同じように書けます。
 fun foo() = Unit
 ```
 
-あれ？ながｋ(省略
-
-気持ちいいですね！
+あれ？ながｋ...気持ちいいですね！
 
 ## getter/setter省略
 
@@ -404,8 +400,8 @@ if(flag) {
 kotlinではこんな感じになります。
 
 ```kotlin
-val foo = if (flag) { 
-    10 
+val foo = if (flag) {
+    10
 }  else {
     100
 }
@@ -902,7 +898,7 @@ public class User {
 ```
 
 ```java
-new User("名", "姓"); 
+new User("名", "姓");
 new User("姓", "名"); // 間違っているけど、コンパイルOK
 ```
 
