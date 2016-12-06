@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How to create custom Intention"
-date: 2016-11-26 10:26:25 +0900
+date: 2016-12-17 00:00:01 +0900
 comments: false
 categories: Intellij plugin Kotlin
 keywords: Intellij plugin kotlin Kotlin Intention custom
@@ -67,7 +67,7 @@ popupで表示される時の文字列
 
 Write Action内で実行するかどうか。
 
-### `isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean` 
+### `isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean`
 
 そのIntentionを利用可能かどうか判定する
 
