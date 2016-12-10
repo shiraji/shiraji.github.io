@@ -1,0 +1,1582 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>What's Good About Kotlin in Android Development - Shiraji's Blog</title>
+  <meta name="author" content="Shiraji">
+
+  
+  <meta name="description" content="describe what's good about choosing Kotlin for Android development in Japanese">
+  <meta name="keywords" content="Android Kotlin Rx Databinding">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://shiraji.github.io/blog/2016/12/11/whats-good-about-kotlin-in-android-development/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Shiraji's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35371862-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Shiraji's Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="shiraji.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">What's Good About Kotlin in Android Development</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-12-11T00:00:01+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>これは<a href="http://qiita.com/advent-calendar/2016/kotlin">Kotlin Advent Calendar 2016</a>の12/11の記事です。</p>
+
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">kotlinでやるとAndroid簡単に書ける手法まとめとかないかな。extentionでbindingadapter書くとか、custom viewのコンストラクタをJvmOverloadsで省略とか。</p>&mdash; しらじ (@shiraj_i) <a href="https://twitter.com/shiraj_i/status/768082977569898496">2016年8月23日</a></blockquote>
+
+
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>8月23日にこんなつぶやきをして、今日まで溜めたAndroid開発をしていて、こう書くと簡単で気持ちいい！！！というKotlinの文法を紹介したいと思います。</p>
+
+<p>(あくまで自分が気持ちいいってだけだからね！)</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h1>自己紹介</h1>
+
+<p><a href="https://blog.jetbrains.com/kotlin/2016/09/kotlin-1-0-4-is-here/">Kotlin 1.0.4</a>, <a href="https://blog.jetbrains.com/kotlin/2016/11/kotlin-1-0-5-is-here/">Kotlin 1.0.5</a>で名前が載ったExternal Contributorsの一人です(嬉しいから自慢)。主にKotlin Pluginの静的解析にコントリビュートしています。Kotlinで書かれている<a href="https://github.com/hotchemi/PermissionsDispatcher">PermissionsDispatcher</a>の開発にも参加しています。</p>
+
+<p>Android開発経験3年ほどで、今はAndroidをJavaでもKotlinでも開発しています。</p>
+
+<h1>前提条件と想定読者</h1>
+
+<ul>
+<li>Android開発はある程度知っている</li>
+<li>KotlinでのAndroid興味がある人</li>
+<li>KotlinでのAndroid開発良いと言われてるけど、何がいいかわからねな人</li>
+</ul>
+
+
+<p>Kotlinの文法はJavaコードと比較すればだいたいわかる感じで記載していきますが、もしわからなければ、<a href="https://twitter.com/shiraj_i">@shiraj_i</a>にメンションいただければ答えますので、お気軽に質問して下さい。</p>
+
+<h1>キモチイイ！文法たち</h1>
+
+<p>Kotlinは書きやすいとよく耳にしますが、実際どういうところでどういう文法にすると「書きやすい」になるのかJavaとの比較があまりありません。そこで独断と偏見で気持ちいい文法だこれ！と思った文法や書き方を紹介したいと思います。</p>
+
+<p>Kotlinで一番有名であろう機能、Null安全やセミコロンレスに関しては多くのドキュメントやブログがありますので割愛します。</p>
+
+<h2>一行メソッド</h2>
+
+<p>ある特定のテキストを返すだけのメソッドを作る時、Javaで書くとこんな感じになります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="s">&quot;MyApp&quot;</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Kotlinでも同じように書けます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">fun</span> <span class="nf">getName</span><span class="p">():</span> <span class="n">String</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="s">&quot;MyApp&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ただ、Kotlinは一行でreturn出来る場合、<code>=</code>をつけて<code>{}</code>を省略することが出来ます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">fun</span> <span class="nf">getName</span><span class="p">():</span> <span class="n">String</span> <span class="p">=</span> <span class="s">&quot;MyApp&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>さらに、戻り値の型が明らかな場合、型の指定しなくても良いので</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">fun</span> <span class="nf">getName</span><span class="p">()</span> <span class="p">=</span> <span class="s">&quot;MyApp&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>短くてだいぶ気持ちいいですね。</p>
+
+<p>こんな感じで、以下もJavaの例文を出して、Kotlinで気持ち良くなっていきます。それではどんどんいきます。</p>
+
+<h2>null時何する？</h2>
+
+<p>例えば、パラメータがnullだった場合、即メソッドを抜けるという処理を書くとします。Javaの場合、結構色々書かなきゃいけません。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">foo</span><span class="o">(</span><span class="nd">@Nullable</span> <span class="n">String</span> <span class="n">text</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">text</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="c1">// ...</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Kotlinはnull時にこれをしてくれという<code>?:</code>文法が用意されています。それを使うと一行で書けちゃいます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">fun</span> <span class="nf">foo</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="n">String</span><span class="p">?)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">text</span> <span class="o">?:</span> <span class="k">return</span>
+</span><span class='line'>    <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>null時に別値を代入ということも可能です。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">fun</span> <span class="nf">foo</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="n">String</span><span class="p">?)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="py">bar</span> <span class="p">=</span> <span class="n">text</span> <span class="o">?:</span> <span class="s">&quot;&quot;</span> <span class="c1">// textをbarに代入する。textがnullだった場合、空文字とする。</span>
+</span><span class='line'>    <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>空クラス</h2>
+
+<p>Javaでは空クラスだろうと、<code>{}</code>を書かなくてはなりません。特に目印用のinterfaceとかであると思いますが</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">interface</span> <span class="nc">Foo</span> <span class="o">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Kotlinではボディが空のクラスの場合、<code>{}</code>を書かなくて良いので</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="n">interface</span> <span class="n">Foo</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>もちろん、classでも可能です。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">class</span> <span class="nc">Bar</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>空メソッド</h2>
+
+<p>空メソッド。Javaの場合、<code>{}</code>を書かなくてはなりません。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">foo</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Kotlinの場合、一行メソッドと同じように書けます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">fun</span> <span class="nf">foo</span><span class="p">()</span> <span class="p">=</span> <span class="n">Unit</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>あれ？ながｋ&hellip;気持ちいいですね！</p>
+
+<h2>getter/setter省略</h2>
+
+<p>Kotlinでは、getter/setterがあった場合、propertyとしてアクセス可能になります。AOSPに書いてあるgetter/setterも同様です。</p>
+
+<p><code>Activity#getLayoutInflater()</code>を使うようなメソッドを定義する場合</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="n">LayoutInflater</span> <span class="nf">getLayoutInflater</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">activity</span><span class="o">.</span><span class="na">getLayoutInflater</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Kotlinで書くと以下のように書けます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">fun</span> <span class="nf">layoutInflater</span><span class="p">():</span> <span class="n">LayoutInflater</span> <span class="p">=</span> <span class="n">activity</span><span class="p">.</span><span class="n">layoutInflater</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>実際にはActivity内に<code>layoutInflater</code>というプロパティは存在していませんが、Kotlinが解釈してくれます。</p>
+
+<p>もちろんですが、以下のようにも書けます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">fun</span> <span class="nf">layoutInflater</span><span class="p">():</span> <span class="n">LayoutInflater</span> <span class="p">=</span> <span class="n">activity</span><span class="p">.</span><span class="n">getLayoutInflater</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ただ、Android Studioさんが「これプロパティアクセスに変えな？」というサジェストが出ます。</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/whats-good-about-kotlin-in-android-development/getter_setter.png" alt="getter_setter" /></p>
+
+<p>Javaっぽいコードを書くとこのようにワーニングを出してくれるので、都度修正していくとKotlinらしい文法の勉強も捗ります。(platform typeにはご注意下さい)</p>
+
+<h2>パラメータのデフォルト値</h2>
+
+<p>ここのパラメータだいたい同じ値なのだけど、時々違うから、overloadメソッドを用意するか！ってことありませんか？</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">maybeStartActivity</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">Intent</span> <span class="n">intent</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nf">maybeStartActivity</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">intent</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">maybeStartActivity</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">Intent</span> <span class="n">intent</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">chooser</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="c1">// ...</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>かの有名な<a href="https://github.com/JakeWharton/u2020/blob/70dd9572f45afb21a62ff414d19b7c095d737372/src/main/java/com/jakewharton/u2020/util/Intents.java">u2020</a>にもありました。</p>
+
+<p>Kotlinはパラメータのデフォルト値を定義出来ます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'>  <span class="k">fun</span> <span class="nf">maybeStartActivity</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">intent</span><span class="p">:</span> <span class="n">Intent</span><span class="p">,</span> <span class="n">chooser</span><span class="p">:</span> <span class="n">Boolean</span> <span class="p">=</span> <span class="k">false</span><span class="p">):</span> <span class="n">Boolean</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">// ...</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>カスタムViewのコンストラクタ</h3>
+
+<p>パラメータのデフォルト値に関連して、カスタムViewのコンストラクタの定義って大変だと思います。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="nf">CustomView</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="nf">CustomView</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">AttributeSet</span> <span class="n">attrs</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">attrs</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="nf">CustomView</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">AttributeSet</span> <span class="n">attrs</span><span class="o">,</span> <span class="kt">int</span> <span class="n">defStyleAttr</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">attrs</span><span class="o">,</span> <span class="n">defStyleAttr</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">binding</span> <span class="o">=</span> <span class="n">DataBindingUtil</span><span class="o">.</span><span class="na">inflate</span><span class="o">(</span><span class="n">LayoutInflater</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">context</span><span class="o">),</span> <span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">custom_view</span><span class="o">,</span> <span class="k">this</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Kotlinはデフォルト値を定義したメソッドを上記のようにJavaから見たら複数あるようにする<code>@JvmOverloads</code>というアノテーションがあります。</p>
+
+<p>これを使うと、カスタムViewのコンストラクタは一行定義するだけで書けます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">class</span> <span class="nc">@JvmOverloads</span> <span class="n">CustomView</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">attrs</span><span class="p">:</span> <span class="n">AttributeSet</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span> <span class="n">defStyleAttr</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(Kotlinのコンストラクタ自体は気持ちよくないので説明省略します。)</p>
+
+<h2>キャストで括弧少ない</h2>
+
+<p>Javaでキャストする場合、括弧が多くなりがちです。PagerAdapterの<code>destroyItem</code>を実装してみます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="err">＠</span><span class="n">Override</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">destroyItem</span><span class="o">(</span><span class="n">ViewGroup</span> <span class="n">container</span><span class="o">,</span> <span class="kt">int</span> <span class="n">position</span><span class="o">,</span> <span class="n">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">((</span><span class="n">ViewPager</span><span class="o">)</span> <span class="n">container</span><span class="o">).</span><span class="na">removeView</span><span class="o">((</span><span class="n">View</span><span class="o">)</span> <span class="n">obj</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Kotlinだと<code>as</code>を使ってキャストします。文法的にも括弧が減り、どこで括弧が終わっているのかがわかりやすくなります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">override</span> <span class="k">fun</span> <span class="nf">destroyItem</span><span class="p">(</span><span class="n">container</span><span class="p">:</span> <span class="n">ViewGroup</span><span class="p">?,</span> <span class="n">position</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">?)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">(</span><span class="n">container</span> <span class="k">as</span> <span class="n">ViewPager</span><span class="p">).</span><span class="n">removeView</span><span class="p">(</span><span class="n">obj</span> <span class="k">as</span> <span class="n">View</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>キャスト失敗時に何する？</h3>
+
+<p>null時に何する？との組み合わせることでキャスト失敗時に何するかの定義も簡単にできます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">override</span> <span class="k">fun</span> <span class="nf">destroyItem</span><span class="p">(</span><span class="n">container</span><span class="p">:</span> <span class="n">ViewGroup</span><span class="p">?,</span> <span class="n">position</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">?)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">container</span> <span class="k">as</span><span class="p">?</span> <span class="n">ViewPager</span> <span class="o">?:</span> <span class="k">return</span>
+</span><span class='line'>    <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>また、readonlyの変数のキャストに成功すると自動的にその変数をキャストしてくれます。メソッドパラメータはreadonly。各所に出てくる<code>val</code>と定義されている変数もreadonlyです。(余談ですが、immutableではありませんので注意して下さい。)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">override</span> <span class="k">fun</span> <span class="nf">destroyItem</span><span class="p">(</span><span class="n">container</span><span class="p">:</span> <span class="n">ViewGroup</span><span class="p">?,</span> <span class="n">position</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">?)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">container</span> <span class="k">as</span><span class="p">?</span> <span class="n">ViewPager</span> <span class="o">?:</span> <span class="k">return</span>
+</span><span class='line'>    <span class="n">obj</span> <span class="k">as</span><span class="p">?</span> <span class="n">View</span> <span class="o">?:</span> <span class="k">return</span>
+</span><span class='line'>    <span class="n">container</span><span class="p">.</span><span class="n">removeView</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>mutable変数<code>var</code>の場合、<code>as?</code>後に変更可能なので、自動的にキャストしてもらえないので注意。Kotlinでは理由がない限り、<code>var</code>を使わないほうが良いです。</p>
+
+<h2>Util系</h2>
+
+<p>XxxUtilsとか作って、全メソッドをstaticにして、privateコンストラクタを作って・・・みたいなやり方をJavaではちょくちょくしていました。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LogUtil</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="nf">LogUtil</span><span class="o">()</span> <span class="o">{}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">initLog</span><span class="o">(</span><span class="n">String</span> <span class="n">tag</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">Timber</span><span class="o">.</span><span class="na">plant</span><span class="o">(</span><span class="n">ExtTree</span><span class="o">(</span><span class="n">tag</span><span class="o">))</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>kotlinではTopレベルにメソッドを書けば、このようなUtil系のメソッドを書くことが出来ます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">fun</span> <span class="nf">initLog</span><span class="p">(</span><span class="n">tag</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">=</span> <span class="n">Timber</span><span class="p">.</span><span class="n">plant</span><span class="p">(</span><span class="n">ExtTree</span><span class="p">(</span><span class="n">tag</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>使い方もJavaのときと変わりません。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">import</span> <span class="nn">package.initLog</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">fun</span> <span class="nf">foo</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">initLog</span><span class="p">(</span><span class="s">&quot;MyApp&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Stringテンプレート</h2>
+
+<p>JavaでStringの結合をする場合、こんな感じになります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">return</span> <span class="n">originalResponse</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">()</span>
+</span><span class='line'>                    <span class="o">.</span><span class="na">header</span><span class="o">(</span><span class="s">&quot;Cache-Control&quot;</span><span class="o">,</span> <span class="s">&quot;public, max-age=&quot;</span> <span class="o">+</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">3</span><span class="o">)</span>
+</span><span class='line'>                    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>KotlinにはStringテンプレートとしてString内に<code>${}</code>で変数を書くことが出来ます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">return</span> <span class="n">originalResponse</span><span class="p">.</span><span class="n">newBuilder</span><span class="p">()</span>
+</span><span class='line'>                    <span class="p">.</span><span class="n">header</span><span class="p">(</span><span class="s">&quot;Cache-Control&quot;</span><span class="p">,</span> <span class="s">&quot;public, max-age=${60 * 3}&quot;</span><span class="p">)</span>
+</span><span class='line'>                    <span class="p">.</span><span class="n">build</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>変数一つだけである場合、<code>{}</code>の省略も出来ます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">foo</span> <span class="p">=</span> <span class="m">1</span>
+</span><span class='line'><span class="k">val</span> <span class="py">bar</span> <span class="p">=</span> <span class="s">&quot;Text$foo&quot;</span> <span class="c1">// &lt;= &quot;Text1&quot;という文字列に</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>複数行のString</h2>
+
+<p>JavaのStringで複数行を生成する場合、結構辛いです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">String</span> <span class="n">text</span> <span class="o">=</span> <span class="s">&quot;aaa\nbbb\nccc&quot;</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Kotlinでは<code>"""</code>を使うことで複数行のStringの定義を出来ます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">text</span> <span class="p">=</span> <span class="s">&quot;&quot;&quot;aaa</span>
+</span><span class='line'>              <span class="n">bbb</span>
+</span><span class='line'>              <span class="n">ccc</span><span class="s">&quot;&quot;&quot;.trimMargin();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>.trimMargin()のこととか、マージンの開始位置とか複数行のStringは結構多機能ですが、詳細知りたければ<a href="https://kotlinlang.org/docs/reference/basic-types.html#string-literals">公式のstring-literals</a>を確認してね。</p>
+
+<h2>複数if -> when</h2>
+
+<p>Javaではifが複数ある場合、ちょっとつらいです。</p>
+
+<p>例えば以下のようなコードがあったとします。(Javaでbehaviorを独自実装したときに使っていたコード)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">if</span> <span class="o">(</span><span class="n">isAnimating</span><span class="o">)</span> <span class="k">return</span><span class="o">;</span>
+</span><span class='line'><span class="k">if</span> <span class="o">(</span><span class="n">consumed</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">hide</span><span class="o">(</span><span class="n">child</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">show</span><span class="o">(</span><span class="n">child</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これをKotlinでもそのままif/else書けます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">isAnimating</span><span class="p">)</span> <span class="k">return</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">consumed</span> <span class="p">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">hide</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">show</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>しかし、もう少し簡単にwhenでまとめることも可能です。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">when</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">isAnimating</span> <span class="p">-&gt;</span> <span class="k">return</span>
+</span><span class='line'>    <span class="n">consumed</span> <span class="p">&gt;</span> <span class="m">0</span> <span class="p">-&gt;</span> <span class="n">animateHide</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">else</span> <span class="p">-&gt;</span> <span class="n">animateShow</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>whenはJavaでいうSwitch文に近いですが、上記のようにwhenの後に条件を付けなかったり、変数の型のcase文に出来たりとめちゃくちゃ気持ちよくなれます。</p>
+
+<h2>式</h2>
+
+<p>Kotlinではifやwhenなど諸々が式です。</p>
+
+<p>例えば、ifの結果を変数に代入する場合、</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">foo</span><span class="o">;</span>
+</span><span class='line'><span class="k">if</span><span class="o">(</span><span class="n">flag</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">foo</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">foo</span> <span class="o">=</span> <span class="mi">100</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>kotlinではこんな感じになります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">foo</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">flag</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="m">10</span>
+</span><span class='line'><span class="p">}</span>  <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="m">100</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>単純な場合、<code>{}</code>は省略するので一行で書くことが多いです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">foo</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">flag</span><span class="p">)</span> <span class="m">10</span> <span class="k">else</span> <span class="m">100</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>条件により違った値を代入しているのですが<code>val</code>で定義出来るのがポイントです。</p>
+
+<p>ちなみに、<a href="https://github.com/hotchemi/PermissionsDispatcher">PermissionsDispatcher</a>さんでも利用していて、メソッドの引数として使ったりもしています。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="n">builder</span><span class="p">.</span><span class="n">beginControlFlow</span><span class="p">(</span><span class="s">&quot;if (\$N\$T.shouldShowRequestPermissionRationale(\$N, \$N))&quot;</span><span class="p">,</span> <span class="k">if</span> <span class="p">(</span><span class="n">isPositiveCondition</span><span class="p">)</span> <span class="s">&quot;&quot;</span> <span class="k">else</span> <span class="s">&quot;!&quot;</span><span class="p">,</span> <span class="n">PERMISSION_UTILS</span><span class="p">,</span> <span class="n">targetParam</span><span class="p">,</span> <span class="n">permissionField</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ネストさせることも出来るのですが、複雑になるので見にくい場合はローカル変数に切り出すのが良いと思います。</p>
+
+<h2>Annotation</h2>
+
+<p>Dagger2を使う場合、ActivityやFragmentスコープを作るために独自Annotation作ったりします。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Scope</span>
+</span><span class='line'><span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+</span><span class='line'><span class="kd">public</span> <span class="nd">@interface</span> <span class="n">ActivityScope</span> <span class="o">{</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>@interface</code>というキーワードを使っていましたが、Kotlinでは<code>annotation</code>と表現します。直感的で良いです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="n">@Scope</span>
+</span><span class='line'><span class="n">@Retention</span>
+</span><span class='line'><span class="k">annotation</span> <span class="k">class</span> <span class="nc">ActivityScope</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>Retention</code>のデフォルト値が<code>RetentionPolicy.RUNTIME</code>なので、指定を省略出来るのもスッキリしていて気持ち良いです。</p>
+
+<h2>Singleton</h2>
+
+<p>Javaでは(簡易的な)シングルトンを作成する場合、以下のように書く必要がありました。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MoshiUtil</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="n">Moshi</span> <span class="n">moshi</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Moshi</span> <span class="nf">getMoshi</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">moshi</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">moshi</span> <span class="o">=</span> <span class="n">Moshi</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">DateAdapter</span><span class="o">()).</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">moshi</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Kotlinでは、<code>object</code>として定義すればアプリ内でシングルトンとして利用可能です。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">object</span> <span class="nc">MoshiUtil</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="py">moshi</span><span class="p">:</span> <span class="n">Moshi</span> <span class="k">by</span> <span class="n">lazy</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">Moshi</span><span class="p">.</span><span class="n">Builder</span><span class="p">().</span><span class="n">add</span><span class="p">(</span><span class="n">DateAdapter</span><span class="p">()).</span><span class="n">build</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>使い方もJavaの時と同じです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="n">MoshiUtil</span><span class="p">.</span><span class="n">moshi</span><span class="p">.</span><span class="n">adapter</span><span class="p">(</span><span class="n">BlackjackHand</span><span class="o">::</span><span class="n">java</span><span class="p">.</span><span class="k">class</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>rx.ObservableのThread指定方法</h2>
+
+<p>ちょこっとしたことなのですが、Rxの実行スレッド方法の指定も気持ちよく書けるようになります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">load</span><span class="o">()</span>
+</span><span class='line'>  <span class="o">.</span><span class="na">subscribeOn</span><span class="o">(</span><span class="n">AndroidSchedulers</span><span class="o">.</span><span class="na">mainThread</span><span class="o">())</span>
+</span><span class='line'>  <span class="o">.</span><span class="na">observeOn</span><span class="o">(</span><span class="n">AndroidSchedulers</span><span class="o">.</span><span class="na">mainThread</span><span class="o">())</span>
+</span><span class='line'>  <span class="o">.</span><span class="na">subscribe</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Kotlinの拡張プロパティを利用し、スレッドの指定方法を定義します。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="err">&lt;</span><span class="py">T</span><span class="p">&gt;</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;.</span><span class="n">observeOnUI</span><span class="p">:</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span>
+</span><span class='line'>    <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">observeOn</span><span class="p">(</span><span class="n">AndroidSchedulers</span><span class="p">.</span><span class="n">mainThread</span><span class="p">())</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">val</span> <span class="err">&lt;</span><span class="py">T</span><span class="p">&gt;</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;.</span><span class="n">observeOnIO</span><span class="p">:</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span>
+</span><span class='line'>    <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">observeOn</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="n">io</span><span class="p">())</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">val</span> <span class="err">&lt;</span><span class="py">T</span><span class="p">&gt;</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;.</span><span class="n">observeOnComputation</span><span class="p">:</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span>
+</span><span class='line'>    <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">observeOn</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="n">computation</span><span class="p">())</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">val</span> <span class="err">&lt;</span><span class="py">T</span><span class="p">&gt;</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;.</span><span class="n">subscribeOnUI</span><span class="p">:</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span>
+</span><span class='line'>    <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">subscribeOn</span><span class="p">(</span><span class="n">AndroidSchedulers</span><span class="p">.</span><span class="n">mainThread</span><span class="p">())</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">val</span> <span class="err">&lt;</span><span class="py">T</span><span class="p">&gt;</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;.</span><span class="n">subscribeOnIO</span><span class="p">:</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span>
+</span><span class='line'>    <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">subscribeOn</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="n">io</span><span class="p">())</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">val</span> <span class="err">&lt;</span><span class="py">T</span><span class="p">&gt;</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;.</span><span class="n">subscribeOnComputation</span><span class="p">:</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span>
+</span><span class='line'>    <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">subscribeOn</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="n">computation</span><span class="p">()).</span><span class="n">unsubscribeOn</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="n">computation</span><span class="p">())</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>この拡張プロパティを利用すると以下のように書けます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="n">load</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">subscribeOnIO</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">observeOnIO</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">subscribe</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>DatabindingのBindingAdapter指定方法</h2>
+
+<p>DatabindingのBindingAdapterの<a href="https://developer.android.com/reference/android/databinding/BindingAdapter.html">公式ドキュメントのコード</a>をKotlinで書いてみます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@BindingAdapter</span><span class="o">(</span><span class="s">&quot;android:bufferType&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setBufferType</span><span class="o">(</span><span class="n">TextView</span> <span class="n">view</span><span class="o">,</span> <span class="n">TextView</span><span class="o">.</span><span class="na">BufferType</span> <span class="n">bufferType</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">view</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="n">view</span><span class="o">.</span><span class="na">getText</span><span class="o">(),</span> <span class="n">bufferType</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これがこんな感じになります。<code>view</code>が消えました。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@BindingAdapter</span><span class="o">(</span><span class="s">&quot;android:bufferType&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="n">fun</span> <span class="n">TextView</span><span class="o">.</span><span class="na">setBufferType</span><span class="o">(</span><span class="n">TextView</span><span class="o">.</span><span class="na">BufferType</span> <span class="n">bufferType</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">setText</span><span class="o">(</span><span class="n">getText</span><span class="o">(),</span> <span class="n">bufferType</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>DatabindingのonClickなどのイベント指定方法</h2>
+
+<p>これも拡張メソッドでいきます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;android.support.design.widget.FloatingActionButton</span>
+</span><span class='line'>                <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>                <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>                <span class="na">android:layout_marginTop=</span><span class="s">&quot;@dimen/spacing&quot;</span>
+</span><span class='line'>                <span class="na">android:onClick=</span><span class="s">&quot;@{viewModel::onClickTopFab}&quot;</span>
+</span><span class='line'>                <span class="na">app:backgroundTint=</span><span class="s">&quot;@color/action_green&quot;</span>
+</span><span class='line'>                <span class="na">app:fabSize=</span><span class="s">&quot;normal&quot;</span>
+</span><span class='line'>                <span class="na">app:layout_anchor=</span><span class="s">&quot;@id/app_bar&quot;</span>
+</span><span class='line'>                <span class="na">app:layout_anchorGravity=</span><span class="s">&quot;bottom|end&quot;</span>
+</span><span class='line'>                <span class="na">app:srcCompat=</span><span class="s">&quot;@drawable/plus&quot;</span><span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">fun</span> <span class="nf">onClickFab</span><span class="o">(</span><span class="n">View</span> <span class="n">view</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">Toast</span><span class="o">.</span><span class="na">makeText</span><span class="o">(</span><span class="n">view</span><span class="o">.</span><span class="na">getContext</span><span class="o">(),</span> <span class="n">R</span><span class="o">.</span><span class="na">string</span><span class="o">.</span><span class="na">message_fab</span><span class="o">,</span> <span class="n">Toast</span><span class="o">.</span><span class="na">LENGTH_LONG</span><span class="o">).</span><span class="na">show</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>kotlinではこんな感じ。Toast表示用の拡張メソッドも定義しています。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">fun</span> <span class="nf">View</span><span class="p">.</span><span class="n">onClickFab</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">Toast</span><span class="p">.</span><span class="n">makeText</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">R</span><span class="p">.</span><span class="n">string</span><span class="p">.</span><span class="n">message_fab</span><span class="p">,</span> <span class="n">Toast</span><span class="p">.</span><span class="n">LENGTH_LONG</span><span class="p">).</span><span class="n">show</span><span class="p">()</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ちょっと手が滑ると</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">fun</span> <span class="nf">Context</span><span class="p">.</span><span class="n">showLongToast</span><span class="p">(</span><span class="n">@StringRes</span> <span class="n">id</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">Toast</span><span class="p">.</span><span class="n">makeText</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">id</span><span class="p">,</span> <span class="n">Toast</span><span class="p">.</span><span class="n">LENGTH_LONG</span><span class="p">).</span><span class="n">show</span><span class="p">()</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">fun</span> <span class="nf">View</span><span class="p">.</span><span class="n">onClickFab</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">context</span><span class="p">.</span><span class="n">showLongToast</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">string</span><span class="p">.</span><span class="n">message_fab</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>topレベルの拡張メソッドは用法・用量を守って正しくお使い下さい。</p>
+
+<h2>createIntent/newInstance</h2>
+
+<p>自分はcreateIntent/newInstanceパターン大好きです。</p>
+
+<p>これも気持ちよくなれます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="n">Intent</span> <span class="nf">createIntent</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">Intent</span> <span class="n">intent</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Intent</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">MyActivity</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">intent</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>applyを使って、一行に。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="n">companion</span> <span class="k">object</span> <span class="err">{</span>
+</span><span class='line'>    <span class="k">fun</span> <span class="nf">createIntent</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">=</span> <span class="n">Intent</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">MyActivity</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">).</span><span class="n">apply</span> <span class="p">{</span> <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>newInstanceもやってみます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="n">SimpleDialogFragment</span> <span class="nf">newInstance</span><span class="o">(</span><span class="n">MyPacel</span> <span class="n">entity</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">SimpleDialogFragment</span> <span class="n">fragment</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">SimpleDialogFragment</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">Bundle</span> <span class="n">bundle</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Bundle</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">bundle</span><span class="o">.</span><span class="na">putParcelable</span><span class="o">(</span><span class="n">PARCELABLE_KEY</span><span class="o">,</span> <span class="n">entity</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">fragment</span><span class="o">.</span><span class="na">setArguments</span><span class="o">(</span><span class="n">bundle</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">fragment</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>パラメータセットしたインスタンスを作りたいだけなのですが、結構冗長的で辛い。。。</p>
+
+<p>Kotlinで短くしてみます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">fun</span> <span class="nf">newInstance</span><span class="p">(</span><span class="n">entity</span><span class="p">:</span> <span class="n">MyPacel</span><span class="p">)</span> <span class="p">=</span>
+</span><span class='line'>　   <span class="n">SimpleDialogFragment</span><span class="p">().</span><span class="n">apply</span> <span class="p">{</span>
+</span><span class='line'>         <span class="n">arguments</span> <span class="p">=</span> <span class="n">Bundle</span><span class="p">().</span><span class="n">apply</span> <span class="p">{</span>
+</span><span class='line'>             <span class="n">putParcelable</span><span class="p">(</span><span class="n">PARCELABLE_KEY</span><span class="p">,</span> <span class="n">entity</span><span class="p">)</span>
+</span><span class='line'>         <span class="p">}</span>
+</span><span class='line'>     <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>nestが激しいのでバラしていきます。まずはこの部分。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="n">arguments</span> <span class="p">=</span> <span class="n">Bundle</span><span class="p">().</span><span class="n">apply</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">putParcelable</span><span class="p">(</span><span class="n">PARCELABLE_KEY</span><span class="p">,</span> <span class="n">entity</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これをメソッド化すると</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">private</span> <span class="k">fun</span> <span class="nf">entity</span><span class="p">(</span><span class="n">bundle</span><span class="p">:</span> <span class="n">Bundle</span><span class="p">,</span> <span class="n">entity</span><span class="p">:</span> <span class="n">MyPacel</span><span class="p">):</span> <span class="n">Bundle</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">bundle</span><span class="p">.</span><span class="n">apply</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">putParcelable</span><span class="p">(</span><span class="n">PARCELABLE_KEY</span><span class="p">,</span> <span class="n">entity</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>bundle変数に関する処理なので、Bundleの拡張メソッドと考えると良さ気。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">private</span> <span class="k">fun</span> <span class="nf">Bundle</span><span class="p">.</span><span class="n">entity</span><span class="p">(</span><span class="n">entity</span><span class="p">:</span> <span class="n">MyPacel</span><span class="p">):</span> <span class="n">Bundle</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="n">apply</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">putParcelable</span><span class="p">(</span><span class="n">PARCELABLE_KEY</span><span class="p">,</span> <span class="n">entity</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>return文一文なので、省略。thisも必要ないので、省略。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">private</span> <span class="k">fun</span> <span class="nf">Bundel</span><span class="p">.</span><span class="n">entity</span><span class="p">(</span><span class="n">entity</span><span class="p">:</span> <span class="n">MyPacel</span><span class="p">)</span> <span class="p">=</span> <span class="n">apply</span> <span class="p">{</span> <span class="n">putParcelable</span><span class="p">(</span><span class="n">PARCELABLE_KEY</span><span class="p">,</span> <span class="n">entity</span><span class="p">)</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>イマココ</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">fun</span> <span class="nf">newInstance</span><span class="p">(</span><span class="n">entity</span><span class="p">:</span> <span class="n">MyPacel</span><span class="p">)</span> <span class="p">=</span>
+</span><span class='line'>     <span class="n">SimpleDialogFragment</span><span class="p">().</span><span class="n">apply</span> <span class="p">{</span>
+</span><span class='line'>         <span class="n">arguments</span> <span class="p">=</span> <span class="n">Bundle</span><span class="p">().</span><span class="n">entity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+</span><span class='line'>     <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">fun</span> <span class="nf">Bundel</span><span class="p">.</span><span class="n">entity</span><span class="p">(</span><span class="n">entity</span><span class="p">:</span> <span class="n">MyPacel</span><span class="p">)</span> <span class="p">=</span> <span class="n">apply</span> <span class="p">{</span> <span class="n">putParcelable</span><span class="p">(</span><span class="n">PARCELABLE_KEY</span><span class="p">,</span> <span class="n">entity</span><span class="p">)</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>SimpleDialogFragmentの部分も同じように拡張メソッドを使って書くと。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">fun</span> <span class="nf">newInstance</span><span class="p">(</span><span class="n">entity</span><span class="p">:</span> <span class="n">Entity</span><span class="p">)</span> <span class="p">=</span> <span class="n">MyFragment</span><span class="p">().</span><span class="n">entity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">fun</span> <span class="nf">MyFragment</span><span class="p">.</span><span class="n">entity</span><span class="p">(</span><span class="n">entity</span><span class="p">:</span> <span class="n">Entity</span><span class="p">)</span> <span class="p">=</span> <span class="n">apply</span> <span class="p">{</span> <span class="n">arguments</span> <span class="p">=</span> <span class="n">Bundle</span><span class="p">().</span><span class="n">entity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">fun</span> <span class="nf">Bundle</span><span class="p">.</span><span class="n">entity</span><span class="p">(</span><span class="n">entity</span><span class="p">:</span> <span class="n">Entity</span><span class="p">)</span> <span class="p">=</span> <span class="n">apply</span> <span class="p">{</span> <span class="n">putParcelable</span><span class="p">(</span><span class="n">KEY</span><span class="p">,</span> <span class="n">entity</span><span class="p">)</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>だいぶシンプルになりました。ヨイヨヨイヨ。</p>
+
+<h2>setVisibleOrGone</h2>
+
+<p>Databinding前には結構使うことが多かったのですが、今となっては・・・でも一応。</p>
+
+<p>Viewを消してしまうか表示するかをBoolean値で判別するようなUtil系のメソッドを書くとすると</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setVisibleOrGone</span><span class="o">(</span><span class="n">View</span> <span class="n">view</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">isVisible</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span><span class="o">(</span><span class="n">view</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span><span class="o">(</span><span class="n">isVisible</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">view</span><span class="o">.</span><span class="na">setVisiblity</span><span class="o">(</span><span class="n">View</span><span class="o">.</span><span class="na">VISIBLE</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">view</span><span class="o">.</span><span class="na">setVisiblity</span><span class="o">(</span><span class="n">View</span><span class="o">.</span><span class="na">GONE</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これをkotlinで書くと一行でいけます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">fun</span> <span class="nf">View</span><span class="o">?.</span><span class="n">setVisibleOrGone</span><span class="p">(</span><span class="n">isVisible</span><span class="p">:</span> <span class="n">Boolean</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">?.</span><span class="n">visibility</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">isVisible</span><span class="p">)</span> <span class="n">View</span><span class="p">.</span><span class="n">VISIBLE</span> <span class="k">else</span> <span class="n">View</span><span class="p">.</span><span class="n">GONE</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>nullableのViewの拡張メソッド、null安全、setter/getterの省略、if式利用と色々Javaにはない機能を利用しています。</p>
+
+<h2>BaseObservable</h2>
+
+<p>公式にある、以下のコードをKotlinで気持ちよく書いてみます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">User</span> <span class="kd">extends</span> <span class="n">BaseObservable</span> <span class="o">{</span>
+</span><span class='line'>   <span class="kd">private</span> <span class="n">String</span> <span class="n">firstName</span><span class="o">;</span>
+</span><span class='line'>   <span class="kd">private</span> <span class="n">String</span> <span class="n">lastName</span><span class="o">;</span>
+</span><span class='line'>   <span class="nd">@Bindable</span>
+</span><span class='line'>   <span class="kd">public</span> <span class="n">String</span> <span class="nf">getFirstName</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>       <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">firstName</span><span class="o">;</span>
+</span><span class='line'>   <span class="o">}</span>
+</span><span class='line'>   <span class="nd">@Bindable</span>
+</span><span class='line'>   <span class="kd">public</span> <span class="n">String</span> <span class="nf">getLastName</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>       <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">lastName</span><span class="o">;</span>
+</span><span class='line'>   <span class="o">}</span>
+</span><span class='line'>   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFirstName</span><span class="o">(</span><span class="n">String</span> <span class="n">firstName</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>       <span class="k">this</span><span class="o">.</span><span class="na">firstName</span> <span class="o">=</span> <span class="n">firstName</span><span class="o">;</span>
+</span><span class='line'>       <span class="n">notifyPropertyChanged</span><span class="o">(</span><span class="n">BR</span><span class="o">.</span><span class="na">firstName</span><span class="o">);</span>
+</span><span class='line'>   <span class="o">}</span>
+</span><span class='line'>   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setLastName</span><span class="o">(</span><span class="n">String</span> <span class="n">lastName</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>       <span class="k">this</span><span class="o">.</span><span class="na">lastName</span> <span class="o">=</span> <span class="n">lastName</span><span class="o">;</span>
+</span><span class='line'>       <span class="n">notifyPropertyChanged</span><span class="o">(</span><span class="n">BR</span><span class="o">.</span><span class="na">lastName</span><span class="o">);</span>
+</span><span class='line'>   <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Kotlinで書く前に、そもそも具体的にやることは以下</p>
+
+<ul>
+<li>getterに<code>@Bindable</code>をつける</li>
+<li>setterの最後に<code>notifyPropertyChanged(BR.firstName);</code>を呼ぶ</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="p">:</span> <span class="n">BaseObservable</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">@get</span><span class="p">:</span><span class="n">Bindable</span>
+</span><span class='line'>    <span class="k">var</span> <span class="py">firstName</span><span class="p">:</span> <span class="n">String</span>
+</span><span class='line'>        <span class="k">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">field</span> <span class="p">=</span> <span class="n">value</span>
+</span><span class='line'>            <span class="n">notifyPropertyChanged</span><span class="p">(</span><span class="n">BR</span><span class="p">.</span><span class="n">firstName</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">@get</span><span class="p">:</span><span class="n">Bindable</span>
+</span><span class='line'>    <span class="k">var</span> <span class="py">lastName</span><span class="p">:</span> <span class="n">String</span>
+</span><span class='line'>        <span class="k">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">field</span> <span class="p">=</span> <span class="n">value</span>
+</span><span class='line'>            <span class="n">notifyPropertyChanged</span><span class="p">(</span><span class="n">BR</span><span class="p">.</span><span class="n">lastName</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>setter/getterを書かなくて良いのでシンプルになってます。</p>
+
+<p>もうちょいキレイになればいいですが、わざわざメソッド書かなくて良いというだけでも気持ちいいです。</p>
+
+<h2>Delegate</h2>
+
+<p>継承するな！移譲しろ！と言われてもJava使ってると継承しちゃいガチなのですが、KotlinのDelegateがあるとこれを積極的に利用したいなと思えるようになります。</p>
+
+<p>ViewModelにRxのSubscriptionの機能を実装し、<code>Activity#onDestroy</code>時に<code>unsubscribe()</code>したいという時</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nf">MyViewModel</span><span class="o">(</span><span class="n">CompositeSubscription</span> <span class="n">compositeSubscription</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// ...</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">unsubscribe</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">compositeSubscription</span><span class="o">.</span><span class="na">unsubscribe</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Kotlinでdelegateすると<code>unsubscribe()</code>は書かなくて良くなります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">class</span> <span class="nc">MyViewModel</span> <span class="n">@Inject</span> <span class="n">constructor</span><span class="p">(</span><span class="k">var</span> <span class="py">compositeSubscription</span><span class="p">:</span> <span class="n">CompositeSubscription</span><span class="p">)</span> <span class="p">:</span> <span class="n">Subscription</span> <span class="k">by</span> <span class="n">compositeSubscription</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Activityではこんな感じ。<code>MyViewModel</code>で実装していないのに<code>unsubscribe()</code>を呼ぶことが出来る。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">class</span> <span class="nc">ThirdActivity</span> <span class="p">:</span> <span class="n">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">@field</span><span class="p">:[</span><span class="n">Inject</span><span class="p">]</span>
+</span><span class='line'>    <span class="n">lateinit</span> <span class="k">var</span> <span class="py">viewModel</span><span class="p">:</span> <span class="n">MyViewModel</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// ...</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onDestroy</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">super</span><span class="p">.</span><span class="n">onDestroy</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">viewModel</span><span class="p">.</span><span class="n">unsubscribe</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>droidkaigi2016の<a href="https://github.com/konifar/droidkaigi2016/blob/master/app/src/main/java/io/github/droidkaigi/confsched/widget/ArrayRecyclerAdapter.java">ArrayRecyclerAdapter</a>を以下のようなにすることもできるけど、余計なメソッドも生えるので、用法と用量を(省略</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">abstract</span> <span class="k">class</span> <span class="nc">MutableListRecyclerAdapter</span><span class="p">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">VH</span> <span class="p">:</span> <span class="n">RecyclerView</span><span class="p">.</span><span class="n">ViewHolder</span><span class="p">&gt;(</span><span class="k">private</span> <span class="k">val</span> <span class="py">list</span><span class="p">:</span> <span class="n">MutableList</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;)</span> <span class="p">:</span>
+</span><span class='line'>        <span class="n">RecyclerView</span><span class="p">.</span><span class="n">Adapter</span><span class="p">&lt;</span><span class="n">VH</span><span class="p">&gt;(),</span> <span class="n">Iterable</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;,</span> <span class="n">MutableList</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="k">by</span> <span class="n">list</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">var</span> <span class="py">itemClickListener</span><span class="p">:</span> <span class="n">View</span><span class="p">.</span><span class="n">OnClickListener</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">override</span> <span class="k">fun</span> <span class="nf">getItemCount</span><span class="p">()</span> <span class="p">=</span> <span class="n">list</span><span class="p">.</span><span class="n">size</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">@UiThread</span> <span class="k">fun</span> <span class="nf">addAllWithNotification</span><span class="p">(</span><span class="n">items</span><span class="p">:</span> <span class="n">Collection</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">val</span> <span class="py">position</span> <span class="p">=</span> <span class="n">itemCount</span>
+</span><span class='line'>        <span class="n">addAll</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">notifyItemChanged</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">@UiThread</span> <span class="k">fun</span> <span class="nf">reset</span><span class="p">(</span><span class="n">items</span><span class="p">:</span> <span class="n">Collection</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">clear</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">addAll</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">notifyDataSetChanged</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>遅延初期化</h2>
+
+<p>Javaで簡単にやる場合、getterを作成し、propertyアクセスは禁止し、そのgetter経由で値を取得するというルールの下かろうじて出来る遅延初期化処理です。</p>
+
+<p>例えば、Databindingの<code>setContentView</code>を利用して、<code>binding</code>変数を初期化します。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="n">MyBinding</span> <span class="n">binding</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">private</span> <span class="n">MyBinding</span> <span class="nf">getBinding</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span><span class="o">(</span><span class="n">binding</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">binding</span> <span class="o">=</span> <span class="n">DataBindingUtil</span><span class="o">.</span><span class="na">setContentView</span><span class="o">&lt;</span><span class="n">MyBinding</span><span class="o">&gt;(</span><span class="k">this</span><span class="o">,</span> <span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">my</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">binding</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Kotlinでは<code>by lazy</code>を利用して書きます。一旦<code>binding</code>変数にアクセスしたら<code>by lazy</code>内の処理が実行され、初期化されます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">private</span> <span class="k">val</span> <span class="py">binding</span> <span class="k">by</span> <span class="n">lazy</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">DataBindingUtil</span><span class="p">.</span><span class="n">setContentView</span><span class="p">&lt;</span><span class="n">MyBinding</span><span class="p">&gt;(</span><span class="k">this</span><span class="p">,</span> <span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">my</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>valであるのも良いです。</p>
+
+<p>ちなみに、enumに<code>ordinal</code>ではない数値のidを振ることがあって、そのidから逆引きしたい時にキャッシュした<code>SparseArray</code>を利用して逆引きしますが、この時も<code>by lazy</code>使います。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="n">companion</span> <span class="k">object</span> <span class="err">{</span>
+</span><span class='line'>    <span class="k">private</span> <span class="k">val</span> <span class="py">lookup</span><span class="p">:</span> <span class="n">SparseArray</span><span class="p">&lt;</span><span class="n">MyType</span><span class="p">&gt;</span> <span class="k">by</span> <span class="n">lazy</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">SparseArray</span><span class="p">&lt;</span><span class="n">MyType</span><span class="p">&gt;().</span><span class="n">apply</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">EnumSet</span><span class="p">.</span><span class="n">allOf</span><span class="p">(</span><span class="n">MyType</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">).</span><span class="n">forEach</span> <span class="p">{</span>
+</span><span class='line'>                <span class="k">this</span><span class="n">@apply</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="n">typeId</span><span class="p">,</span> <span class="n">it</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">fun</span> <span class="nf">fromTypeId</span><span class="p">(</span><span class="n">typeId</span><span class="p">:</span> <span class="n">Int</span><span class="p">):</span> <span class="n">MyType</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">lookup</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">typeId</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>parameter name</h2>
+
+<p>Javaではそもそも出来ないのですが、こんなPOJOクラスがあったとします。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">firstName</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">lastName</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">User</span><span class="o">(</span><span class="n">firstName</span><span class="o">,</span> <span class="n">lastName</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">firstName</span> <span class="o">=</span> <span class="n">firstName</span><span class="o">;</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">lastName</span> <span class="o">=</span> <span class="n">lastName</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// その他メソッド省略</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">new</span> <span class="nf">User</span><span class="o">(</span><span class="s">&quot;名&quot;</span><span class="o">,</span> <span class="s">&quot;姓&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="k">new</span> <span class="nf">User</span><span class="o">(</span><span class="s">&quot;姓&quot;</span><span class="o">,</span> <span class="s">&quot;名&quot;</span><span class="o">);</span> <span class="c1">// 間違っているけど、コンパイルOK</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>第一引数と第二引数がfirstなのか、lastなのかわからなくなります。ランタイムでしか検知できないのが辛いです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="n">User</span><span class="p">(</span><span class="n">firstName</span> <span class="p">=</span> <span class="s">&quot;名&quot;</span><span class="p">,</span> <span class="n">lastName</span> <span class="p">=</span> <span class="s">&quot;姓&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>引数に名前を設定して、メソッドを呼び出せます。こんなことしても叱られませんし、間違った挙動を起こしません。同じような型が多いメソッド呼び出しでは積極的に使うと気持ち良いです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="n">User</span><span class="p">(</span><span class="n">lastName</span> <span class="p">=</span> <span class="s">&quot;姓&quot;</span><span class="p">,</span> <span class="n">firstName</span> <span class="p">=</span> <span class="s">&quot;名&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>最後に</h2>
+
+<p>リストアップしてみたら結構出てきました。。。</p>
+
+<p>長すぎたので、落選した項目は<a href="https://gist.github.com/shiraji/2caf8190d282ab3594a21b467980267e">gist</a>で公開しています。</p>
+</div>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="9086067267"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Shiraji</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-12-11T00:00:01+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>12:00 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/kotlin/'>kotlin</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  <a href="http://b.hatena.ne.jp/entry/http://shiraji.github.io/blog/2016/12/11/whats-good-about-kotlin-in-android-development/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shiraji.github.io/blog/2016/12/11/whats-good-about-kotlin-in-android-development/" data-via="shiraj_i" data-counturl="http://shiraji.github.io/blog/2016/12/11/whats-good-about-kotlin-in-android-development/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/12/03/how-to-contribute-swift-library-r-dot-swift/" title="Previous Post: how to contribute R.swift (for Japanese Android Engineer)">&laquo; how to contribute R.swift (for Japanese Android Engineer)</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/12/11/whats-good-about-kotlin-in-android-development/">What's Good About Kotlin in Android Development</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/12/03/how-to-contribute-swift-library-r-dot-swift/">How to Contribute R.swift (for Japanese Android Engineer)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/09/18/create-intellij-plugin-2/">Tips for Creating Intellij Plugin in Kotlin</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/07/14/how-to-kontribute/">How to Kontribute (for Japanese)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/07/11/create_intellij_wizard/">How to Create Intellij Custom Wizard</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/shiraji">@shiraji</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'shiraji',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Shiraji -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
