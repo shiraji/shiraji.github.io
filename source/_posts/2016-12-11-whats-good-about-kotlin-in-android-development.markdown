@@ -35,6 +35,8 @@ description: describe what's good about choosing Kotlin for Android development 
 
 Android開発経験3年ほどで、今はAndroidをJavaでもKotlinでも開発しています。
 
+ブログでAndroid/Kotlinネタ少しくらいなら書いてもいいレベルだと思っています。
+
 # 前提条件と想定読者
 
 * Android開発はある程度知っている
