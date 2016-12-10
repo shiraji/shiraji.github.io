@@ -8,7 +8,14 @@ keywords: Android Kotlin Rx Databinding
 description: describe what's good about choosing Kotlin for Android development in Japanese
 ---
 
-Kotlinの文法紹介というより、Javaで書いてた辛い文法をこんな感じでKotlinで書くこと出来るよ！紹介です。これが最強だ！と言ってるわけではなく、自分がこう書くとキモチイイ！だけです。(という予防線を張っておこう・・・)
+これは[Kotlin Advent Calendar 2016](http://qiita.com/advent-calendar/2016/kotlin)の12/11の記事です。
+
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">kotlinでやるとAndroid簡単に書ける手法まとめとかないかな。extentionでbindingadapter書くとか、custom viewのコンストラクタをJvmOverloadsで省略とか。</p>&mdash; しらじ (@shiraj_i) <a href="https://twitter.com/shiraj_i/status/768082977569898496">2016年8月23日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+8月23日にこんなつぶやきをして、今日まで溜めたAndroid開発をしていて、こう書くと簡単で気持ちいい！！！というKotlinの文法を紹介したいと思います。
+
+(あくまで自分が気持ちいいってだけだからね！)
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- 728x90 -->
