@@ -935,4 +935,4 @@ User(lastName = "姓", firstName = "名")
 
 リストアップしてみたら結構出てきました。。。
 
-長すぎたので、落選した項目は[gist](https://gist.github.com/shiraji/2caf8190d282ab3594a21b467980267e)で公開しています。
+落選した項目は[gist](https://gist.github.com/shiraji/2caf8190d282ab3594a21b467980267e)で公開しています。
