@@ -4,7 +4,7 @@
   <title><![CDATA[Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-12-10T19:14:51+09:00</updated>
+  <updated>2016-12-10T19:21:56+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -56,6 +56,8 @@
 <p><a href="https://blog.jetbrains.com/kotlin/2016/09/kotlin-1-0-4-is-here/">Kotlin 1.0.4</a>, <a href="https://blog.jetbrains.com/kotlin/2016/11/kotlin-1-0-5-is-here/">Kotlin 1.0.5</a>で名前が載ったExternal Contributorsの一人です(嬉しいから自慢)。主にKotlin Pluginの静的解析にコントリビュートしています。Kotlinで書かれている<a href="https://github.com/hotchemi/PermissionsDispatcher">PermissionsDispatcher</a>の開発にも参加しています。</p>
 
 <p>Android開発経験3年ほどで、今はAndroidをJavaでもKotlinでも開発しています。</p>
+
+<p>ブログでAndroid/Kotlinネタ少しくらいなら書いてもいいレベルだと思っています。</p>
 
 <h1>前提条件と想定読者</h1>
 
