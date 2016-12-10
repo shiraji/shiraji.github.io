@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-12-10T19:07:03+09:00</updated>
+  <updated>2016-12-10T19:09:28+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -563,6 +563,22 @@ fun View.onClickFab() {
 </code></pre>
 
 <p>topレベルの拡張メソッドは用法・用量を守って正しくお使い下さい。</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 
 <h2>createIntent/newInstance</h2>
 
