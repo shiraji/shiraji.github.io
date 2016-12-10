@@ -13,7 +13,7 @@ description: describe what's good about choosing Kotlin for Android development 
 <blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">kotlinでやるとAndroid簡単に書ける手法まとめとかないかな。extentionでbindingadapter書くとか、custom viewのコンストラクタをJvmOverloadsで省略とか。</p>&mdash; しらじ (@shiraj_i) <a href="https://twitter.com/shiraj_i/status/768082977569898496">2016年8月23日</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-8月23日にこんなつぶやきをして、今日まで溜めたAndroid開発をしていて、こう書くと簡単で気持ちいい！！！というKotlinの文法を紹介したいと思います。
+8月23日にこんなつぶやきをして、今日まで溜めたAndroid開発をしていて、こう書くと簡単でキモチイイ！！！というKotlinの文法を紹介したいと思います。
 
 (あくまで自分が気持ちいいってだけだからね！)
 
