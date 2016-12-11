@@ -697,11 +697,11 @@ private fun Bundel.entity(entity: MyPacel) = apply { putParcelable(PARCELABLE_KE
 SimpleDialogFragmentの部分も同じように拡張メソッドを使って書くと。
 
 ```kotlin
-fun newInstance(entity: Entity) = MyFragment().entity(entity)
+fun newInstance(entity: MyPacel) = MyFragment().entity(entity)
 
-private fun MyFragment.entity(entity: Entity) = apply { arguments = Bundle().entity(entity) }
+private fun MyFragment.entity(entity: MyPacel) = apply { arguments = Bundle().entity(entity) }
 
-private fun Bundle.entity(entity: Entity) = apply { putParcelable(KEY, entity) }
+private fun Bundle.entity(entity: MyPacel) = apply { putParcelable(KEY, entity) }
 ```
 
 だいぶシンプルになりました。ヨイヨヨイヨ。
