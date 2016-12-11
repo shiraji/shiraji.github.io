@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-12-10T19:23:48+09:00</updated>
+  <updated>2016-12-11T09:10:07+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -666,11 +666,11 @@ private fun Bundel.entity(entity: MyPacel) = apply { putParcelable(PARCELABLE_KE
 
 <p>SimpleDialogFragmentの部分も同じように拡張メソッドを使って書くと。</p>
 
-<pre><code class="kotlin">fun newInstance(entity: Entity) = MyFragment().entity(entity)
+<pre><code class="kotlin">fun newInstance(entity: MyPacel) = MyFragment().entity(entity)
 
-private fun MyFragment.entity(entity: Entity) = apply { arguments = Bundle().entity(entity) }
+private fun MyFragment.entity(entity: MyPacel) = apply { arguments = Bundle().entity(entity) }
 
-private fun Bundle.entity(entity: Entity) = apply { putParcelable(KEY, entity) }
+private fun Bundle.entity(entity: MyPacel) = apply { putParcelable(KEY, entity) }
 </code></pre>
 
 <p>だいぶシンプルになりました。ヨイヨヨイヨ。</p>
