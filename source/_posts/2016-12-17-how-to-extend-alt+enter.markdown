@@ -1,14 +1,14 @@
 ---
 layout: post
-title: "How to create custom Intention"
+title: "How to extend Alt+Enter"
 date: 2016-12-17 00:00:01 +0900
 comments: false
-categories: Intellij plugin Kotlin
+categories: Intellij plugin Kotlin Intention
 keywords: Intellij plugin kotlin Kotlin Intention custom
 description: Describe how to create Intellij custom Intention
 ---
 
-Intellij IDEAだけではないのですが、Intentionは自分でカスタムしたものを作ることが可能です。
+Intellij IDEAだけではないのですが、Alt+Enter(Intention)は自分でカスタムしたものを作ることが可能です。
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- 728x90 -->
