@@ -4,7 +4,7 @@
   <title><![CDATA[Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-12-16T22:42:39+09:00</updated>
+  <updated>2016-12-16T23:14:41+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -18,7 +18,9 @@
     <link href="http://shiraji.github.io/blog/2016/12/17/how-to-extend-alt+enter/"/>
     <updated>2016-12-17T00:00:01+09:00</updated>
     <id>http://shiraji.github.io/blog/2016/12/17/how-to-extend-alt+enter</id>
-    <content type="html"><![CDATA[<p>Intellij IDEAだけではないのですが、Alt+Enter(Intention)は自分でカスタムしたものを作ることが可能です。</p>
+    <content type="html"><![CDATA[<p>この記事は<a href="http://qiita.com/advent-calendar/2016/jetbrains">JetBrains Advent Calendar 2016</a>の17日目の記事です。</p>
+
+<p>Intellij IDEAだけではないのですが、Alt+Enter(Intention)は自分で拡張したものを作ることが可能です。</p>
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
