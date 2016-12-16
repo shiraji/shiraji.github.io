@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Kotlin | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/kotlin/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-12-11T09:10:07+09:00</updated>
+  <updated>2016-12-16T22:42:39+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -12,6 +12,184 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How to Extend Alt+Enter]]></title>
+    <link href="http://shiraji.github.io/blog/2016/12/17/how-to-extend-alt+enter/"/>
+    <updated>2016-12-17T00:00:01+09:00</updated>
+    <id>http://shiraji.github.io/blog/2016/12/17/how-to-extend-alt+enter</id>
+    <content type="html"><![CDATA[<p>Intellij IDEAだけではないのですが、Alt+Enter(Intention)は自分でカスタムしたものを作ることが可能です。</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h1>自己紹介</h1>
+
+<p>自分のページにリストされているIntellijプラグインページがページングされたらプラグイン開発辞めようと誓っていて、最近中の人と話したらページング機能ないけど？ｗと生涯現役プラグイン開発者としてやっていくことが決定した人間です。</p>
+
+<p>Intentionだけではなく、Inspectionなども作成しており、Kotlinのコントリビュートもしています。Kotlinの主なコントリビュートもInspection/Intentionなので、ある程度説明出来るレベルだと思います。</p>
+
+<h1>想定読者</h1>
+
+<ul>
+<li>Intentionを作ってみたい</li>
+<li>プラグイン開発に興味がある</li>
+<li>Intellijの機能をある程度理解している</li>
+<li>kotlinの文法がそれなりに理解できる</li>
+</ul>
+
+
+<h1>Custom Intentionを作ってみる</h1>
+
+<p>今回サンプルとして、Intention周りのプラグインをリリースしました。
+<a href="https://plugins.jetbrains.com/plugin/9271">https://plugins.jetbrains.com/plugin/9271</a></p>
+
+<p>ソースコード
+<a href="https://github.com/shiraji/databinding-support">https://github.com/shiraji/databinding-support</a></p>
+
+<p>これをベースにXMLファイルに対してのIntentionの説明をします。</p>
+
+<p>今回はレイアウトファイルであり、<code>&lt;layout&gt;</code>タグがrootタグではなかった場合、<code>&lt;layout&gt;</code>タグでラップするというIntentionを作成します。</p>
+
+<p><img src="https://raw.githubusercontent.com/shiraji/databinding-support/master/websites/images/wrap.gif" alt="wrap" /></p>
+
+<p>プラグインの作成方法などは参考リンクにまとめてありますので、そちらを参照して下さい。</p>
+
+<h2>Intentionクラス</h2>
+
+<p><code>IntentionAction</code>を継承します。以下のメソッドを実装する必要があります。</p>
+
+<h3><code>getText(): String</code></h3>
+
+<p>popupで表示される時の文字列</p>
+
+<h3><code>getFamilyName(): String</code></h3>
+
+<p>よくわからねｗ(intellij-community/kotlin repo内でもgetText呼び出してるだけのところが多い。)</p>
+
+<h3><code>startInWriteAction(): Boolean</code></h3>
+
+<p>Write Action内で実行するかどうか。</p>
+
+<h3><code>isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean</code></h3>
+
+<p>そのIntentionを利用可能かどうか判定する</p>
+
+<h3><code>invoke(project: Project, editor: Editor?, file: PsiFile?)</code></h3>
+
+<p>Intentionが選択時に実行されるメソッド。</p>
+
+<p>今回は実際に以下のようなイメージになりました。</p>
+
+<pre><code class="kotlin">package com.github.shiraji.databindinglayout.intentions
+
+class ConvertToDatabindingLayoutIntention : IntentionAction {
+
+    override fun getText() = "Convert to databinding layout"
+    override fun getFamilyName() = "Convert to databinding layout"
+    override fun startInWriteAction() = true
+
+    override fun isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean {
+        // rootタグがlayoutではなく、androidのレイアウトファイルかどうかを判定。
+    }
+
+    override fun invoke(project: Project, editor: Editor?, file: PsiFile?) {
+        // 新規&lt;layout&gt;タグを作成し、必要なattributeを追加し、root tagとする。
+    }
+
+}
+</code></pre>
+
+<p><a href="https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/kotlin/com/github/shiraji/databindinglayout/intentions/ConvertToDatabindingLayoutIntention.kt">https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/kotlin/com/github/shiraji/databindinglayout/intentions/ConvertToDatabindingLayoutIntention.kt</a></p>
+
+<p>このrootタグかどうかとか、androidのレイアウトファイルかどうかの判定とか、何をどう書き換えるのかとかがたぶん一番難しい部分だと思います。ただ、ここはそれぞれのIntentionやプラグインで違うのでコード読んで頑張れｗとしか言えません。。。</p>
+
+<p>唯一ある共通点としてはファイルなどの読み込みや解析はPsiを使います。例えば、xmlタグだったら<a href="https://github.com/JetBrains/intellij-community/blob/master/xml/xml-psi-api/src/com/intellij/psi/xml/XmlTag.java">XmlTag</a>、<a href="https://github.com/JetBrains/intellij-community/blob/master/xml/xml-psi-api/src/com/intellij/psi/xml/XmlAttribute.java">XmlAttribute</a>を使います。<code>PsiElement#replace()</code>でソースコードの置換することが出来ます。</p>
+
+<p>それぞれのElement作成それぞれのファイルタイプ毎にFactoryが用意されています。Xmlなら<code>XmlElementFactory</code>で作成しています。Javaの場合だと<code>PsiElementFactory</code>だし、Kotlinなら<code>KtPsiFactory</code>を使います。</p>
+
+<h2>plugin.xml</h2>
+
+<p>Intentionクラスをplugin.xmlに定義します。</p>
+
+<pre><code class="xml">        &lt;intentionAction&gt;
+            &lt;className&gt;com.github.shiraji.databindinglayout.intentions.ConvertToDatabindingLayoutIntention&lt;/className&gt;
+            &lt;category&gt;Android&lt;/category&gt;
+        &lt;/intentionAction&gt;
+</code></pre>
+
+<p><a href="https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/resources/META-INF/plugin.xml#L31-L34">https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/resources/META-INF/plugin.xml#L31-L34</a></p>
+
+<h2>Intentionの説明文を書く</h2>
+
+<p>自分はちょくちょく忘れるのですが・・・(実際これを忘れて、1.0.1->1.0.2のバージョン更新をした。)</p>
+
+<p>こんな感じで設定画面に説明文を書くことが可能です。</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-create-custom-intention/intention_setting.gif" alt="intention_settings" /></p>
+
+<p>以下の3つのファイルを作成します。</p>
+
+<ul>
+<li>after.xml.template</li>
+<li>before.xml.template</li>
+<li>description.html</li>
+</ul>
+
+
+<p>それぞれが表示されるのはここです。</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-create-custom-intention/intention_desc.png" alt="intention_desc" /></p>
+
+<p>例えば、JavaファイルののIntentionだった場合、<code>after.java.template</code>のようにファイル名を<code>after.{拡張子}.template</code>とすれば良いです。<code>before</code>のほうも同じです。</p>
+
+<p>配置箇所は<code>resourcesフォルダ/intentionDescriptions/INTENSION名/</code>に配置します。</p>
+
+<p><code>ConvertToDatabindingLayoutIntention</code>の場合、こんな感じ。</p>
+
+<p><a href="https://github.com/shiraji/databinding-support/tree/1.0.2/src/main/resources/intentionDescriptions/ConvertToDatabindingLayoutIntention">https://github.com/shiraji/databinding-support/tree/1.0.2/src/main/resources/intentionDescriptions/ConvertToDatabindingLayoutIntention</a></p>
+
+<h1>最後に</h1>
+
+<p>Happy <code>alt+enter</code> life!</p>
+
+<h1>参考リンク</h1>
+
+<p>IntelliJ IDEAクイックスタート – インテンション</p>
+
+<p><a href="http://samuraism.com/products/jetbrains/intellij-idea/quickstart/intentions">http://samuraism.com/products/jetbrains/intellij-idea/quickstart/intentions</a></p>
+
+<p>プラグインプロジェクトの作成手順</p>
+
+<p><a href="http://www.jetbrains.org/intellij/sdk/docs/index.html">http://www.jetbrains.org/intellij/sdk/docs/index.html</a></p>
+
+<p>gradleを使う場合</p>
+
+<p><a href="http://www.jetbrains.org/intellij/sdk/docs/tutorials/build_system.html?search=gradle">http://www.jetbrains.org/intellij/sdk/docs/tutorials/build_system.html?search=gradle</a></p>
+
+<p>このgradleプラグインのセットアップウィザードはないので、gradle-intellij-plugin wizardを使うと便利だよ(ステマ)</p>
+
+<p><a href="https://plugins.jetbrains.com/plugin/8450">https://plugins.jetbrains.com/plugin/8450</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[What's Good About Kotlin in Android Development]]></title>

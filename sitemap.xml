@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://shiraji.github.io/blog/2016/12/17/how-to-extend-alt+enter/</loc>
+    <lastmod>2016-12-17T00:00:01+09:00</lastmod>
+  </url>
+  <url>
     <loc>http://shiraji.github.io/blog/2016/12/11/whats-good-about-kotlin-in-android-development/</loc>
     <lastmod>2016-12-11T00:00:01+09:00</lastmod>
   </url>
@@ -117,5 +121,8 @@
   </url>
   <url>
     <loc>http://shiraji.github.io/blog/categories/kotlin/</loc>
+  </url>
+  <url>
+    <loc>http://shiraji.github.io/blog/categories/intention/</loc>
   </url>
 </urlset>

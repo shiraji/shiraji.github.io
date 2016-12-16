@@ -1,0 +1,457 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>How to Extend Alt+Enter - Shiraji's Blog</title>
+  <meta name="author" content="Shiraji">
+
+  
+  <meta name="description" content="Describe how to create Intellij custom Intention">
+  <meta name="keywords" content="Intellij plugin kotlin Kotlin Intention custom">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://shiraji.github.io/blog/2016/12/17/how-to-extend-alt+enter/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Shiraji's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35371862-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Shiraji's Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="shiraji.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">How to Extend Alt+Enter</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-12-17T00:00:01+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Intellij IDEAだけではないのですが、Alt+Enter(Intention)は自分でカスタムしたものを作ることが可能です。</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h1>自己紹介</h1>
+
+<p>自分のページにリストされているIntellijプラグインページがページングされたらプラグイン開発辞めようと誓っていて、最近中の人と話したらページング機能ないけど？ｗと生涯現役プラグイン開発者としてやっていくことが決定した人間です。</p>
+
+<p>Intentionだけではなく、Inspectionなども作成しており、Kotlinのコントリビュートもしています。Kotlinの主なコントリビュートもInspection/Intentionなので、ある程度説明出来るレベルだと思います。</p>
+
+<h1>想定読者</h1>
+
+<ul>
+<li>Intentionを作ってみたい</li>
+<li>プラグイン開発に興味がある</li>
+<li>Intellijの機能をある程度理解している</li>
+<li>kotlinの文法がそれなりに理解できる</li>
+</ul>
+
+
+<h1>Custom Intentionを作ってみる</h1>
+
+<p>今回サンプルとして、Intention周りのプラグインをリリースしました。
+<a href="https://plugins.jetbrains.com/plugin/9271">https://plugins.jetbrains.com/plugin/9271</a></p>
+
+<p>ソースコード
+<a href="https://github.com/shiraji/databinding-support">https://github.com/shiraji/databinding-support</a></p>
+
+<p>これをベースにXMLファイルに対してのIntentionの説明をします。</p>
+
+<p>今回はレイアウトファイルであり、<code>&lt;layout&gt;</code>タグがrootタグではなかった場合、<code>&lt;layout&gt;</code>タグでラップするというIntentionを作成します。</p>
+
+<p><img src="https://raw.githubusercontent.com/shiraji/databinding-support/master/websites/images/wrap.gif" alt="wrap" /></p>
+
+<p>プラグインの作成方法などは参考リンクにまとめてありますので、そちらを参照して下さい。</p>
+
+<h2>Intentionクラス</h2>
+
+<p><code>IntentionAction</code>を継承します。以下のメソッドを実装する必要があります。</p>
+
+<h3><code>getText(): String</code></h3>
+
+<p>popupで表示される時の文字列</p>
+
+<h3><code>getFamilyName(): String</code></h3>
+
+<p>よくわからねｗ(intellij-community/kotlin repo内でもgetText呼び出してるだけのところが多い。)</p>
+
+<h3><code>startInWriteAction(): Boolean</code></h3>
+
+<p>Write Action内で実行するかどうか。</p>
+
+<h3><code>isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean</code></h3>
+
+<p>そのIntentionを利用可能かどうか判定する</p>
+
+<h3><code>invoke(project: Project, editor: Editor?, file: PsiFile?)</code></h3>
+
+<p>Intentionが選択時に実行されるメソッド。</p>
+
+<p>今回は実際に以下のようなイメージになりました。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">package</span> <span class="nn">com.github.shiraji.databindinglayout.intentions</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">ConvertToDatabindingLayoutIntention</span> <span class="p">:</span> <span class="n">IntentionAction</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">override</span> <span class="k">fun</span> <span class="nf">getText</span><span class="p">()</span> <span class="p">=</span> <span class="s">&quot;Convert to databinding layout&quot;</span>
+</span><span class='line'>    <span class="k">override</span> <span class="k">fun</span> <span class="nf">getFamilyName</span><span class="p">()</span> <span class="p">=</span> <span class="s">&quot;Convert to databinding layout&quot;</span>
+</span><span class='line'>    <span class="k">override</span> <span class="k">fun</span> <span class="nf">startInWriteAction</span><span class="p">()</span> <span class="p">=</span> <span class="k">true</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">override</span> <span class="k">fun</span> <span class="nf">isAvailable</span><span class="p">(</span><span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span> <span class="n">editor</span><span class="p">:</span> <span class="n">Editor</span><span class="p">?,</span> <span class="n">file</span><span class="p">:</span> <span class="n">PsiFile</span><span class="p">?):</span> <span class="n">Boolean</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// rootタグがlayoutではなく、androidのレイアウトファイルかどうかを判定。</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">override</span> <span class="k">fun</span> <span class="nf">invoke</span><span class="p">(</span><span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span> <span class="n">editor</span><span class="p">:</span> <span class="n">Editor</span><span class="p">?,</span> <span class="n">file</span><span class="p">:</span> <span class="n">PsiFile</span><span class="p">?)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// 新規&lt;layout&gt;タグを作成し、必要なattributeを追加し、root tagとする。</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/kotlin/com/github/shiraji/databindinglayout/intentions/ConvertToDatabindingLayoutIntention.kt">https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/kotlin/com/github/shiraji/databindinglayout/intentions/ConvertToDatabindingLayoutIntention.kt</a></p>
+
+<p>このrootタグかどうかとか、androidのレイアウトファイルかどうかの判定とか、何をどう書き換えるのかとかがたぶん一番難しい部分だと思います。ただ、ここはそれぞれのIntentionやプラグインで違うのでコード読んで頑張れｗとしか言えません。。。</p>
+
+<p>唯一ある共通点としてはファイルなどの読み込みや解析はPsiを使います。例えば、xmlタグだったら<a href="https://github.com/JetBrains/intellij-community/blob/master/xml/xml-psi-api/src/com/intellij/psi/xml/XmlTag.java">XmlTag</a>、<a href="https://github.com/JetBrains/intellij-community/blob/master/xml/xml-psi-api/src/com/intellij/psi/xml/XmlAttribute.java">XmlAttribute</a>を使います。<code>PsiElement#replace()</code>でソースコードの置換することが出来ます。</p>
+
+<p>それぞれのElement作成それぞれのファイルタイプ毎にFactoryが用意されています。Xmlなら<code>XmlElementFactory</code>で作成しています。Javaの場合だと<code>PsiElementFactory</code>だし、Kotlinなら<code>KtPsiFactory</code>を使います。</p>
+
+<h2>plugin.xml</h2>
+
+<p>Intentionクラスをplugin.xmlに定義します。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>    <span class="nt">&lt;intentionAction&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;className&gt;</span>com.github.shiraji.databindinglayout.intentions.ConvertToDatabindingLayoutIntention<span class="nt">&lt;/className&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;category&gt;</span>Android<span class="nt">&lt;/category&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/intentionAction&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/resources/META-INF/plugin.xml#L31-L34">https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/resources/META-INF/plugin.xml#L31-L34</a></p>
+
+<h2>Intentionの説明文を書く</h2>
+
+<p>自分はちょくちょく忘れるのですが・・・(実際これを忘れて、1.0.1->1.0.2のバージョン更新をした。)</p>
+
+<p>こんな感じで設定画面に説明文を書くことが可能です。</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-create-custom-intention/intention_setting.gif" alt="intention_settings" /></p>
+
+<p>以下の3つのファイルを作成します。</p>
+
+<ul>
+<li>after.xml.template</li>
+<li>before.xml.template</li>
+<li>description.html</li>
+</ul>
+
+
+<p>それぞれが表示されるのはここです。</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-create-custom-intention/intention_desc.png" alt="intention_desc" /></p>
+
+<p>例えば、JavaファイルののIntentionだった場合、<code>after.java.template</code>のようにファイル名を<code>after.{拡張子}.template</code>とすれば良いです。<code>before</code>のほうも同じです。</p>
+
+<p>配置箇所は<code>resourcesフォルダ/intentionDescriptions/INTENSION名/</code>に配置します。</p>
+
+<p><code>ConvertToDatabindingLayoutIntention</code>の場合、こんな感じ。</p>
+
+<p><a href="https://github.com/shiraji/databinding-support/tree/1.0.2/src/main/resources/intentionDescriptions/ConvertToDatabindingLayoutIntention">https://github.com/shiraji/databinding-support/tree/1.0.2/src/main/resources/intentionDescriptions/ConvertToDatabindingLayoutIntention</a></p>
+
+<h1>最後に</h1>
+
+<p>Happy <code>alt+enter</code> life!</p>
+
+<h1>参考リンク</h1>
+
+<p>IntelliJ IDEAクイックスタート – インテンション</p>
+
+<p><a href="http://samuraism.com/products/jetbrains/intellij-idea/quickstart/intentions">http://samuraism.com/products/jetbrains/intellij-idea/quickstart/intentions</a></p>
+
+<p>プラグインプロジェクトの作成手順</p>
+
+<p><a href="http://www.jetbrains.org/intellij/sdk/docs/index.html">http://www.jetbrains.org/intellij/sdk/docs/index.html</a></p>
+
+<p>gradleを使う場合</p>
+
+<p><a href="http://www.jetbrains.org/intellij/sdk/docs/tutorials/build_system.html?search=gradle">http://www.jetbrains.org/intellij/sdk/docs/tutorials/build_system.html?search=gradle</a></p>
+
+<p>このgradleプラグインのセットアップウィザードはないので、gradle-intellij-plugin wizardを使うと便利だよ(ステマ)</p>
+
+<p><a href="https://plugins.jetbrains.com/plugin/8450">https://plugins.jetbrains.com/plugin/8450</a></p>
+</div>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="9086067267"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Shiraji</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-12-17T00:00:01+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>12:00 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/intellij/'>intellij</a>, <a class='category' href='/blog/categories/intention/'>intention</a>, <a class='category' href='/blog/categories/kotlin/'>kotlin</a>, <a class='category' href='/blog/categories/plugin/'>plugin</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  <a href="http://b.hatena.ne.jp/entry/http://shiraji.github.io/blog/2016/12/17/how-to-extend-alt+enter/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shiraji.github.io/blog/2016/12/17/how-to-extend-alt+enter/" data-via="shiraj_i" data-counturl="http://shiraji.github.io/blog/2016/12/17/how-to-extend-alt+enter/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/12/11/whats-good-about-kotlin-in-android-development/" title="Previous Post: What's good about Kotlin in Android development">&laquo; What's good about Kotlin in Android development</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/12/17/how-to-extend-alt+enter/">How to Extend Alt+Enter</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/12/11/whats-good-about-kotlin-in-android-development/">What's Good About Kotlin in Android Development</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/12/03/how-to-contribute-swift-library-r-dot-swift/">How to Contribute R.swift (for Japanese Android Engineer)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/09/18/create-intellij-plugin-2/">Tips for Creating Intellij Plugin in Kotlin</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/07/14/how-to-kontribute/">How to Kontribute (for Japanese)</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/shiraji">@shiraji</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'shiraji',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Shiraji -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
