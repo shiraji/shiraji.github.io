@@ -4,7 +4,7 @@
   <title><![CDATA[Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2016-12-16T23:16:46+09:00</updated>
+  <updated>2017-04-29T08:07:35+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -1975,6 +1975,12 @@
 
 
 <p>こんな感じで設定していきました。</p>
+
+<h3>Windows user</h3>
+
+<p>自分はWindowsでの開発をしていないのですが、Windowsで開発する場合、JDKはOracleさんが出しているものが良いようです。</p>
+
+<p>Macであれば、OpenJDKでもOrableのやつでもどちらでも問題なくビルドできるそうです。</p>
 
 <h2>build</h2>
 
