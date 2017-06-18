@@ -43,6 +43,12 @@ JDK_17=`/usr/libexec/java_home -v 1.7`
 
 こんな感じで設定していきました。
 
+### Windows user
+
+自分はWindowsでの開発をしていないのですが、Windowsで開発する場合、JDKはOracleさんが出しているものが良いようです。
+
+Macであれば、OpenJDKでもOrableのやつでもどちらでも問題なくビルドできるそうです。
+
 ## build
 
 pullには結構時間かかります。buildコマンドはドキュメントにある通り、

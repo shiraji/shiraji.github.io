@@ -8,7 +8,9 @@ keywords: Intellij plugin kotlin Kotlin Intention custom
 description: Describe how to create Intellij custom Intention
 ---
 
-Intellij IDEAだけではないのですが、Alt+Enter(Intention)は自分でカスタムしたものを作ることが可能です。
+この記事は[JetBrains Advent Calendar 2016](http://qiita.com/advent-calendar/2016/jetbrains)の12/17の記事です。
+
+Intellij IDEAだけではないのですが、Alt+Enter(Intention)は自分で拡張したものを作ることが可能です。
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- 728x90 -->
