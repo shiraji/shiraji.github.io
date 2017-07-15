@@ -42,8 +42,7 @@ compile-testingとは
 
 > A library for testing javac compilation with or without annotation processors
 
-です。
-annotation processingのライブラリでよく使われる手法として、コードを読み込ませ、compile-testingを利用し想定通りのコードを出力しているかを確認しています。
+です。annotation processingのライブラリでよく使われる手法として、コードを読み込ませ、compile-testingを利用し想定通りのコードを出力しているかを確認しています。
 
 こんな感じで書いています。
 
@@ -52,17 +51,17 @@ https://github.com/shiraji/kenkenpa/blob/master/kenkenpa-compiler/src/test/java/
 * ユーザが書くであろうコード(JavaFileObject source)からcompile-testingが生成するコードが想定している生成コード(JavaFileObject expectedSource)と等しいかどうかを確認します。
 * コンパイルエラーなどが起こさないか？の確認もします。
 
-このテストを実行し、JUnitが全てパスされた場合、思った通りのコードが生成され、コンパイルも問題なしで安心していました。
+このテストを実行し、JUnitが全てパスした場合、思った通りのコードが生成され、コンパイルも問題なしです。私はこれだけで安心していました。
 
 ## 挙動のテスト
 
-compile-testingが通りました！テストOKです！・・・本当にそうなんでしょうか？
+compile-testingが通りました！OKです！・・・でも本当にそうなんでしょうか？
 
-よく考えるとテストしたのはcompilerが思った通りのコードを生成したことを確認しただけだと思うのです。
+テストしたのはcompilerが思った通りのコードを生成したことを確認しただけです。
 
 本当に必要なテストは、生成したコードが実際に思った通り動くかどうかの挙動の確認であるはずです。
 
-ライブラリ利用者からすれば、極論、(メソッド数や容量とか気になるけど）生成されるコードなんてどんな形でも良いのです。挙動さえ正しければ良いはずです。
+ライブラリ利用者からすれば、極論、生成されるコードなんてどんな形でも良いのです。挙動さえ正しければ良いはずです。(メソッド数や容量とか気になるけど。）
 が、その挙動の確認はcompile-testingでは行っていません。
 
 ## ではどうするか？
@@ -83,8 +82,4 @@ PermissionsDispatcherは[Delegate to generated class](https://github.com/hotchem
 
 捨てちゃダメです。冒頭のPRでは生成コードが必須になるため、正常系のテストしか行うことが出来ません。コンパイルエラーが発生した場合のエラーハンドリングが適切に行われているか？の確認としては非常に有効に活用できます。
 
-compiler-testingが実際に何をテストしているのかをしっかり把握し、適材適所でのライブラリの選定が一番だと思います。
-
-## 余談
-
-余談ですが、一度付与されたRuntime Permissionをテスト実行中に破棄することが出来なかったので、androidTest書けずでした。本当はそっちを書きたかったです。。。(Revokeするとプロセスがkillされるとかで。。。)
+compiler-testingが何をテストしているのかをしっかり把握し、適材適所でのライブラリの選定が一番だと思います。
