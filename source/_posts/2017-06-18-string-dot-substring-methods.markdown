@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Visual for Kotlin substringXxx methods"
+title: "Visualize Kotlin substringXxx methods"
 date: 2017-06-18 15:41:47 -0400
 comments: false
 categories: Kotlin
