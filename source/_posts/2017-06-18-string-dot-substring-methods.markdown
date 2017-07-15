@@ -52,3 +52,13 @@ Here is the visuals that illustrate the differences between these methods.
 `substringBeforeLast` tries to find the character(s) from "last", and substrings "before" the characters
 
 ![substringBeforeLast](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/substrings/substringBeforeLast.png)
+
+# Text Summary
+
+The following list is the summary of these methods.
+
+* "Last" -> find a match from the end
+* no "Last" -> find a match from the beginning
+* "Before" -> get all text before the match
+* "After" -> get all text after the match
+* The substring result does not include the matched text
