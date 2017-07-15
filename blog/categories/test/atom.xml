@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Test | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/test/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2017-07-15T19:22:44+09:00</updated>
+  <updated>2017-07-15T19:34:35+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -56,7 +56,7 @@
 </ul>
 
 
-<h2>compiler-testingによるテスト</h2>
+<h2>compile-testingによるテスト</h2>
 
 <p>Annotation Processingのテストで検索するとだいたい<a href="https://github.com/google/compile-testing">compile-testing</a>を使えと書かれています。</p>
 
@@ -106,11 +106,11 @@
 
 <p>このテストのメリットとして、今後PermissionsDispatcherは<a href="https://github.com/hotchemi/PermissionsDispatcher/issues/320">KotlinはKotlinらしいコードを生成しようぜ！</a>という話が上がっており、Kotlinらしいコードを生成したとしても、このテストが通りさえすれば、あくまで理論上ですが、どんなコードを生成しても問題ないと言えるはずです。</p>
 
-<h2>compiler-testing捨てるべきなの？</h2>
+<h2>compile-testing捨てるべきなの？</h2>
 
 <p>捨てちゃダメです。冒頭のPRでは生成コードが必須になるため、正常系のテストしか行うことが出来ません。コンパイルエラーが発生した場合のエラーハンドリングが適切に行われているか？の確認としては非常に有効に活用できます。</p>
 
-<p>compiler-testingが何をテストしているのかをしっかり把握し、適材適所でのライブラリの選定が一番だと思います。</p>
+<p>compile-testingが何をテストしているのかをしっかり把握し、適材適所でのライブラリの選定が一番だと思います。</p>
 ]]></content>
   </entry>
   
