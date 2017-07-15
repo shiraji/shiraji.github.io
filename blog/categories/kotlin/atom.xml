@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Kotlin | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/kotlin/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2017-07-15T19:34:35+09:00</updated>
+  <updated>2017-07-15T19:40:01+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Visual for Kotlin substringXxx Methods]]></title>
+    <title type="html"><![CDATA[Visualize Kotlin substringXxx Methods]]></title>
     <link href="http://shiraji.github.io/blog/2017/06/19/string-dot-substring-methods/"/>
     <updated>2017-06-19T04:41:47+09:00</updated>
     <id>http://shiraji.github.io/blog/2017/06/19/string-dot-substring-methods</id>
