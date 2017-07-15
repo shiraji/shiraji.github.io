@@ -1,0 +1,322 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Visual for Kotlin substringXxx Methods - Shiraji's Blog</title>
+  <meta name="author" content="Shiraji">
+
+  
+  <meta name="description" content="Visialive what is the differences between substring methods">
+  <meta name="keywords" content="Kotlin, String, substring, substringAfter, substringBefore, method">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://shiraji.github.io/blog/2017/06/19/string-dot-substring-methods/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Shiraji's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35371862-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Shiraji's Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="shiraji.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Visual for Kotlin substringXxx Methods</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-06-19T04:41:47+09:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>4:41 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I found very hard time to memorize the following methods.</p>
+
+<ul>
+<li>substringAfter</li>
+<li>substringAfterLast</li>
+<li>substringBefore</li>
+<li>substringBeforeLast</li>
+</ul>
+
+
+<p>Here is the visuals that illustrate the differences between these methods.</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h2>substringAfter</h2>
+
+<p><code>substringAfter</code> tries to find the character(s) from &ldquo;beginning&rdquo;, and substrings &ldquo;after&rdquo; the characters</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/substrings/substringAfter.png" alt="substringAfter" /></p>
+
+<h2>substringAfterLast</h2>
+
+<p><code>substringAfterLast</code> tries to find the character(s) from &ldquo;last&rdquo;, and substrings &ldquo;after&rdquo; the characters</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/substrings/substringAfterLast.png" alt="substringAfterLast" /></p>
+
+<h2>substringBefore</h2>
+
+<p><code>substringBefore</code> tries to find the character(s) from &ldquo;beginning&rdquo;, and substrings &ldquo;before&rdquo; the characters</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/substrings/substringBefore.png" alt="substringBefore" /></p>
+
+<h2>substringBeforeLast</h2>
+
+<p><code>substringBeforeLast</code> tries to find the character(s) from &ldquo;last&rdquo;, and substrings &ldquo;before&rdquo; the characters</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/substrings/substringBeforeLast.png" alt="substringBeforeLast" /></p>
+</div>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="9086067267"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Shiraji</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2017-06-19T04:41:47+09:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>4:41 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/kotlin/'>kotlin</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  <a href="http://b.hatena.ne.jp/entry/http://shiraji.github.io/blog/2017/06/19/string-dot-substring-methods/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shiraji.github.io/blog/2017/06/19/string-dot-substring-methods/" data-via="shiraj_i" data-counturl="http://shiraji.github.io/blog/2017/06/19/string-dot-substring-methods/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/12/17/how-to-extend-alt+enter/" title="Previous Post: How to extend Alt+Enter">&laquo; How to extend Alt+Enter</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2017/07/14/testing-against-annotation-processing/" title="Next Post: Testing against annotation processing">Testing against annotation processing &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2017/07/14/testing-against-annotation-processing/">Testing Against Annotation Processing</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/06/19/string-dot-substring-methods/">Visual for Kotlin substringXxx Methods</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/12/17/how-to-extend-alt+enter/">How to Extend Alt+Enter</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/12/11/whats-good-about-kotlin-in-android-development/">What's Good About Kotlin in Android Development</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/12/03/how-to-contribute-swift-library-r-dot-swift/">How to Contribute R.swift (for Japanese Android Engineer)</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/shiraji">@shiraji</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'shiraji',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - Shiraji -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

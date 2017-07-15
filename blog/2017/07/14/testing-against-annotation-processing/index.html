@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Testing Against Annotation Processing - Shiraji's Blog</title>
+  <meta name="author" content="Shiraji">
+
+  
+  <meta name="description" content="Describe what type of testing requires for Annotation Processing">
+  <meta name="keywords" content="Kotlin, Annotation Processing, apt, Unit Test, Testing, OSS, PermissionsDispatcher">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://shiraji.github.io/blog/2017/07/14/testing-against-annotation-processing/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Shiraji's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35371862-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Shiraji's Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="shiraji.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Testing Against Annotation Processing</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-07-14T00:11:22+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>12:11 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>以下のPRを投げて、マージされました。</p>
+
+<p>Add integration test cases for checking the behavior of generated code
+<a href="https://github.com/hotchemi/PermissionsDispatcher/pull/339">https://github.com/hotchemi/PermissionsDispatcher/pull/339</a></p>
+
+<p>このPRについて語ってみます。</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h2>想定読者</h2>
+
+<ul>
+<li>Annotation Processingに興味がある人</li>
+<li>Annotation Processingを利用したライブラリを作っている人</li>
+<li>PermissionsDispatcherに興味がある人</li>
+<li>細かい単語を気にしない人</li>
+</ul>
+
+
+<h2>compiler-testingによるテスト</h2>
+
+<p>Annotation Processingのテストで検索するとだいたい<a href="https://github.com/google/compile-testing">compile-testing</a>を使えと書かれています。</p>
+
+<p>compile-testingとは</p>
+
+<blockquote><p>A library for testing javac compilation with or without annotation processors</p></blockquote>
+
+<p>です。annotation processingのライブラリでよく使われる手法として、コードを読み込ませ、compile-testingを利用し想定通りのコードを出力しているかを確認しています。</p>
+
+<p>こんな感じで書いています。</p>
+
+<p><a href="https://github.com/shiraji/kenkenpa/blob/master/kenkenpa-compiler/src/test/java/com/github/shiraji/kenkenpa/compiler/HopTests.java#L17-L75">https://github.com/shiraji/kenkenpa/blob/master/kenkenpa-compiler/src/test/java/com/github/shiraji/kenkenpa/compiler/HopTests.java#L17-L75</a></p>
+
+<ul>
+<li>ユーザが書くであろうコード(JavaFileObject source)からcompile-testingが生成するコードが想定している生成コード(JavaFileObject expectedSource)と等しいかどうかを確認します。</li>
+<li>コンパイルエラーなどが起こさないか？の確認もします。</li>
+</ul>
+
+
+<p>このテストを実行し、JUnitが全てパスした場合、思った通りのコードが生成され、コンパイルも問題なしです。私はこれだけで安心していました。</p>
+
+<h2>挙動のテスト</h2>
+
+<p>compile-testingが通りました！OKです！・・・でも本当にそうなんでしょうか？</p>
+
+<p>テストしたのはcompilerが思った通りのコードを生成したことを確認しただけです。</p>
+
+<p>本当に必要なテストは、生成したコードが実際に思った通り動くかどうかの挙動の確認であるはずです。</p>
+
+<p>ライブラリ利用者からすれば、極論、生成されるコードなんてどんな形でも良いのです。挙動さえ正しければ良いはずです。(メソッド数や容量とか気になるけど。）
+が、その挙動の確認はcompile-testingでは行っていません。</p>
+
+<h2>ではどうするか？</h2>
+
+<p>実際に生成したコードに対してテストを書けば良いはずです。</p>
+
+<p>冒頭のPermissionsDispatcherの<a href="https://github.com/hotchemi/PermissionsDispatcher/pull/339">PR</a>でやったこととして</p>
+
+<ul>
+<li>testモジュールを作成した(設定による生成コードの違いがあるのでtest-v13も作っています。)</li>
+<li>testモジュール内で実際にPermissionsDispatcherを利用するコードを書いた <a href="https://github.com/hotchemi/PermissionsDispatcher/pull/339/files#diff-fd72dbeb86d7072fd2fc764574b85633">https://github.com/hotchemi/PermissionsDispatcher/pull/339/files#diff-fd72dbeb86d7072fd2fc764574b85633</a></li>
+<li>上記のコードで生成されるコードに関するテストを書いた <a href="https://github.com/hotchemi/PermissionsDispatcher/pull/339/files#diff-178f9383e58a228e87ded8c49a97b492">https://github.com/hotchemi/PermissionsDispatcher/pull/339/files#diff-178f9383e58a228e87ded8c49a97b492</a></li>
+</ul>
+
+
+<p>PermissionsDispatcherは<a href="https://github.com/hotchemi/PermissionsDispatcher#2-delegate-to-generated-class">Delegate to generated class</a>にある通り、2つのpublicメソッドを生成します。そこで、この2つのメソッドに対し、PowerMockito、Robolectricなどフル活用してテストを書きました。</p>
+
+<p>このテストのメリットとして、今後PermissionsDispatcherは<a href="https://github.com/hotchemi/PermissionsDispatcher/issues/320">KotlinはKotlinらしいコードを生成しようぜ！</a>という話が上がっており、Kotlinらしいコードを生成したとしても、このテストが通りさえすれば、あくまで理論上ですが、どんなコードを生成しても問題ないと言えるはずです。</p>
+
+<h2>compiler-testing捨てるべきなの？</h2>
+
+<p>捨てちゃダメです。冒頭のPRでは生成コードが必須になるため、正常系のテストしか行うことが出来ません。コンパイルエラーが発生した場合のエラーハンドリングが適切に行われているか？の確認としては非常に有効に活用できます。</p>
+
+<p>compiler-testingが何をテストしているのかをしっかり把握し、適材適所でのライブラリの選定が一番だと思います。</p>
+</div>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="9086067267"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Shiraji</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2017-07-14T00:11:22+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>12:11 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/annotation/'>annotation</a>, <a class='category' href='/blog/categories/apt/'>apt,</a>, <a class='category' href='/blog/categories/kotlin/'>kotlin,</a>, <a class='category' href='/blog/categories/processing/'>processing,</a>, <a class='category' href='/blog/categories/test/'>test</a>, <a class='category' href='/blog/categories/unit/'>unit</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  <a href="http://b.hatena.ne.jp/entry/http://shiraji.github.io/blog/2017/07/14/testing-against-annotation-processing/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shiraji.github.io/blog/2017/07/14/testing-against-annotation-processing/" data-via="shiraj_i" data-counturl="http://shiraji.github.io/blog/2017/07/14/testing-against-annotation-processing/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2017/06/19/string-dot-substring-methods/" title="Previous Post: Visual for Kotlin substringXxx methods">&laquo; Visual for Kotlin substringXxx methods</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2017/07/14/testing-against-annotation-processing/">Testing Against Annotation Processing</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/06/19/string-dot-substring-methods/">Visual for Kotlin substringXxx Methods</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/12/17/how-to-extend-alt+enter/">How to Extend Alt+Enter</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/12/11/whats-good-about-kotlin-in-android-development/">What's Good About Kotlin in Android Development</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/12/03/how-to-contribute-swift-library-r-dot-swift/">How to Contribute R.swift (for Japanese Android Engineer)</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/shiraji">@shiraji</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'shiraji',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - Shiraji -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

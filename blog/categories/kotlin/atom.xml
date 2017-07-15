@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Kotlin | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/kotlin/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2017-04-29T08:07:35+09:00</updated>
+  <updated>2017-07-15T19:22:44+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -12,6 +12,70 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Visual for Kotlin substringXxx Methods]]></title>
+    <link href="http://shiraji.github.io/blog/2017/06/19/string-dot-substring-methods/"/>
+    <updated>2017-06-19T04:41:47+09:00</updated>
+    <id>http://shiraji.github.io/blog/2017/06/19/string-dot-substring-methods</id>
+    <content type="html"><![CDATA[<p>I found very hard time to memorize the following methods.</p>
+
+<ul>
+<li>substringAfter</li>
+<li>substringAfterLast</li>
+<li>substringBefore</li>
+<li>substringBeforeLast</li>
+</ul>
+
+
+<p>Here is the visuals that illustrate the differences between these methods.</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h2>substringAfter</h2>
+
+<p><code>substringAfter</code> tries to find the character(s) from &ldquo;beginning&rdquo;, and substrings &ldquo;after&rdquo; the characters</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/substrings/substringAfter.png" alt="substringAfter" /></p>
+
+<h2>substringAfterLast</h2>
+
+<p><code>substringAfterLast</code> tries to find the character(s) from &ldquo;last&rdquo;, and substrings &ldquo;after&rdquo; the characters</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/substrings/substringAfterLast.png" alt="substringAfterLast" /></p>
+
+<h2>substringBefore</h2>
+
+<p><code>substringBefore</code> tries to find the character(s) from &ldquo;beginning&rdquo;, and substrings &ldquo;before&rdquo; the characters</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/substrings/substringBefore.png" alt="substringBefore" /></p>
+
+<h2>substringBeforeLast</h2>
+
+<p><code>substringBeforeLast</code> tries to find the character(s) from &ldquo;last&rdquo;, and substrings &ldquo;before&rdquo; the characters</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/substrings/substringBeforeLast.png" alt="substringBeforeLast" /></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How to Extend Alt+Enter]]></title>

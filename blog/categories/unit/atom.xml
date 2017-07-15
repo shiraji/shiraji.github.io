@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Unit | Shiraji's Blog]]></title>
+  <link href="http://shiraji.github.io/blog/categories/unit/atom.xml" rel="self"/>
+  <link href="http://shiraji.github.io/"/>
+  <updated>2017-07-15T19:22:44+09:00</updated>
+  <id>http://shiraji.github.io/</id>
+  <author>
+    <name><![CDATA[Shiraji]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Testing Against Annotation Processing]]></title>
+    <link href="http://shiraji.github.io/blog/2017/07/14/testing-against-annotation-processing/"/>
+    <updated>2017-07-14T00:11:22+09:00</updated>
+    <id>http://shiraji.github.io/blog/2017/07/14/testing-against-annotation-processing</id>
+    <content type="html"><![CDATA[<p>以下のPRを投げて、マージされました。</p>
+
+<p>Add integration test cases for checking the behavior of generated code
+<a href="https://github.com/hotchemi/PermissionsDispatcher/pull/339">https://github.com/hotchemi/PermissionsDispatcher/pull/339</a></p>
+
+<p>このPRについて語ってみます。</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h2>想定読者</h2>
+
+<ul>
+<li>Annotation Processingに興味がある人</li>
+<li>Annotation Processingを利用したライブラリを作っている人</li>
+<li>PermissionsDispatcherに興味がある人</li>
+<li>細かい単語を気にしない人</li>
+</ul>
+
+
+<h2>compiler-testingによるテスト</h2>
+
+<p>Annotation Processingのテストで検索するとだいたい<a href="https://github.com/google/compile-testing">compile-testing</a>を使えと書かれています。</p>
+
+<p>compile-testingとは</p>
+
+<blockquote><p>A library for testing javac compilation with or without annotation processors</p></blockquote>
+
+<p>です。annotation processingのライブラリでよく使われる手法として、コードを読み込ませ、compile-testingを利用し想定通りのコードを出力しているかを確認しています。</p>
+
+<p>こんな感じで書いています。</p>
+
+<p><a href="https://github.com/shiraji/kenkenpa/blob/master/kenkenpa-compiler/src/test/java/com/github/shiraji/kenkenpa/compiler/HopTests.java#L17-L75">https://github.com/shiraji/kenkenpa/blob/master/kenkenpa-compiler/src/test/java/com/github/shiraji/kenkenpa/compiler/HopTests.java#L17-L75</a></p>
+
+<ul>
+<li>ユーザが書くであろうコード(JavaFileObject source)からcompile-testingが生成するコードが想定している生成コード(JavaFileObject expectedSource)と等しいかどうかを確認します。</li>
+<li>コンパイルエラーなどが起こさないか？の確認もします。</li>
+</ul>
+
+
+<p>このテストを実行し、JUnitが全てパスした場合、思った通りのコードが生成され、コンパイルも問題なしです。私はこれだけで安心していました。</p>
+
+<h2>挙動のテスト</h2>
+
+<p>compile-testingが通りました！OKです！・・・でも本当にそうなんでしょうか？</p>
+
+<p>テストしたのはcompilerが思った通りのコードを生成したことを確認しただけです。</p>
+
+<p>本当に必要なテストは、生成したコードが実際に思った通り動くかどうかの挙動の確認であるはずです。</p>
+
+<p>ライブラリ利用者からすれば、極論、生成されるコードなんてどんな形でも良いのです。挙動さえ正しければ良いはずです。(メソッド数や容量とか気になるけど。）
+が、その挙動の確認はcompile-testingでは行っていません。</p>
+
+<h2>ではどうするか？</h2>
+
+<p>実際に生成したコードに対してテストを書けば良いはずです。</p>
+
+<p>冒頭のPermissionsDispatcherの<a href="https://github.com/hotchemi/PermissionsDispatcher/pull/339">PR</a>でやったこととして</p>
+
+<ul>
+<li>testモジュールを作成した(設定による生成コードの違いがあるのでtest-v13も作っています。)</li>
+<li>testモジュール内で実際にPermissionsDispatcherを利用するコードを書いた <a href="https://github.com/hotchemi/PermissionsDispatcher/pull/339/files#diff-fd72dbeb86d7072fd2fc764574b85633">https://github.com/hotchemi/PermissionsDispatcher/pull/339/files#diff-fd72dbeb86d7072fd2fc764574b85633</a></li>
+<li>上記のコードで生成されるコードに関するテストを書いた <a href="https://github.com/hotchemi/PermissionsDispatcher/pull/339/files#diff-178f9383e58a228e87ded8c49a97b492">https://github.com/hotchemi/PermissionsDispatcher/pull/339/files#diff-178f9383e58a228e87ded8c49a97b492</a></li>
+</ul>
+
+
+<p>PermissionsDispatcherは<a href="https://github.com/hotchemi/PermissionsDispatcher#2-delegate-to-generated-class">Delegate to generated class</a>にある通り、2つのpublicメソッドを生成します。そこで、この2つのメソッドに対し、PowerMockito、Robolectricなどフル活用してテストを書きました。</p>
+
+<p>このテストのメリットとして、今後PermissionsDispatcherは<a href="https://github.com/hotchemi/PermissionsDispatcher/issues/320">KotlinはKotlinらしいコードを生成しようぜ！</a>という話が上がっており、Kotlinらしいコードを生成したとしても、このテストが通りさえすれば、あくまで理論上ですが、どんなコードを生成しても問題ないと言えるはずです。</p>
+
+<h2>compiler-testing捨てるべきなの？</h2>
+
+<p>捨てちゃダメです。冒頭のPRでは生成コードが必須になるため、正常系のテストしか行うことが出来ません。コンパイルエラーが発生した場合のエラーハンドリングが適切に行われているか？の確認としては非常に有効に活用できます。</p>
+
+<p>compiler-testingが何をテストしているのかをしっかり把握し、適材適所でのライブラリの選定が一番だと思います。</p>
+]]></content>
+  </entry>
+  
+</feed>
