@@ -34,7 +34,7 @@ https://github.com/hotchemi/PermissionsDispatcher/pull/339
 * PermissionsDispatcherに興味がある人
 * 細かい単語を気にしない人
 
-## compiler-testingによるテスト
+## compile-testingによるテスト
 
 Annotation Processingのテストで検索するとだいたい[compile-testing](https://github.com/google/compile-testing)を使えと書かれています。
 
@@ -78,8 +78,8 @@ PermissionsDispatcherは[Delegate to generated class](https://github.com/hotchem
 
 このテストのメリットとして、今後PermissionsDispatcherは[KotlinはKotlinらしいコードを生成しようぜ！](https://github.com/hotchemi/PermissionsDispatcher/issues/320)という話が上がっており、Kotlinらしいコードを生成したとしても、このテストが通りさえすれば、あくまで理論上ですが、どんなコードを生成しても問題ないと言えるはずです。
 
-## compiler-testing捨てるべきなの？
+## compile-testing捨てるべきなの？
 
 捨てちゃダメです。冒頭のPRでは生成コードが必須になるため、正常系のテストしか行うことが出来ません。コンパイルエラーが発生した場合のエラーハンドリングが適切に行われているか？の確認としては非常に有効に活用できます。
 
-compiler-testingが何をテストしているのかをしっかり把握し、適材適所でのライブラリの選定が一番だと思います。
+compile-testingが何をテストしているのかをしっかり把握し、適材適所でのライブラリの選定が一番だと思います。
