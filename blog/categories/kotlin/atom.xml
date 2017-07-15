@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Kotlin | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/kotlin/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2017-07-15T19:40:01+09:00</updated>
+  <updated>2017-07-15T19:57:12+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -74,6 +74,19 @@
 <p><code>substringBeforeLast</code> tries to find the character(s) from &ldquo;last&rdquo;, and substrings &ldquo;before&rdquo; the characters</p>
 
 <p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/substrings/substringBeforeLast.png" alt="substringBeforeLast" /></p>
+
+<h1>Text Summary</h1>
+
+<p>The following list is the summary of these methods.</p>
+
+<ul>
+<li>&ldquo;Last&rdquo; -> find a match from the end</li>
+<li>no &ldquo;Last&rdquo; -> find a match from the beginning</li>
+<li>&ldquo;Before&rdquo; -> get all text before the match</li>
+<li>&ldquo;After&rdquo; -> get all text after the match</li>
+<li>The substring result does not include the matched text</li>
+</ul>
+
 ]]></content>
   </entry>
   
