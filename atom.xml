@@ -4,7 +4,7 @@
   <title><![CDATA[Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2017-07-15T19:57:12+09:00</updated>
+  <updated>2017-09-22T22:32:47+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -2161,6 +2161,8 @@
 <p>Macであれば、OpenJDKでもOrableのやつでもどちらでも問題なくビルドできるそうです。</p>
 
 <h2>build</h2>
+
+<p><strong>buildコマンドは2017/09/20にgradleを利用する大きな変更が入りました。時間が出来たら反映します。</strong></p>
 
 <p>pullには結構時間かかります。buildコマンドはドキュメントにある通り、</p>
 
