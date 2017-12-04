@@ -4,7 +4,7 @@
   <title><![CDATA[Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2017-09-22T22:32:47+09:00</updated>
+  <updated>2017-12-05T00:03:36+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -12,6 +12,326 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[PermissionsDispatcher V3に関して]]></title>
+    <link href="http://shiraji.github.io/blog/2017/12/05/permissions-dispatcher-v3/"/>
+    <updated>2017-12-05T00:01:38+09:00</updated>
+    <id>http://shiraji.github.io/blog/2017/12/05/permissions-dispatcher-v3</id>
+    <content type="html"><![CDATA[<p>この記事は <a href="https://qiita.com/advent-calendar/2017/android">Android Advent Calendar 2017</a> の5日目の記事です。</p>
+
+<h2>はじめに</h2>
+
+<p><a href="https://github.com/permissions-dispatcher/PermissionsDispatcher">PermissionsDispatcher</a> v3が今年の9月にリリースされました🎉</p>
+
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="en" dir="ltr">Finally PermissionsDispatcher 3.0.0 is out😄 We added fully <a href="https://twitter.com/kotlin?ref_src=twsrc%5Etfw">@kotlin</a> support and a few improvements🎉Enjoy✌️ <a href="https://t.co/3a1SQ17AWb">https://t.co/3a1SQ17AWb</a></p>&mdash; hotchemi (@hotchemi) <a href="https://twitter.com/hotchemi/status/908889575208116229?ref_src=twsrc%5Etfw">2017年9月16日</a></blockquote>
+
+
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>結構大きな修正であったので、これに関して書きます。</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h2>自己紹介</h2>
+
+<p>PermissionsDispatcherのコミッターの一人です。今年はそれほどコードでの貢献が出来なかったので、この記事を書くことで何か貢献したいと思います。</p>
+
+<h2>想定読者</h2>
+
+<ul>
+<li>PermissionsDispatcherを使ったことがある人</li>
+<li>PermissionsDispatcher v3に興味がある人</li>
+</ul>
+
+
+<h2>書いていないこと</h2>
+
+<ul>
+<li>PermissionsDispatcherの使い方</li>
+<li>KotlinPoetに関して</li>
+</ul>
+
+
+<h2>PermissionsDispatcher v3への移行方法</h2>
+
+<p>まずv2を使っている人はv3への移行をする必要があります。移行手順は以下にあります。</p>
+
+<p><a href="https://github.com/permissions-dispatcher/PermissionsDispatcher/blob/master/doc/migration_guide.md#migrating-to-3x">https://github.com/permissions-dispatcher/PermissionsDispatcher/blob/master/doc/migration_guide.md#migrating-to-3x</a></p>
+
+<p>簡単に解説すると以下の二点の修正が必要になります。</p>
+
+<ul>
+<li>Kotlinユーザは<code>XxxPermissionsDispatcher</code>クラスが無くなり、<code>Activity</code>/<code>Fragment</code>の拡張関数として提供されるようになった</li>
+<li>Java/Kotlin共に<code>XxxWithCheck</code>メソッドが<code>XxxWithPermissionCheck</code>メソッドに変更になった</li>
+</ul>
+
+
+<h2>生成されるKotlinコード</h2>
+
+<p>実際に生成されるKotlinのソースを見てみましょう。<a href="https://github.com/permissions-dispatcher/PermissionsDispatcher/tree/123e50a184e058ad6b4adb0b659a343d79813913/sample-kotlin">sample-kotlinモジュール</a>では以下のコードが生成されます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">private</span> <span class="k">val</span> <span class="py">REQUEST_SHOWCAMERA</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">0</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">val</span> <span class="py">PERMISSION_SHOWCAMERA</span><span class="p">:</span> <span class="n">Array</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">arrayOf</span><span class="p">(</span><span class="s">&quot;android.permission.CAMERA&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">val</span> <span class="py">REQUEST_SHOWCONTACTS</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">1</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">val</span> <span class="py">PERMISSION_SHOWCONTACTS</span><span class="p">:</span> <span class="n">Array</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">arrayOf</span><span class="p">(</span><span class="s">&quot;android.permission.READ_CONTACTS&quot;</span><span class="p">,</span> <span class="s">&quot;android.permission.WRITE_CONTACTS&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">fun</span> <span class="nf">MainActivity</span><span class="p">.</span><span class="n">showCameraWithPermissionCheck</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">PermissionUtils</span><span class="p">.</span><span class="n">hasSelfPermissions</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">*</span><span class="n">PERMISSION_SHOWCAMERA</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">showCamera</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">PermissionUtils</span><span class="p">.</span><span class="n">shouldShowRequestPermissionRationale</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">*</span><span class="n">PERMISSION_SHOWCAMERA</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">showRationaleForCamera</span><span class="p">(</span><span class="n">MainActivityShowCameraPermissionRequest</span><span class="p">(</span><span class="k">this</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">ActivityCompat</span><span class="p">.</span><span class="n">requestPermissions</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">PERMISSION_SHOWCAMERA</span><span class="p">,</span> <span class="n">REQUEST_SHOWCAMERA</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">fun</span> <span class="nf">MainActivity</span><span class="p">.</span><span class="n">showContactsWithPermissionCheck</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">PermissionUtils</span><span class="p">.</span><span class="n">hasSelfPermissions</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">*</span><span class="n">PERMISSION_SHOWCONTACTS</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">showContacts</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">PermissionUtils</span><span class="p">.</span><span class="n">shouldShowRequestPermissionRationale</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">*</span><span class="n">PERMISSION_SHOWCONTACTS</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">showRationaleForContacts</span><span class="p">(</span><span class="n">MainActivityShowContactsPermissionRequest</span><span class="p">(</span><span class="k">this</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">ActivityCompat</span><span class="p">.</span><span class="n">requestPermissions</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">PERMISSION_SHOWCONTACTS</span><span class="p">,</span> <span class="n">REQUEST_SHOWCONTACTS</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">fun</span> <span class="nf">MainActivity</span><span class="p">.</span><span class="n">onRequestPermissionsResult</span><span class="p">(</span><span class="n">requestCode</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span> <span class="n">grantResults</span><span class="p">:</span> <span class="n">IntArray</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">when</span> <span class="p">(</span><span class="n">requestCode</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">REQUEST_SHOWCAMERA</span> <span class="p">-&gt;</span>
+</span><span class='line'>     <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">PermissionUtils</span><span class="p">.</span><span class="n">verifyPermissions</span><span class="p">(*</span><span class="n">grantResults</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">showCamera</span><span class="p">()</span>
+</span><span class='line'>      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(!</span><span class="n">PermissionUtils</span><span class="p">.</span><span class="n">shouldShowRequestPermissionRationale</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">*</span><span class="n">PERMISSION_SHOWCAMERA</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">onCameraNeverAskAgain</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">onCameraDenied</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">REQUEST_SHOWCONTACTS</span> <span class="p">-&gt;</span>
+</span><span class='line'>     <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">PermissionUtils</span><span class="p">.</span><span class="n">verifyPermissions</span><span class="p">(*</span><span class="n">grantResults</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">showContacts</span><span class="p">()</span>
+</span><span class='line'>      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(!</span><span class="n">PermissionUtils</span><span class="p">.</span><span class="n">shouldShowRequestPermissionRationale</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">*</span><span class="n">PERMISSION_SHOWCONTACTS</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">onContactsNeverAskAgain</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">onContactsDenied</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">class</span> <span class="nc">MainActivityShowCameraPermissionRequest</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="n">MainActivity</span><span class="p">)</span> <span class="p">:</span> <span class="n">PermissionRequest</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">private</span> <span class="k">val</span> <span class="py">weakTarget</span><span class="p">:</span> <span class="n">WeakReference</span><span class="p">&lt;</span><span class="n">MainActivity</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">WeakReference</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">override</span> <span class="k">fun</span> <span class="nf">proceed</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="py">target</span> <span class="p">=</span> <span class="n">weakTarget</span><span class="p">.</span><span class="k">get</span><span class="p">()</span> <span class="o">?:</span> <span class="k">return</span>
+</span><span class='line'>    <span class="n">ActivityCompat</span><span class="p">.</span><span class="n">requestPermissions</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">PERMISSION_SHOWCAMERA</span><span class="p">,</span> <span class="n">REQUEST_SHOWCAMERA</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">override</span> <span class="k">fun</span> <span class="nf">cancel</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="py">target</span> <span class="p">=</span> <span class="n">weakTarget</span><span class="p">.</span><span class="k">get</span><span class="p">()</span> <span class="o">?:</span> <span class="k">return</span>
+</span><span class='line'>    <span class="n">target</span><span class="p">.</span><span class="n">onCameraDenied</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">class</span> <span class="nc">MainActivityShowContactsPermissionRequest</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="n">MainActivity</span><span class="p">)</span> <span class="p">:</span> <span class="n">PermissionRequest</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">private</span> <span class="k">val</span> <span class="py">weakTarget</span><span class="p">:</span> <span class="n">WeakReference</span><span class="p">&lt;</span><span class="n">MainActivity</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">WeakReference</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">override</span> <span class="k">fun</span> <span class="nf">proceed</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="py">target</span> <span class="p">=</span> <span class="n">weakTarget</span><span class="p">.</span><span class="k">get</span><span class="p">()</span> <span class="o">?:</span> <span class="k">return</span>
+</span><span class='line'>    <span class="n">ActivityCompat</span><span class="p">.</span><span class="n">requestPermissions</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">PERMISSION_SHOWCONTACTS</span><span class="p">,</span> <span class="n">REQUEST_SHOWCONTACTS</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">override</span> <span class="k">fun</span> <span class="nf">cancel</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="py">target</span> <span class="p">=</span> <span class="n">weakTarget</span><span class="p">.</span><span class="k">get</span><span class="p">()</span> <span class="o">?:</span> <span class="k">return</span>
+</span><span class='line'>    <span class="n">target</span><span class="p">.</span><span class="n">onContactsDenied</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>REQUEST_*</code>や<code>PERMISSION_*</code>はv2では<code>MainActivityPermissionsDispatcher</code>クラス内で定義されていましたが、privateのトップレベルでの定義に変わりました。
+また、<code>showCameraWithPermissionCheck</code>や<code>onRequestPermissionsResult</code>は<code>MainActivity</code>の拡張関数になっています。その為、<code>MainActivityPermissionsDispatcher</code>クラスがなくなりました。(Javaの方では存在しています。)</p>
+
+<h2>なんでこんな変更になったのか？</h2>
+
+<h3>Kotlinの拡張関数</h3>
+
+<p><a href="https://github.com/square/kotlinpoet">KotlinPoet</a>の出現から、これを使ってKotlinコードの生成してみよう->どうせならKotlinっぽく拡張関数にしてみよう！という流れで拡張関数を使うことになりました。</p>
+
+<p>詳細は以下のIssueを確認してみて下さい。</p>
+
+<p><a href="https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/320">https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/320</a></p>
+
+<h3>XxxWithPermissionCheckへのリネーム</h3>
+
+<p>以下のIssueで問題提起されました。</p>
+
+<p><a href="https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/355">https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/355</a></p>
+
+<p>このIssueでは漠然とした質問でしたが、Kotlinユーザに対して、拡張関数として提供する場合、<code>WithCheck</code>では意味がわからないのではないか？という話から一気にv3.0に導入する流れになりました。</p>
+
+<h2>懸念事項</h2>
+
+<h3>Kotlin向けのlint</h3>
+
+<p>PermissionsDispatcherはカスタムlintを提供していますが、Kotlin実装向けのlintの対応がまだ終わっていません。(実際の問題はUASTのKotlin対応)</p>
+
+<p>この件に関するIssueは以下</p>
+
+<p><a href="https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/373">https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/373</a></p>
+
+<h3>Intellij Plugin</h3>
+
+<p><a href="https://github.com/permissions-dispatcher/permissions-dispatcher-plugin">permissions-dispatcher-plugin</a>と言うIntellijプラグインですが、メイン開発者の <a href="https://github.com/shiraji">@shiraji</a> がサボっている為、v3対応がされていません。また<a href="https://github.com/permissions-dispatcher/permissions-dispatcher-plugin/issues/79#issuecomment-346983436">もうv2の対応しなくて良くね？</a>と言っており、誰からも反論がない為、急にv3のみのサポートになる予定です。</p>
+
+<p>そんなにいないと思いますが・・・このプラグインを使っていて、v2のみしか使っていない人はこれを機にv3へのアップグレードをよろしくお願いいたします。多分今年度中にはプラグインの方も対応します。</p>
+
+<h2>あんまり利用者関係ない話</h2>
+
+<h3>permissions-dispatcher orgが出来た</h3>
+
+<p><a href="https://github.com/hotchemi">@hotchemi</a>さんからの提案で、permissions-dispatcher orgが出来ました。おかげ様で、ますますメンテナとして頑張りたい！と思えるように。以下がそのIssue</p>
+
+<p><a href="https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/353">https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/353</a></p>
+
+<p>数日前にあった<a href="http://hotchemi.hateblo.jp/entry/2017/12/03/003912">PermissionsDispatcherのプロダクトマネジメント</a>にも同じようなことが記述されていました。</p>
+
+<h3>挙動を確認するテストを増やした</h3>
+
+<p>7月に書いた<a href="http://shiraji.github.io/blog/2017/07/14/testing-against-annotation-processing/">Testing Against Annotation Processing</a>に詳細書いてあるので、読んでください!!!</p>
+
+<h2>KotlinPoetに関して</h2>
+
+<p>PermissionsDispatcherの<a href="https://github.com/permissions-dispatcher/PermissionsDispatcher/tree/123e50a184e058ad6b4adb0b659a343d79813913/processor/src/main/kotlin/permissions/dispatcher/processor/impl/kotlin">この辺り</a>を眺めるとKotlinPoetの実装の参考になると思います。<a href="https://qiita.com/advent-calendar/2017/kotlin">Kotlin Advent Calendar</a> の16日目にKotlinPoetに関する投稿がされるので、そちらも参照して下さい。</p>
+
+<h2>最後に</h2>
+
+<p>PermissionsDispatcherは非常に良いライブラリで、新しい仕組みも積極的に取り入れています。一緒に開発しませんか？</p>
+
+<p>また、最近、ビルド出来ない。使い方がわからない。などなどREADME読んでません的なissueに上がってきます。これの対応に時間を割いてしまい、開発が滞りガチです。もし、PermissionsDispatcherに対して何か貢献したい！と言う方は、 このようなissueの対応や調査などなどお手伝いして頂けると非常に助かります。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Testing Against Annotation Processing]]></title>

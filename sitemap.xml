@@ -1,154 +1,161 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>http://shiraji.github.io/blog/2017/07/14/testing-against-annotation-processing/</loc>
-    <lastmod>2017-07-14T00:11:22+09:00</lastmod>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/2017/06/19/string-dot-substring-methods/</loc>
-    <lastmod>2017-06-19T04:41:47+09:00</lastmod>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/2016/12/17/how-to-extend-alt+enter/</loc>
-    <lastmod>2016-12-17T00:00:01+09:00</lastmod>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/2016/12/11/whats-good-about-kotlin-in-android-development/</loc>
-    <lastmod>2016-12-11T00:00:01+09:00</lastmod>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/2016/12/03/how-to-contribute-swift-library-r-dot-swift/</loc>
-    <lastmod>2016-12-03T00:00:00+09:00</lastmod>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/2016/09/18/create-intellij-plugin-2/</loc>
-    <lastmod>2016-09-18T21:14:03+09:00</lastmod>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/2016/07/14/how-to-kontribute/</loc>
-    <lastmod>2016-07-14T13:07:08+09:00</lastmod>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/2016/07/11/create_intellij_wizard/</loc>
-    <lastmod>2016-07-11T13:22:11+09:00</lastmod>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/2016/05/14/difference-between-psijavafile-and-ktfile/</loc>
-    <lastmod>2016-05-14T23:33:07+09:00</lastmod>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/2016/03/28/create-intellij-plugin/</loc>
-    <lastmod>2016-03-28T23:00:00+09:00</lastmod>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/2016/02/24/forwardingAstVisitor/</loc>
-    <lastmod>2016-02-24T14:37:58+09:00</lastmod>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/2016/02/17/custom-lint-for-library/</loc>
-    <lastmod>2016-02-17T03:00:00+09:00</lastmod>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/2016/01/11/accessor/</loc>
-    <lastmod>2016-01-11T10:50:49+09:00</lastmod>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/2016/01/10/pull_req_study/</loc>
-    <lastmod>2016-01-10T10:44:39+09:00</lastmod>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/2015/10/17/refactoring/</loc>
-    <lastmod>2015-10-17T11:39:09+09:00</lastmod>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/2015/10/17/intro/</loc>
-    <lastmod>2015-10-17T07:31:51+09:00</lastmod>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/archives/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/refactoring/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/github/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/mian-qiang-fang-fa/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/git/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/java/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/android/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/github/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/lint/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/kotlin/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/intellij/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/plugin/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/plugin/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/android/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/intellij/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/oss/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/development/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/ios/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/swift/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/iphone/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/kotlin/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/intention/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/annotation/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/processing/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/apt/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/unit/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/blog/categories/test/</loc>
-  </url>
-  <url>
-    <loc>http://shiraji.github.io/posts/2/</loc>
-  </url>
+<url>
+<loc>http://shiraji.github.io/blog/2017/12/05/permissions-dispatcher-v3/</loc>
+<lastmod>2017-12-05T00:01:38+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/2017/07/14/testing-against-annotation-processing/</loc>
+<lastmod>2017-07-14T00:11:22+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/2017/06/19/string-dot-substring-methods/</loc>
+<lastmod>2017-06-19T04:41:47+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/2016/12/17/how-to-extend-alt+enter/</loc>
+<lastmod>2016-12-17T00:00:01+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/2016/12/11/whats-good-about-kotlin-in-android-development/</loc>
+<lastmod>2016-12-11T00:00:01+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/2016/12/03/how-to-contribute-swift-library-r-dot-swift/</loc>
+<lastmod>2016-12-03T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/2016/09/18/create-intellij-plugin-2/</loc>
+<lastmod>2016-09-18T21:14:03+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/2016/07/14/how-to-kontribute/</loc>
+<lastmod>2016-07-14T13:07:08+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/2016/07/11/create_intellij_wizard/</loc>
+<lastmod>2016-07-11T13:22:11+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/2016/05/14/difference-between-psijavafile-and-ktfile/</loc>
+<lastmod>2016-05-14T23:33:07+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/2016/03/28/create-intellij-plugin/</loc>
+<lastmod>2016-03-28T23:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/2016/02/24/forwardingAstVisitor/</loc>
+<lastmod>2016-02-24T14:37:58+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/2016/02/17/custom-lint-for-library/</loc>
+<lastmod>2016-02-17T03:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/2016/01/11/accessor/</loc>
+<lastmod>2016-01-11T10:50:49+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/2016/01/10/pull_req_study/</loc>
+<lastmod>2016-01-10T10:44:39+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/2015/10/17/refactoring/</loc>
+<lastmod>2015-10-17T11:39:09+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/2015/10/17/intro/</loc>
+<lastmod>2015-10-17T07:31:51+09:00</lastmod>
+</url>
+<url>
+<loc>http://shiraji.github.io/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/archives/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/refactoring/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/github/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/mian-qiang-fang-fa/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/git/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/java/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/android/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/github/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/lint/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/kotlin/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/intellij/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/plugin/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/plugin/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/android/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/intellij/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/oss/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/development/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/ios/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/swift/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/iphone/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/kotlin/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/intention/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/annotation/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/processing/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/apt/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/unit/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/test/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/blog/categories/permissionsdispatcher/</loc>
+</url>
+<url>
+<loc>http://shiraji.github.io/posts/2/</loc>
+</url>
 </urlset>
