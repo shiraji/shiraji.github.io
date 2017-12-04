@@ -8,6 +8,10 @@ keywords: Android PermissionsDispatcher Kotlin KotlinPoet
 description: Describe what's new about PermissionsDispatcher v3
 ---
 
+この記事は [Android Advent Calendar 2017](https://qiita.com/advent-calendar/2017/android) の5日目の記事です。
+
+## はじめに
+
 PermissionsDispatcher v3が今年の9月にリリースされました🎉
 
 <blockquote class="twitter-tweet" data-lang="ja"><p lang="en" dir="ltr">Finally PermissionsDispatcher 3.0.0 is out😄 We added fully <a href="https://twitter.com/kotlin?ref_src=twsrc%5Etfw">@kotlin</a> support and a few improvements🎉Enjoy✌️ <a href="https://t.co/3a1SQ17AWb">https://t.co/3a1SQ17AWb</a></p>&mdash; hotchemi (@hotchemi) <a href="https://twitter.com/hotchemi/status/908889575208116229?ref_src=twsrc%5Etfw">2017年9月16日</a></blockquote>
@@ -29,6 +33,7 @@ PermissionsDispatcher v3が今年の9月にリリースされました🎉
 
 ## 想定読者
 
+* PermissionsDispatcherを使ったことがある人
 * PermissionsDispatcher v3に興味がある人
 
 ## 書いていないこと
@@ -153,30 +158,33 @@ private class MainActivityShowContactsPermissionRequest(target: MainActivity) : 
 
 https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/320
 
-### XxxWithPermissionCheck
+### XxxWithPermissionCheckへのリネーム
 
 以下のIssueで問題提起されました。
 
 https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/355
 
-このIssueでは漠然とした質問でしたが、Kotlinユーザに対して、拡張関数として提供する場合、`WithCheck`では意味がわからないのではないか？という考えから一気にv3.0に導入する流れになりました。
+このIssueでは漠然とした質問でしたが、Kotlinユーザに対して、拡張関数として提供する場合、`WithCheck`では意味がわからないのではないか？という話から一気にv3.0に導入する流れになりました。
 
 ## 懸念事項
 
 ### Kotlin向けのlint
 
 PermissionsDispatcherはカスタムlintを提供していますが、Kotlin実装向けのlintの対応がまだ終わっていません。(実際の問題はUASTのKotlin対応)
+
 https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/373
 
 ### Intellij Plugin
 
-[permissions-dispatcher-plugin](https://github.com/permissions-dispatcher/permissions-dispatcher-plugin)と言うIntellijプラグインですが、メイン開発者の @shiraji がサボっている為、v3対応がされていません。また[もうv2の対応しなくて良くね？](https://github.com/permissions-dispatcher/permissions-dispatcher-plugin/issues/79#issuecomment-346983436)と言っており、誰からも反論がない為、急にv3のみのサポートになる予定です。
+[permissions-dispatcher-plugin](https://github.com/permissions-dispatcher/permissions-dispatcher-plugin)と言うIntellijプラグインですが、メイン開発者の [@shiraji](https://github.com/shiraji) がサボっている為、v3対応がされていません。また[もうv2の対応しなくて良くね？](https://github.com/permissions-dispatcher/permissions-dispatcher-plugin/issues/79#issuecomment-346983436)と言っており、誰からも反論がない為、急にv3のみのサポートになる予定です。
 
 そんなにいないと思いますが・・・このプラグインを使っていて、v2のみしか使っていない人はこれを機にv3へのアップグレードをよろしくお願いいたします。多分今年度中にはプラグインの方も対応します。
 
 ## 最後に
 
-PermissionsDispatcherは非常に良いライブラリで、新しい仕組みも積極的に取り入れています。PermissionsDispatcherの[この辺り](https://github.com/permissions-dispatcher/PermissionsDispatcher/tree/123e50a184e058ad6b4adb0b659a343d79813913/processor/src/main/kotlin/permissions/dispatcher/processor/impl/kotlin)を眺めるとKotlinPoetの実装の参考になると思います。
+PermissionsDispatcherは非常に良いライブラリで、新しい仕組みも積極的に取り入れています。PermissionsDispatcherの[この辺り](https://github.com/permissions-dispatcher/PermissionsDispatcher/tree/123e50a184e058ad6b4adb0b659a343d79813913/processor/src/main/kotlin/permissions/dispatcher/processor/impl/kotlin)を眺めるとKotlinPoetの実装の参考になると思います。[Kotlin Advent Calendar](https://qiita.com/advent-calendar/2017/kotlin) の16日目にKotlinPoetに関する投稿がされるので、そちらも参照して下さい。
 
-しかし、最近、ビルド出来ない。使い方がわからない。などなどREADME読んでません的なissueに上がってきます。これの対応に時間を割いてしまい、開発が滞りガチです。もし、PermissionsDispatcherに対して何か貢献したい！と言う方は、 こう言うissueの対応や調査などして頂けると非常に助かります。
+## 最後に2
+
+最近、ビルド出来ない。使い方がわからない。などなどREADME読んでません的なissueに上がってきます。これの対応に時間を割いてしまい、開発が滞りガチです。もし、PermissionsDispatcherに対して何か貢献したい！と言う方は、 このようなissueの対応や調査などして頂けると非常に助かります。
 
