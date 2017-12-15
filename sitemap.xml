@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://shiraji.github.io/blog/2017/12/16/kotlinpoet/</loc>
+<lastmod>2017-12-16T00:00:01+09:00</lastmod>
+</url>
+<url>
 <loc>http://shiraji.github.io/blog/2017/12/05/permissions-dispatcher-v3/</loc>
 <lastmod>2017-12-05T00:01:38+09:00</lastmod>
 </url>
@@ -156,6 +160,6 @@
 <loc>http://shiraji.github.io/blog/categories/permissionsdispatcher/</loc>
 </url>
 <url>
-<loc>http://shiraji.github.io/posts/2/</loc>
+<loc>http://shiraji.github.io/blog/categories/codegen/</loc>
 </url>
 </urlset>

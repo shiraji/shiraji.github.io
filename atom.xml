@@ -4,7 +4,7 @@
   <title><![CDATA[Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2017-12-05T00:03:36+09:00</updated>
+  <updated>2017-12-16T00:06:30+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -12,6 +12,623 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[KotlinPoetを使ってみた]]></title>
+    <link href="http://shiraji.github.io/blog/2017/12/16/kotlinpoet/"/>
+    <updated>2017-12-16T00:00:01+09:00</updated>
+    <id>http://shiraji.github.io/blog/2017/12/16/kotlinpoet</id>
+    <content type="html"><![CDATA[<p>KotlinPoetを使ってコード生成をしたので、触りだけですが、紹介したいと思います。</p>
+
+<p>なおこのエントリーはKotlinPoet v0.6.0を利用しています。</p>
+
+<h1>想定読者</h1>
+
+<ul>
+<li>KotlinPoetに興味がある人</li>
+<li>JavaPoetを触ったこと・勉強したことがある人</li>
+</ul>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h1>書いていないこと</h1>
+
+<ul>
+<li>JavaPoetの説明</li>
+</ul>
+
+
+<h1>KotlinPoetについて</h1>
+
+<p>KotlinPoetはKotlinのコードを生成することを手助けするライブラリです。<a href="https://github.com/square/javapoet">JavaPoet</a>のKotlin版というイメージです。</p>
+
+<p>以下のコードが</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">greeterClass</span> <span class="p">=</span> <span class="n">ClassName</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Greeter&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">val</span> <span class="py">file</span> <span class="p">=</span> <span class="n">FileSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;HelloWorld&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">addType</span><span class="p">(</span><span class="n">TypeSpec</span><span class="p">.</span><span class="n">classBuilder</span><span class="p">(</span><span class="s">&quot;Greeter&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">primaryConstructor</span><span class="p">(</span><span class="n">FunSpec</span><span class="p">.</span><span class="n">constructorBuilder</span><span class="p">()</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">addParameter</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">String</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">addProperty</span><span class="p">(</span><span class="n">PropertySpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">String</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">initializer</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">addFunction</span><span class="p">(</span><span class="n">FunSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;greet&quot;</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">addStatement</span><span class="p">(</span><span class="s">&quot;println(%S)&quot;</span><span class="p">,</span> <span class="s">&quot;Hello, \$name&quot;</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">addFunction</span><span class="p">(</span><span class="n">FunSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;main&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">addParameter</span><span class="p">(</span><span class="s">&quot;args&quot;</span><span class="p">,</span> <span class="n">String</span><span class="o">::</span><span class="k">class</span><span class="p">,</span> <span class="n">VARARG</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">addStatement</span><span class="p">(</span><span class="s">&quot;%T(args[0]).greet()&quot;</span><span class="p">,</span> <span class="n">greeterClass</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">build</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">file</span><span class="p">.</span><span class="n">writeTo</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="k">out</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このコードを出力します。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">class</span> <span class="nc">Greeter</span><span class="p">(</span><span class="k">val</span> <span class="py">name</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">fun</span> <span class="nf">greet</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;Hello, $name&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">fun</span> <span class="nf">main</span><span class="p">(</span><span class="k">vararg</span> <span class="n">args</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">Greeter</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="m">0</span><span class="p">]).</span><span class="n">greet</span><span class="p">()</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>KotlinPoetの紹介は<a href="https://youtu.be/_obNBSldffw">KotlinConfの動画</a>を観ると良いです。</p>
+
+<h1>KotlinPoetの考え方</h1>
+
+<p>実は上記のコード一点、非常に<strong>面白い</strong>点があります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">class</span> <span class="nc">Greeter</span><span class="p">(</span><span class="k">val</span> <span class="py">name</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>primary constructorの生成です。KotlinPoetの以下の部分で生成しています。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">file</span> <span class="p">=</span> <span class="n">FileSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;HelloWorld&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">addType</span><span class="p">(</span><span class="n">TypeSpec</span><span class="p">.</span><span class="n">classBuilder</span><span class="p">(</span><span class="s">&quot;Greeter&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">primaryConstructor</span><span class="p">(</span><span class="n">FunSpec</span><span class="p">.</span><span class="n">constructorBuilder</span><span class="p">()</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">addParameter</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">String</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">addProperty</span><span class="p">(</span><span class="n">PropertySpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">String</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">initializer</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>valの<code>name</code>をprimary constructorに入れるだけなのですが、KotlinPoetでは3回も<code>name</code>と記述しています。</p>
+
+<p>せっかくなので、一つずつ見ていきましょう。まずPropertyを生成する場合、以下のコードになります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">file</span> <span class="p">=</span> <span class="n">FileSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;HelloWorld&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="n">addType</span><span class="p">(</span><span class="n">TypeSpec</span><span class="p">.</span><span class="n">classBuilder</span><span class="p">(</span><span class="s">&quot;Greeter&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">addProperty</span><span class="p">(</span><span class="n">PropertySpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">String</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以下のコードが生成されます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">class</span> <span class="nc">Greeter</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="py">name</span><span class="p">:</span> <span class="n">String</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>次にprimary constructorに<code>name</code>入れたい為、primary constructorの設定を記述します。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='diff'><span class='line'>val file = FileSpec.builder(&quot;&quot;, &quot;HelloWorld&quot;)
+</span><span class='line'>    .addType(TypeSpec.classBuilder(&quot;Greeter&quot;)
+</span><span class='line'>        .primaryConstructor(FunSpec.constructorBuilder()
+</span><span class='line'>            .addParameter(&quot;name&quot;, String::class)
+</span><span class='line'>            .build())
+</span><span class='line'><span class="gi">+       .addProperty(PropertySpec.builder(&quot;name&quot;, String::class)</span>
+</span><span class='line'><span class="gi">+           .build())</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>そうするとこんなコードが生成されます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">class</span> <span class="nc">Greeter</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="py">name</span><span class="p">:</span> <span class="n">String</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最後にprimary constructorとpropertyを連結するため、初期化方法を記述します。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='diff'><span class='line'>val file = FileSpec.builder(&quot;&quot;, &quot;HelloWorld&quot;)
+</span><span class='line'>    .addType(TypeSpec.classBuilder(&quot;Greeter&quot;)
+</span><span class='line'>        .primaryConstructor(FunSpec.constructorBuilder()
+</span><span class='line'>            .addParameter(&quot;name&quot;, String::class)
+</span><span class='line'>            .build())
+</span><span class='line'>        .addProperty(PropertySpec.builder(&quot;name&quot;, String::class)
+</span><span class='line'><span class="gi">+           .initializer(&quot;name&quot;)</span>
+</span><span class='line'>            .build())
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでようやく以下のコードが生成されるようになります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">class</span> <span class="nc">Greeter</span><span class="p">(</span><span class="k">val</span> <span class="py">name</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これは、記述されたコードは全て生成する。最適化はKotlinPoetがする。というKotlinPoetの考えからきているそうです。</p>
+
+<p>KotlinConfの動画でも解説されていますので確認して見てください。 <a href="https://youtu.be/_obNBSldffw?t=20m40s">https://youtu.be/_obNBSldffw?t=20m40s</a></p>
+
+<p>若干文法が違ったり、上記のような隠れた癖がある為、JavaPoetに慣れている方は最初戸惑うことがあるかもしれませんので、生成後のコードをしっかり確認した方が良いです。</p>
+
+<p>ちなみにPermissionsDispatcherはKotlinPoetのこの挙動を知らず、<a href="https://github.com/permissions-dispatcher/PermissionsDispatcher/commit/ddf14a1dd005d5fbb9bb51b445815d6af7e7125f">誤って外に出てしまったpropertyをコンストラクタに詰める為の修正</a>をv3.0.1で入れています:joy:</p>
+
+<p>その時の開発者のつぶやきです。</p>
+
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">parameterとproperty作成して、property側のinitializerに変数名を入れるというまじかよ！って方法で達成した。なぜできるのか？という疑問は後で調査しよう。</p>&mdash; shiraji (@shiraj_i) <a href="https://twitter.com/shiraj_i/status/909327774044663808?ref_src=twsrc%5Etfw">2017年9月17日</a></blockquote>
+
+
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<h1>その他の代表的なコードの生成方法</h1>
+
+<p>ファイル、クラス、クラスメンバー、プライマリコンストラクター、トップレベルの関数に関しては上記サンプルコードをみてください。</p>
+
+<p>それ以外のよく使いそうなコードの生成方法をメモしておきます。</p>
+
+<h2>コメント</h2>
+
+<p>kotlinpoetのコード</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">file</span> <span class="p">=</span> <span class="n">FileSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;com.github.shiraji&quot;</span><span class="p">,</span> <span class="s">&quot;HelloWorld&quot;</span><span class="p">).</span><span class="n">addComment</span><span class="p">(</span><span class="s">&quot;コメント&quot;</span><span class="p">).</span><span class="n">build</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>生成されるコード</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="c1">// コメント</span>
+</span><span class='line'><span class="k">package</span> <span class="nn">com.github.shiraji</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>FileSpec.Builder</code>の<code>addComment</code>を利用している為、ファイル上部にコメントしていますが、Builderの種類(TypeSpec.Builderなど)によりコメント位置が調整されます。</p>
+
+<h2>フォーマット</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">message</span> <span class="p">=</span> <span class="s">&quot;ふふふ&quot;</span>
+</span><span class='line'><span class="k">val</span> <span class="py">file</span> <span class="p">=</span> <span class="n">FileSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;com.github.shiraji&quot;</span><span class="p">,</span> <span class="s">&quot;HelloWorld&quot;</span><span class="p">).</span><span class="n">addComment</span><span class="p">(</span><span class="s">&quot;コメント %L&quot;</span><span class="p">,</span> <span class="n">message</span><span class="p">).</span><span class="n">build</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="c1">// コメント ふふふ</span>
+</span><span class='line'><span class="k">package</span> <span class="nn">com.github.shiraji</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>フォーマットはJavaPoetと違い<code>%</code>を利用します。その他のフォーマットは<a href="https://square.github.io/kotlinpoet/0.x/kotlinpoet/com.squareup.kotlinpoet/-code-block/index.html">こちら</a>を参照してください。</p>
+
+<p><em>これ以降のコードはあまりフォーマットを利用していませんが、本来はこのフォーマットを使う方が良いです。</em></p>
+
+<h2>initメソッド</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">file</span> <span class="p">=</span> <span class="n">FileSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;com.github.shiraji&quot;</span><span class="p">,</span> <span class="s">&quot;HelloWorld&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">addType</span><span class="p">(</span><span class="n">TypeSpec</span><span class="p">.</span><span class="n">classBuilder</span><span class="p">(</span><span class="s">&quot;Greeter&quot;</span><span class="p">)</span>
+</span><span class='line'>                <span class="p">.</span><span class="n">addInitializerBlock</span><span class="p">(</span><span class="n">CodeBlock</span><span class="p">.</span><span class="n">builder</span><span class="p">()</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">addStatement</span><span class="p">(</span><span class="s">&quot;val i = 10&quot;</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>                <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">build</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">package</span> <span class="nn">com.github.shiraji</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Greeter</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">init</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="py">i</span> <span class="p">=</span> <span class="m">10</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Secondary Constructor</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">file</span> <span class="p">=</span> <span class="n">FileSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;com.github.shiraji&quot;</span><span class="p">,</span> <span class="s">&quot;HelloWorld&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">addType</span><span class="p">(</span><span class="n">TypeSpec</span><span class="p">.</span><span class="n">classBuilder</span><span class="p">(</span><span class="s">&quot;Greeter&quot;</span><span class="p">)</span>
+</span><span class='line'>                <span class="p">.</span><span class="n">primaryConstructor</span><span class="p">(</span><span class="n">FunSpec</span><span class="p">.</span><span class="n">constructorBuilder</span><span class="p">()</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">addParameter</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">String</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>                <span class="p">.</span><span class="n">addFunction</span><span class="p">(</span><span class="n">FunSpec</span><span class="p">.</span><span class="n">constructorBuilder</span><span class="p">()</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">callThisConstructor</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)</span> <span class="c1">// callSuperConstructorもあります。</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">addParameter</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">String</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">addParameter</span><span class="p">(</span><span class="s">&quot;lastname&quot;</span><span class="p">,</span> <span class="n">String</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>                <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">build</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">package</span> <span class="nn">com.github.shiraji</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">import</span> <span class="nn">kotlin.String</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Greeter</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">constructor</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span> <span class="n">lastname</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">:</span> <span class="k">this</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>拡張関数</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">file</span> <span class="p">=</span> <span class="n">FileSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;com.github.shiraji&quot;</span><span class="p">,</span> <span class="s">&quot;HelloWorld&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">addType</span><span class="p">(</span><span class="n">TypeSpec</span><span class="p">.</span><span class="n">classBuilder</span><span class="p">(</span><span class="s">&quot;Greeter&quot;</span><span class="p">)</span>
+</span><span class='line'>                <span class="p">.</span><span class="n">addFunction</span><span class="p">(</span><span class="n">FunSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">receiver</span><span class="p">(</span><span class="n">String</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>                <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">build</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">package</span> <span class="nn">com.github.shiraji</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">import</span> <span class="nn">kotlin.String</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Greeter</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">fun</span> <span class="nf">String</span><span class="p">.</span><span class="n">foo</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Class修飾子(Dataクラス)</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">file</span> <span class="p">=</span> <span class="n">FileSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;com.github.shiraji&quot;</span><span class="p">,</span> <span class="s">&quot;HelloWorld&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">addType</span><span class="p">(</span><span class="n">TypeSpec</span><span class="p">.</span><span class="n">classBuilder</span><span class="p">(</span><span class="s">&quot;Foo&quot;</span><span class="p">)</span>
+</span><span class='line'>                <span class="p">.</span><span class="n">addModifiers</span><span class="p">(</span><span class="n">KModifier</span><span class="p">.</span><span class="n">DATA</span><span class="p">)</span> <span class="c1">// KModifier.ENUMなどもあります</span>
+</span><span class='line'>                <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">package</span> <span class="nn">com.github.shiraji</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">data</span> <span class="k">class</span> <span class="nc">Foo</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>if/else</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">file</span> <span class="p">=</span> <span class="n">FileSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;com.github.shiraji&quot;</span><span class="p">,</span> <span class="s">&quot;HelloWorld&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">addType</span><span class="p">(</span><span class="n">TypeSpec</span><span class="p">.</span><span class="n">classBuilder</span><span class="p">(</span><span class="s">&quot;Greeter&quot;</span><span class="p">)</span>
+</span><span class='line'>                <span class="p">.</span><span class="n">addFunction</span><span class="p">(</span><span class="n">FunSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">beginControlFlow</span><span class="p">(</span><span class="s">&quot;if (true)&quot;</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">addStatement</span><span class="p">(</span><span class="s">&quot;val i1 = 10&quot;</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">endControlFlow</span><span class="p">()</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">beginControlFlow</span><span class="p">(</span><span class="s">&quot;else&quot;</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">addStatement</span><span class="p">(</span><span class="s">&quot;val i2 = 20&quot;</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">endControlFlow</span><span class="p">()</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>                <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">build</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">package</span> <span class="nn">com.github.shiraji</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Greeter</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">fun</span> <span class="nf">foo</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">val</span> <span class="py">i1</span> <span class="p">=</span> <span class="m">10</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">val</span> <span class="py">i2</span> <span class="p">=</span> <span class="m">20</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>when</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">file</span> <span class="p">=</span> <span class="n">FileSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;com.github.shiraji&quot;</span><span class="p">,</span> <span class="s">&quot;HelloWorld&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">addType</span><span class="p">(</span><span class="n">TypeSpec</span><span class="p">.</span><span class="n">classBuilder</span><span class="p">(</span><span class="s">&quot;Greeter&quot;</span><span class="p">)</span>
+</span><span class='line'>                <span class="p">.</span><span class="n">addFunction</span><span class="p">(</span><span class="n">FunSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">addStatement</span><span class="p">(</span><span class="s">&quot;val i = 10&quot;</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">beginControlFlow</span><span class="p">(</span><span class="s">&quot;when(i)&quot;</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">beginControlFlow</span><span class="p">(</span><span class="s">&quot;10 -&gt;&quot;</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">addStatement</span><span class="p">(</span><span class="s">&quot;println(\&quot;foo\&quot;)&quot;</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">endControlFlow</span><span class="p">()</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">beginControlFlow</span><span class="p">(</span><span class="s">&quot;20 -&gt;&quot;</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">addStatement</span><span class="p">(</span><span class="s">&quot;println(\&quot;foo222\&quot;)&quot;</span><span class="p">)</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">endControlFlow</span><span class="p">()</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">endControlFlow</span><span class="p">()</span>
+</span><span class='line'>                        <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>                <span class="p">.</span><span class="n">build</span><span class="p">())</span>
+</span><span class='line'>        <span class="p">.</span><span class="n">build</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">package</span> <span class="nn">com.github.shiraji</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Greeter</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">fun</span> <span class="nf">foo</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="py">i</span> <span class="p">=</span> <span class="m">10</span>
+</span><span class='line'>    <span class="k">when</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="m">10</span> <span class="p">-&gt;</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">println</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="m">20</span> <span class="p">-&gt;</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">println</span><span class="p">(</span><span class="s">&quot;foo222&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>インデント</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">file</span> <span class="p">=</span> <span class="n">FileSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;com.github.shiraji&quot;</span><span class="p">,</span> <span class="s">&quot;HelloWorld&quot;</span><span class="p">).</span><span class="n">addComment</span><span class="p">(</span><span class="s">&quot;%&gt;コメント&quot;</span><span class="p">).</span><span class="n">build</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'>  <span class="c1">// コメント</span>
+</span><span class='line'>  <span class="k">package</span> <span class="nn">com.github.shiraji</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>アンインデントされるまでインデントされ続けます。</p>
+
+<h2>アンインデント</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'><span class="k">val</span> <span class="py">file</span> <span class="p">=</span> <span class="n">FileSpec</span><span class="p">.</span><span class="n">builder</span><span class="p">(</span><span class="s">&quot;com.github.shiraji&quot;</span><span class="p">,</span> <span class="s">&quot;HelloWorld&quot;</span><span class="p">).</span><span class="n">addComment</span><span class="p">(</span><span class="s">&quot;%&gt;コメント%&lt;&quot;</span><span class="p">).</span><span class="n">build</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='kotlin'><span class='line'>  <span class="c1">// コメント</span>
+</span><span class='line'><span class="k">package</span> <span class="nn">com.github.shiraji</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>APIドキュメント</h1>
+
+<p>その他知りたければ、KotlinPoetの<a href="https://square.github.io/kotlinpoet/0.x/kotlinpoet/com.squareup.kotlinpoet/index.html">APIドキュメント</a>を確認して下さい。(v0.x系以降のドキュメントはURLが変更されるかも？)</p>
+
+<h1>最後に</h1>
+
+<p>PermissionsDispatcherの<a href="https://github.com/permissions-dispatcher/PermissionsDispatcher/tree/123e50a184e058ad6b4adb0b659a343d79813913/processor/src/main/kotlin/permissions/dispatcher/processor/impl/kotlin">この辺り</a>を眺めるとKotlinPoetの実装の参考になると思います。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[PermissionsDispatcher V3に関して]]></title>
