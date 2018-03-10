@@ -94,4 +94,35 @@ If you cannot build or run the project, ask other kontributors! In next section,
 
 ## Communication
 
+Communication is one of the key success factor for Kontribution.
+
+I will introduce 3 tools that Kontributors usually use.
+
+### Slack
+
+Slack is one of most important communication tool for Kontributors. In case you are not join `Kotlinlang` team, get the invitation from http://slack.kotlinlang.org
+
+There is public channel `kontributors`. This is the one that most of contributors and JetBrains stuff are staying.
+
+If you have trouble building Kotlin project or anything that is related to Kontribution, ask those questions at this channel.
+
+Normally, people respond within one business day.
+
+### YouTrack
+
+The second one is [YouTrack](https://www.jetbrains.com/youtrack/). YouTrack is the issue management tool that JetBrains developed. 
+
+Kotlin's public issues are listed https://youtrack.jetbrains.com/issues/KT
+
+You can work any issues if there is no assignees or no progress. 
+
+In case you are not sure which issue you want to work with, check for `up-for-grabs` tag or https://youtrack.jetbrains.com/issues/KT?q=tag:%20%7BUp%20For%20Grabs%7D%20%23Unresolved These issues are free to contribute.
+
+After you find the issue you want to work with, the first thing you should do is comment "I'm going to do this". Since we are external contributors, JetBrains staff are not able to assign our name as assignee. However, once you comment the issue, you are treated as assignee.
+
+### GitHub
+
+The last one is GitHub. GitHub is where JetBrains staff give us a feedback of your pull request. GitHub are not used for a lot of communication, except [KEEP](https://github.com/Kotlin/KEEP).
+
+After sending pull request, I recommend to write pull request URL to YouTrack's issue. This is because JetBrains staff don't look at GitHub. They constantly check YouTrack but not GitHub. If you comment URL to the issue, the issue goes to top of the list. So, they can easily notice there is some progress for the issue.
 
