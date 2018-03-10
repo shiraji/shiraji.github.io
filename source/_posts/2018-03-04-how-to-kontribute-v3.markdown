@@ -100,6 +100,8 @@ I will introduce 3 tools that Kontributors usually use.
 
 ### Slack
 
+<img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/slack_rgb.png" width="250" style="border: none;" />
+
 Slack is one of most important communication tool for Kontributors. In case you are not join `Kotlinlang` team, get the invitation from http://slack.kotlinlang.org
 
 There is public channel `kontributors`. This is the one that most of contributors and JetBrains stuff are staying.
@@ -109,6 +111,8 @@ If you have trouble building Kotlin project or anything that is related to Kontr
 Normally, people respond within one business day.
 
 ### YouTrack
+
+<img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/logo-text.png" width="250" style="border: none; padding: 16px" />
 
 The second one is [YouTrack](https://www.jetbrains.com/youtrack/). YouTrack is the issue management tool that JetBrains developed. 
 
@@ -121,6 +125,8 @@ In case you are not sure which issue you want to work with, check for `up-for-gr
 After you find the issue you want to work with, the first thing you should do is comment "I'm going to do this". Since we are external contributors, JetBrains staff are not able to assign our name as assignee. However, once you comment the issue, you are treated as assignee.
 
 ### GitHub
+
+<img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/GitHub_Logo.png" width="250" style="border: none;" />
 
 The last one is GitHub. GitHub is where JetBrains staff give us a feedback of your pull request. GitHub are not used for a lot of communication, except [KEEP](https://github.com/Kotlin/KEEP).
 
