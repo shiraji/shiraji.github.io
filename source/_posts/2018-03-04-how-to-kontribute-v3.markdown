@@ -24,11 +24,13 @@ I talked about this topic a few times in many places. After speaking at DroidKai
 
 This blog entry does not explain how to use git/github and how to write Kotlin.
 
+Since I mainly contribute to Kotlin plguin features, this blog post focus on how to contribute kotlin plugin. However, once you undersntand how to do it, it is really easy to contribute to Kotlin Languages, Kotlin JS or Kotlin Native because it is in the same repository.
+
 ## Outline
 
 * Setup
 * Communication
-* Recommended Ways to Kontribute
+* 1st Recommended Ways to Kontribute
 * Developing/Testing Kotlin plugin
 
 ## Setup
@@ -131,4 +133,73 @@ After you find the issue you want to work with, the first thing you should do is
 The last one is GitHub. GitHub is where JetBrains staff give us a feedback of your pull request. GitHub are not used for a lot of communication, except [KEEP](https://github.com/Kotlin/KEEP).
 
 After sending pull request, I recommend to write pull request URL to YouTrack's issue. This is because JetBrains staff don't look at GitHub. They constantly check YouTrack but not GitHub. If you comment URL to the issue, the issue goes to top of the list. So, they can easily notice there is some progress for the issue.
+
+## 1st Recommended Ways to Kontribute
+
+OK, now let's actually work with project. There are 2 recommended ways for 1st commit of Kotlin.
+
+* Adding documentation or comment
+* Providing sample codes
+
+### Adding documentations or comment
+
+Adding documentation or comment is one of best ways to start contribute any OSS including Kotlin. My first commit is also [fixing URL of README](https://github.com/JetBrains/kotlin/commit/68dd3dde59b0a339819407cfdf0c465809092e75)
+
+JetBrains says that they want the documentation for standard library. Find a class or a function which are not documented well from https://kotlinlang.org/api/latest/jvm/stdlib/index.html You may think there are not much function that is not documented. Trust me, you can find at least 10 undocumented functions within 1 min!
+
+### Providing sample codes
+
+If you are not good English writer like me, then providing samples are the better way to start contributing Kotlin. https://youtrack.jetbrains.com/issue/KT-20357 is the issue for samples. This issue is especially for new Kontributors.
+
+There are 4 steps to provide sample codes
+
+![samples-steps](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.028.jpg)
+
+Comment the target API to the issue
+
+![first_comment](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/first_comment.png)
+
+Then, write sample code.
+
+```kotlin
+@Sample
+fun groupBy() {
+}
+```
+
+The method name can be anything but don't add `test` as prefix/postfix because it is not test. Then add sample code inside the method.
+
+```kotlin
+@Sample
+fun groupBy() {
+    val words = listOf("a", "abc", "ab", "def", "abcd")
+    val byLength = words.groupBy { it.length }
+
+    assertPrints(byLength.keys, "[1, 3, 2, 4]")
+    assertPrints(byLength.values, "[[a], [abc, def], [ab], [abcd]]")
+
+    val mutableByLength: MutableMap<Int, MutableList<String>> = words.groupByTo(mutableMapOf()) { it.length }
+    // same content as in byLength map, but the map is mutable
+    assertTrue(mutableByLength == byLength)
+}
+```
+
+There are no hard restriction for writing samples. You can add comment if it is helpful for other developers.
+
+After that, in order to connect with sample code and target method, comment to the target method with `@FQN of the sample method`
+
+```kotlin
+/**
+...
+ * @sample samples.collections.Collections.Transformations.groupBy
+ */
+public inline fun <T, K> Iterable<T>.groupBy(keySelector: (T) -> K): Map<K, List<T>> {
+```
+
+Now, you are ready. Send Pull Request. Then, update you comment with pull request URL
+
+![first_comment2](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/first_comment2.png)
+
+After the pull request get merged, in some point, you can see your sample code in official documentation http://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/group-by.html
+
 
