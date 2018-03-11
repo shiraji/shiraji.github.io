@@ -10,6 +10,18 @@ description: Describe how to contribute Kotlin in 2018
 
 This blog post describes how to start Kontribute.
 
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<!-- more -->
+
 ## Who am I?
 
 ![intro](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.002.jpg)
@@ -200,6 +212,17 @@ Now, you are ready. Send Pull Request. Then, update you comment with pull reques
 
 ![first_comment2](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/first_comment2.png)
 
+That's it! Easy! Now, if you want to provide the sample code, please read README for sample code, too.
+https://github.com/JetBrains/kotlin/blob/master/libraries/stdlib/samples/ReadMe.md
+
 After the pull request get merged, in some point, you can see your sample code in official documentation http://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/group-by.html
+
+## Developing/Testing Kotlin plugin
+
+This section describes how to develop kotlin plugin features Intention and Inspection. Intention and Inspection are the two of Frequently Asked Features. These are the short description of Intention and Inspection.
+
+![intention](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.036.jpg)
+
+![inspection](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.036-2.jpeg)
 
 
