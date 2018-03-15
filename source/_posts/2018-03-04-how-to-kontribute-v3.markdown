@@ -8,7 +8,7 @@ keywords: Kotlin Kontribute Kontributor
 description: Describe how to contribute Kotlin in 2018
 ---
 
-This blog post describes how to start Kontribute.
+This blog post describes how to start Kontribute or how to start contributing [Kotlin](https://kotlinlang.org/).
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- 728x90 -->
@@ -26,9 +26,9 @@ This blog post describes how to start Kontribute.
 
 ![intro](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.002.jpg)
 
-I've been kontributors since July 2016. I made more than 60 commits by now. I love Kotlin, my beautiful wife and son.
+I've been kontributors since July 2016. I made more than 60 commits by now. I love Kotlin, my beautiful wife and lovely son.
 
-I talked about this topic a few times in many places. After speaking at DroidKaigi 2018 and Kotlin Night Kolkata, I thought making blog post in English is also helpful for new Kontributors. I am too lazy to write this from scratch, so I re-used some of slides from those presentation.
+I talked about this topic a few times in different places. After speaking at DroidKaigi 2018 and Kotlin Night Kolkata, some people gave me feed back that it is also helpful for new Kontributors if I make a blog post in English. I am too lazy to write this from scratch, so I re-used some of contents from those presentation.
 
 ## Prerequisite
 
@@ -219,7 +219,7 @@ After the pull request get merged, in some point, you can see your sample code i
 
 ## Developing/Testing Kotlin plugin
 
-This section describes how to develop kotlin plugin features Intention and Inspection. Intention and Inspection are the two of Frequently Asked Features. These are the short description of Intention and Inspection.
+This section describes how to develop kotlin plugin features, Intention and Inspection. Intention and Inspection are the two of Frequently Asked Features. These are the short description of Intention and Inspection.
 
 ![intention](https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.036.jpg)
 
