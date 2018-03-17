@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Kotlin | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/kotlin/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2018-03-17T21:18:27+09:00</updated>
+  <updated>2018-03-17T21:28:32+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -20,7 +20,13 @@
     <id>http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-recommend</id>
     <content type="html"><![CDATA[<p>This blog post describes how to start Kontribute or how to start contributing <a href="https://kotlinlang.org/">Kotlin</a>.</p>
 
-<p>This blog entry is third one. If you don&rsquo;t read first one, please go to <a href="http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup/">http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup/</a></p>
+<ul>
+<li><a href="http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-setup/">Setup</a></li>
+<li><a href="http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-communication/">Communication</a></li>
+<li><a href="http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-recommend/">1st Recommended Ways to Kontribute</a> &lt;- <strong>Now</strong></li>
+<li>Developing/Testing Kotlin plugin</li>
+</ul>
+
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
@@ -121,7 +127,13 @@ public inline fun &lt;T, K&gt; Iterable&lt;T&gt;.groupBy(keySelector: (T) -&gt; 
     <id>http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-communication</id>
     <content type="html"><![CDATA[<p>This blog post describes how to start Kontribute or how to start contributing <a href="https://kotlinlang.org/">Kotlin</a>.</p>
 
-<p>This blog entry is second one. If you don&rsquo;t read first one, please go to <a href="http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup/">http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup/</a></p>
+<ul>
+<li><a href="http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-setup/">Setup</a></li>
+<li><a href="http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-communication/">Communication</a> &lt;- <strong>Now</strong></li>
+<li><a href="http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-recommend/">1st Recommended Ways to Kontribute</a></li>
+<li>Developing/Testing Kotlin plugin</li>
+</ul>
+
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
@@ -233,9 +245,9 @@ public inline fun &lt;T, K&gt; Iterable&lt;T&gt;.groupBy(keySelector: (T) -&gt; 
 <h2>Outline</h2>
 
 <ul>
-<li>Setup</li>
-<li>Communication</li>
-<li>1st Recommended Ways to Kontribute</li>
+<li><a href="http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-setup/">Setup</a></li>
+<li><a href="http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-communication/">Communication</a></li>
+<li><a href="http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-recommend/">1st Recommended Ways to Kontribute</a></li>
 <li>Developing/Testing Kotlin plugin</li>
 </ul>
 
