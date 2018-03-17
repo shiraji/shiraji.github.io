@@ -40,9 +40,9 @@ Since I mainly contribute to Kotlin plguin features, this blog post focus on how
 
 ## Outline
 
-* Setup
-* Communication
-* 1st Recommended Ways to Kontribute
+* [Setup](http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-setup/)
+* [Communication](http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-communication/)
+* [1st Recommended Ways to Kontribute](http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-recommend/)
 * Developing/Testing Kotlin plugin
 
 ## Setup

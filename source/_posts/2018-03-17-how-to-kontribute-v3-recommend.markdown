@@ -10,7 +10,10 @@ description: Describe how to contribute Kotlin in 2018
 
 This blog post describes how to start Kontribute or how to start contributing [Kotlin](https://kotlinlang.org/).
 
-This blog entry is third one. If you don't read first one, please go to http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup/
+* [Setup](http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-setup/)
+* [Communication](http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-communication/)
+* [1st Recommended Ways to Kontribute](http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-recommend/) <- **Now**
+* Developing/Testing Kotlin plugin
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- 728x90 -->
