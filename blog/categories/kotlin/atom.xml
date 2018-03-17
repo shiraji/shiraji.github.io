@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Kotlin | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/kotlin/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2018-03-17T20:30:48+09:00</updated>
+  <updated>2018-03-17T21:18:27+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -14,10 +14,183 @@
 
   
   <entry>
+    <title type="html"><![CDATA[How to Kontribute (V3) - Recommended Way]]></title>
+    <link href="http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-recommend/"/>
+    <updated>2018-03-17T00:00:03+09:00</updated>
+    <id>http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-recommend</id>
+    <content type="html"><![CDATA[<p>This blog post describes how to start Kontribute or how to start contributing <a href="https://kotlinlang.org/">Kotlin</a>.</p>
+
+<p>This blog entry is third one. If you don&rsquo;t read first one, please go to <a href="http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup/">http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup/</a></p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<p>OK, now let&rsquo;s actually work with project. There are 2 recommended ways for 1st commit of Kotlin.</p>
+
+<ul>
+<li>Adding documentation or comment</li>
+<li>Providing sample codes</li>
+</ul>
+
+
+<h3>Adding documentations or comment</h3>
+
+<p>Adding documentation or comment is one of best ways to start contribute any OSS including Kotlin. My first commit is also <a href="https://github.com/JetBrains/kotlin/commit/68dd3dde59b0a339819407cfdf0c465809092e75">fixing URL of README</a></p>
+
+<p>JetBrains says that they want the documentation for standard library. Find a class or a function which are not documented well from <a href="https://kotlinlang.org/api/latest/jvm/stdlib/index.html">https://kotlinlang.org/api/latest/jvm/stdlib/index.html</a> You may think there are not much function that is not documented. Trust me, you can find at least 10 undocumented functions within 1 min!</p>
+
+<h3>Providing sample codes</h3>
+
+<p>If you are not good English writer like me, then providing samples are the better way to start contributing Kotlin. <a href="https://youtrack.jetbrains.com/issue/KT-20357">https://youtrack.jetbrains.com/issue/KT-20357</a> is the issue for samples. This issue is especially for new Kontributors.</p>
+
+<p>There are 4 steps to provide sample codes</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.028.jpg" alt="samples-steps" /></p>
+
+<p>Comment the target API to the issue</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/first_comment.png" alt="first_comment" /></p>
+
+<p>Then, write sample code.</p>
+
+<pre><code class="kotlin">@Sample
+fun groupBy() {
+}
+</code></pre>
+
+<p>The method name can be anything but don&rsquo;t add <code>test</code> as prefix/postfix because it is not test. Then add sample code inside the method.</p>
+
+<pre><code class="kotlin">@Sample
+fun groupBy() {
+    val words = listOf("a", "abc", "ab", "def", "abcd")
+    val byLength = words.groupBy { it.length }
+
+    assertPrints(byLength.keys, "[1, 3, 2, 4]")
+    assertPrints(byLength.values, "[[a], [abc, def], [ab], [abcd]]")
+
+    val mutableByLength: MutableMap&lt;Int, MutableList&lt;String&gt;&gt; = words.groupByTo(mutableMapOf()) { it.length }
+    // same content as in byLength map, but the map is mutable
+    assertTrue(mutableByLength == byLength)
+}
+</code></pre>
+
+<p>There are no hard restriction for writing samples. You can add comment if it is helpful for other developers.</p>
+
+<p>After that, in order to connect with sample code and target method, comment to the target method with <code>@FQN of the sample method</code></p>
+
+<pre><code class="kotlin">/**
+...
+ * @sample samples.collections.Collections.Transformations.groupBy
+ */
+public inline fun &lt;T, K&gt; Iterable&lt;T&gt;.groupBy(keySelector: (T) -&gt; K): Map&lt;K, List&lt;T&gt;&gt; {
+</code></pre>
+
+<p>Now, you are ready. Send Pull Request. Then, update you comment with pull request URL</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/first_comment2.png" alt="first_comment2" /></p>
+
+<p>That&rsquo;s it! Easy! Now, if you want to provide the sample code, please read README for sample code, too.
+<a href="https://github.com/JetBrains/kotlin/blob/master/libraries/stdlib/samples/ReadMe.md">https://github.com/JetBrains/kotlin/blob/master/libraries/stdlib/samples/ReadMe.md</a></p>
+
+<p>After the pull request get merged, in some point, you can see your sample code in official documentation <a href="http://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/group-by.html">http://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/group-by.html</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How to Kontribute (V3) - Communication]]></title>
+    <link href="http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-communication/"/>
+    <updated>2018-03-17T00:00:02+09:00</updated>
+    <id>http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-communication</id>
+    <content type="html"><![CDATA[<p>This blog post describes how to start Kontribute or how to start contributing <a href="https://kotlinlang.org/">Kotlin</a>.</p>
+
+<p>This blog entry is second one. If you don&rsquo;t read first one, please go to <a href="http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup/">http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup/</a></p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h2>Communication</h2>
+
+<p>Communication is one of the key success factor for Kontribution.</p>
+
+<p>I will introduce 3 tools that Kontributors usually use.</p>
+
+<h3>Slack</h3>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/slack_rgb.png" width="250" style="border: none;" /></p>
+
+<p>Slack is one of most important communication tool for Kontributors. In case you are not join <code>Kotlinlang</code> team, get the invitation from <a href="http://slack.kotlinlang.org">http://slack.kotlinlang.org</a></p>
+
+<p>There is public channel <code>kontributors</code>. This is the one that most of contributors and JetBrains stuff are staying.</p>
+
+<p>If you have trouble building Kotlin project or anything that is related to Kontribution, ask those questions at this channel.</p>
+
+<p>Normally, people respond within one business day.</p>
+
+<h3>YouTrack</h3>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/logo-text.png" width="250" style="border: none; padding: 16px" /></p>
+
+<p>The second one is <a href="https://www.jetbrains.com/youtrack/">YouTrack</a>. YouTrack is the issue management tool that JetBrains developed.</p>
+
+<p>Kotlin&rsquo;s public issues are listed <a href="https://youtrack.jetbrains.com/issues/KT">https://youtrack.jetbrains.com/issues/KT</a></p>
+
+<p>You can work any issues if there is no assignees or no progress.</p>
+
+<p>In case you are not sure which issue you want to work with, check for <code>up-for-grabs</code> tag or <a href="https://youtrack.jetbrains.com/issues/KT?q=tag:%20%7BUp%20For%20Grabs%7D%20%23Unresolved">https://youtrack.jetbrains.com/issues/KT?q=tag:%20%7BUp%20For%20Grabs%7D%20%23Unresolved</a> These issues are free to contribute.</p>
+
+<p>After you find the issue you want to work with, the first thing you should do is comment &ldquo;I&rsquo;m going to do this&rdquo;. Since we are external contributors, JetBrains staff are not able to assign our name as assignee. However, once you comment the issue, you are treated as assignee.</p>
+
+<h3>GitHub</h3>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/GitHub_Logo.png" width="250" style="border: none;" /></p>
+
+<p>The last one is GitHub. GitHub is where JetBrains staff give us a feedback of your pull request. GitHub are not used for a lot of communication, except <a href="https://github.com/Kotlin/KEEP">KEEP</a>.</p>
+
+<p>After sending pull request, I recommend to write pull request URL to YouTrack&rsquo;s issue. This is because JetBrains staff don&rsquo;t look at GitHub. They constantly check YouTrack but not GitHub. If you comment URL to the issue, the issue goes to top of the list. So, they can easily notice there is some progress for the issue.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[How to Kontribute (V3) - Setup]]></title>
-    <link href="http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup/"/>
-    <updated>2018-03-04T00:00:01+09:00</updated>
-    <id>http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup</id>
+    <link href="http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-setup/"/>
+    <updated>2018-03-17T00:00:01+09:00</updated>
+    <id>http://shiraji.github.io/blog/2018/03/17/how-to-kontribute-v3-setup</id>
     <content type="html"><![CDATA[<p>This blog post describes how to start Kontribute or how to start contributing <a href="https://kotlinlang.org/">Kotlin</a>.</p>
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -745,263 +918,6 @@ private class MainActivityShowContactsPermissionRequest(target: MainActivity) : 
 <p>PermissionsDispatcherは非常に良いライブラリで、新しい仕組みも積極的に取り入れています。一緒に開発しませんか？</p>
 
 <p>また、最近、ビルド出来ない。使い方がわからない。などなどREADME読んでません的なissueに上がってきます。これの対応に時間を割いてしまい、開発が滞りガチです。もし、PermissionsDispatcherに対して何か貢献したい！と言う方は、 このようなissueの対応や調査などなどお手伝いして頂けると非常に助かります。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Visualize Kotlin substringXxx Methods]]></title>
-    <link href="http://shiraji.github.io/blog/2017/06/19/string-dot-substring-methods/"/>
-    <updated>2017-06-19T04:41:47+09:00</updated>
-    <id>http://shiraji.github.io/blog/2017/06/19/string-dot-substring-methods</id>
-    <content type="html"><![CDATA[<p>I found very hard time to memorize the following methods.</p>
-
-<ul>
-<li>substringAfter</li>
-<li>substringAfterLast</li>
-<li>substringBefore</li>
-<li>substringBeforeLast</li>
-</ul>
-
-
-<p>Here is the visuals that illustrate the differences between these methods.</p>
-
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-
-<!-- 728x90 -->
-
-
-<p><ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-3940616565912592"
-     data-ad-slot="7693358062"></ins></p>
-
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-
-
-
-<!-- more -->
-
-
-<h2>substringAfter</h2>
-
-<p><code>substringAfter</code> tries to find the character(s) from &ldquo;beginning&rdquo;, and substrings &ldquo;after&rdquo; the characters</p>
-
-<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/substrings/substringAfter.png" alt="substringAfter" /></p>
-
-<h2>substringAfterLast</h2>
-
-<p><code>substringAfterLast</code> tries to find the character(s) from &ldquo;last&rdquo;, and substrings &ldquo;after&rdquo; the characters</p>
-
-<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/substrings/substringAfterLast.png" alt="substringAfterLast" /></p>
-
-<h2>substringBefore</h2>
-
-<p><code>substringBefore</code> tries to find the character(s) from &ldquo;beginning&rdquo;, and substrings &ldquo;before&rdquo; the characters</p>
-
-<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/substrings/substringBefore.png" alt="substringBefore" /></p>
-
-<h2>substringBeforeLast</h2>
-
-<p><code>substringBeforeLast</code> tries to find the character(s) from &ldquo;last&rdquo;, and substrings &ldquo;before&rdquo; the characters</p>
-
-<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/substrings/substringBeforeLast.png" alt="substringBeforeLast" /></p>
-
-<h1>Text Summary</h1>
-
-<p>The following list is the summary of these methods.</p>
-
-<ul>
-<li>&ldquo;Last&rdquo; -> find a match from the end</li>
-<li>no &ldquo;Last&rdquo; -> find a match from the beginning</li>
-<li>&ldquo;Before&rdquo; -> get all text before the match</li>
-<li>&ldquo;After&rdquo; -> get all text after the match</li>
-<li>The substring result does not include the matched text</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[How to Extend Alt+Enter]]></title>
-    <link href="http://shiraji.github.io/blog/2016/12/17/how-to-extend-alt+enter/"/>
-    <updated>2016-12-17T00:00:01+09:00</updated>
-    <id>http://shiraji.github.io/blog/2016/12/17/how-to-extend-alt+enter</id>
-    <content type="html"><![CDATA[<p>この記事は<a href="http://qiita.com/advent-calendar/2016/jetbrains">JetBrains Advent Calendar 2016</a>の12/17の記事です。</p>
-
-<p>Intellij IDEAだけではないのですが、Alt+Enter(Intention)は自分で拡張したものを作ることが可能です。</p>
-
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-
-<!-- 728x90 -->
-
-
-<p><ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-3940616565912592"
-     data-ad-slot="7693358062"></ins></p>
-
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-
-
-
-<!-- more -->
-
-
-<h1>自己紹介</h1>
-
-<p>自分のページにリストされているIntellijプラグインページがページングされたらプラグイン開発辞めようと誓っていて、最近中の人と話したらページング機能ないけど？ｗと生涯現役プラグイン開発者としてやっていくことが決定した人間です。</p>
-
-<p>Intentionだけではなく、Inspectionなども作成しており、Kotlinのコントリビュートもしています。Kotlinの主なコントリビュートもInspection/Intentionなので、ある程度説明出来るレベルだと思います。</p>
-
-<h1>想定読者</h1>
-
-<ul>
-<li>Intentionを作ってみたい</li>
-<li>プラグイン開発に興味がある</li>
-<li>Intellijの機能をある程度理解している</li>
-<li>kotlinの文法がそれなりに理解できる</li>
-</ul>
-
-
-<h1>Custom Intentionを作ってみる</h1>
-
-<p>今回サンプルとして、Intention周りのプラグインをリリースしました。
-<a href="https://plugins.jetbrains.com/plugin/9271">https://plugins.jetbrains.com/plugin/9271</a></p>
-
-<p>ソースコード
-<a href="https://github.com/shiraji/databinding-support">https://github.com/shiraji/databinding-support</a></p>
-
-<p>これをベースにXMLファイルに対してのIntentionの説明をします。</p>
-
-<p>今回はレイアウトファイルであり、<code>&lt;layout&gt;</code>タグがrootタグではなかった場合、<code>&lt;layout&gt;</code>タグでラップするというIntentionを作成します。</p>
-
-<p><img src="https://raw.githubusercontent.com/shiraji/databinding-support/master/websites/images/wrap.gif" alt="wrap" /></p>
-
-<p>プラグインの作成方法などは参考リンクにまとめてありますので、そちらを参照して下さい。</p>
-
-<h2>Intentionクラス</h2>
-
-<p><code>IntentionAction</code>を継承します。以下のメソッドを実装する必要があります。</p>
-
-<h3><code>getText(): String</code></h3>
-
-<p>popupで表示される時の文字列</p>
-
-<h3><code>getFamilyName(): String</code></h3>
-
-<p>よくわからねｗ(intellij-community/kotlin repo内でもgetText呼び出してるだけのところが多い。)</p>
-
-<h3><code>startInWriteAction(): Boolean</code></h3>
-
-<p>Write Action内で実行するかどうか。</p>
-
-<h3><code>isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean</code></h3>
-
-<p>そのIntentionを利用可能かどうか判定する</p>
-
-<h3><code>invoke(project: Project, editor: Editor?, file: PsiFile?)</code></h3>
-
-<p>Intentionが選択時に実行されるメソッド。</p>
-
-<p>今回は実際に以下のようなイメージになりました。</p>
-
-<pre><code class="kotlin">package com.github.shiraji.databindinglayout.intentions
-
-class ConvertToDatabindingLayoutIntention : IntentionAction {
-
-    override fun getText() = "Convert to databinding layout"
-    override fun getFamilyName() = "Convert to databinding layout"
-    override fun startInWriteAction() = true
-
-    override fun isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean {
-        // rootタグがlayoutではなく、androidのレイアウトファイルかどうかを判定。
-    }
-
-    override fun invoke(project: Project, editor: Editor?, file: PsiFile?) {
-        // 新規&lt;layout&gt;タグを作成し、必要なattributeを追加し、root tagとする。
-    }
-
-}
-</code></pre>
-
-<p><a href="https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/kotlin/com/github/shiraji/databindinglayout/intentions/ConvertToDatabindingLayoutIntention.kt">https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/kotlin/com/github/shiraji/databindinglayout/intentions/ConvertToDatabindingLayoutIntention.kt</a></p>
-
-<p>このrootタグかどうかとか、androidのレイアウトファイルかどうかの判定とか、何をどう書き換えるのかとかがたぶん一番難しい部分だと思います。ただ、ここはそれぞれのIntentionやプラグインで違うのでコード読んで頑張れｗとしか言えません。。。</p>
-
-<p>唯一ある共通点としてはファイルなどの読み込みや解析はPsiを使います。例えば、xmlタグだったら<a href="https://github.com/JetBrains/intellij-community/blob/master/xml/xml-psi-api/src/com/intellij/psi/xml/XmlTag.java">XmlTag</a>、<a href="https://github.com/JetBrains/intellij-community/blob/master/xml/xml-psi-api/src/com/intellij/psi/xml/XmlAttribute.java">XmlAttribute</a>を使います。<code>PsiElement#replace()</code>でソースコードの置換することが出来ます。</p>
-
-<p>それぞれのElement作成それぞれのファイルタイプ毎にFactoryが用意されています。Xmlなら<code>XmlElementFactory</code>で作成しています。Javaの場合だと<code>PsiElementFactory</code>だし、Kotlinなら<code>KtPsiFactory</code>を使います。</p>
-
-<h2>plugin.xml</h2>
-
-<p>Intentionクラスをplugin.xmlに定義します。</p>
-
-<pre><code class="xml">        &lt;intentionAction&gt;
-            &lt;className&gt;com.github.shiraji.databindinglayout.intentions.ConvertToDatabindingLayoutIntention&lt;/className&gt;
-            &lt;category&gt;Android&lt;/category&gt;
-        &lt;/intentionAction&gt;
-</code></pre>
-
-<p><a href="https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/resources/META-INF/plugin.xml#L31-L34">https://github.com/shiraji/databinding-support/blob/1.0.2/src/main/resources/META-INF/plugin.xml#L31-L34</a></p>
-
-<h2>Intentionの説明文を書く</h2>
-
-<p>自分はちょくちょく忘れるのですが・・・(実際これを忘れて、1.0.1->1.0.2のバージョン更新をした。)</p>
-
-<p>こんな感じで設定画面に説明文を書くことが可能です。</p>
-
-<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-create-custom-intention/intention_setting.gif" alt="intention_settings" /></p>
-
-<p>以下の3つのファイルを作成します。</p>
-
-<ul>
-<li>after.xml.template</li>
-<li>before.xml.template</li>
-<li>description.html</li>
-</ul>
-
-
-<p>それぞれが表示されるのはここです。</p>
-
-<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-create-custom-intention/intention_desc.png" alt="intention_desc" /></p>
-
-<p>例えば、JavaファイルののIntentionだった場合、<code>after.java.template</code>のようにファイル名を<code>after.{拡張子}.template</code>とすれば良いです。<code>before</code>のほうも同じです。</p>
-
-<p>配置箇所は<code>resourcesフォルダ/intentionDescriptions/INTENSION名/</code>に配置します。</p>
-
-<p><code>ConvertToDatabindingLayoutIntention</code>の場合、こんな感じ。</p>
-
-<p><a href="https://github.com/shiraji/databinding-support/tree/1.0.2/src/main/resources/intentionDescriptions/ConvertToDatabindingLayoutIntention">https://github.com/shiraji/databinding-support/tree/1.0.2/src/main/resources/intentionDescriptions/ConvertToDatabindingLayoutIntention</a></p>
-
-<h1>最後に</h1>
-
-<p>Happy <code>alt+enter</code> life!</p>
-
-<h1>参考リンク</h1>
-
-<p>IntelliJ IDEAクイックスタート – インテンション</p>
-
-<p><a href="http://samuraism.com/products/jetbrains/intellij-idea/quickstart/intentions">http://samuraism.com/products/jetbrains/intellij-idea/quickstart/intentions</a></p>
-
-<p>プラグインプロジェクトの作成手順</p>
-
-<p><a href="http://www.jetbrains.org/intellij/sdk/docs/index.html">http://www.jetbrains.org/intellij/sdk/docs/index.html</a></p>
-
-<p>gradleを使う場合</p>
-
-<p><a href="http://www.jetbrains.org/intellij/sdk/docs/tutorials/build_system.html?search=gradle">http://www.jetbrains.org/intellij/sdk/docs/tutorials/build_system.html?search=gradle</a></p>
-
-<p>このgradleプラグインのセットアップウィザードはないので、gradle-intellij-plugin wizardを使うと便利だよ(ステマ)</p>
-
-<p><a href="https://plugins.jetbrains.com/plugin/8450">https://plugins.jetbrains.com/plugin/8450</a></p>
 ]]></content>
   </entry>
   
