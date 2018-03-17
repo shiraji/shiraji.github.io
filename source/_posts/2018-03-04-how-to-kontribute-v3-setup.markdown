@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "How to Kontribute (v3) - Setup"
-date: 2018-03-04 00:00:01 +0900
+date: 2018-03-17 00:00:01 +0900
 comments: false
-categories: Kotlin OSS GitHub 
+categories: Kotlin OSS GitHub
 keywords: Kotlin Kontribute Kontributor
 description: Describe how to contribute Kotlin in 2018
 ---
@@ -88,7 +88,7 @@ After setup Intellij IDEA, you can open kotlin plugin. First time you open the p
 
 After downloading dependencies, you will notice that there is no source code in Project view. To fix this problem, you will need to do the followings:
 
-* Go to File | New | Module from Existing Sources | and then select 
+* Go to File | New | Module from Existing Sources | and then select
 `build.gradle.kts` file
 * After selecting the file, `Import Module from Gradle` dialog popup. Select `use default gradle wrapper`
 
