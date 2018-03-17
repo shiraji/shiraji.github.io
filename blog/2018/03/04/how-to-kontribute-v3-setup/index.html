@@ -1,0 +1,379 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>How to Kontribute (V3) - Setup - Shiraji's Blog</title>
+  <meta name="author" content="Shiraji">
+
+  
+  <meta name="description" content="Describe how to contribute Kotlin in 2018">
+  <meta name="keywords" content="Kotlin Kontribute Kontributor">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Shiraji's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35371862-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Shiraji's Blog</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="shiraji.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">How to Kontribute (V3) - Setup</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2018-03-04T00:00:01+09:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2018</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This blog post describes how to start Kontribute or how to start contributing <a href="https://kotlinlang.org/">Kotlin</a>.</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h2>Who am I?</h2>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.002.jpg" alt="intro" /></p>
+
+<p>I&rsquo;ve been kontributors since July 2016. I made more than 60 commits by now. I love Kotlin, my beautiful wife and lovely son.</p>
+
+<p>I talked about this topic a few times in different places. After speaking at DroidKaigi 2018 and Kotlin Night Kolkata, some people gave me feed back that it is also helpful for new Kontributors if I make a blog post in English. I am too lazy to write this from scratch, so I re-used some of contents from those presentation.</p>
+
+<h2>Prerequisite</h2>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.004.jpg" alt="Prerequisite" /></p>
+
+<p>This blog entry does not explain how to use git/github and how to write Kotlin.</p>
+
+<p>Since I mainly contribute to Kotlin plguin features, this blog post focus on how to contribute kotlin plugin. However, once you undersntand how to do it, it is really easy to contribute to Kotlin Languages, Kotlin JS or Kotlin Native because it is in the same repository.</p>
+
+<h2>Outline</h2>
+
+<ul>
+<li>Setup</li>
+<li>Communication</li>
+<li>1st Recommended Ways to Kontribute</li>
+<li>Developing/Testing Kotlin plugin</li>
+</ul>
+
+
+<h2>Setup</h2>
+
+<p>It &ldquo;was&rdquo; the hardest part but not anymore. This is the reason I updated this topic as v3. There are &ldquo;only&rdquo; 4 parts of setups</p>
+
+<h3>JDK</h3>
+
+<p>The first one is JDK.</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.007.jpg" alt="JDK" /></p>
+
+<p>You need to install 3 differenct versions of JDKs.</p>
+
+<p>In order to use those JDK, you must setup environment variables like this</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.008.jpg" alt="JDK-env-var" /></p>
+
+<p>It&rsquo;s quite annoying to set each environment variables. Here is what I did.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>export JAVA_HOME=`/usr/libexec/java_home -v "1.8"`
+</span><span class='line'>export JDK_16=`/usr/libexec/java_home -v "1.6"`
+</span><span class='line'>export JDK_17=`/usr/libexec/java_home -v "1.7"`
+</span><span class='line'>export JDK_18=`/usr/libexec/java_home -v "1.8"`</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Intellij IDEA &amp; Plugins</h3>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.008.jpg" alt="JDK-env-var" /></p>
+
+<p>As for Intellij IDEA, you can use both community and ultimate version.</p>
+
+<p>To make sure you are using latest kotlin plugin, check the following gif.</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/plugin_up-to-date.gif" alt="plugin_up-to-date" /></p>
+
+<h3>Open project</h3>
+
+<p>After setup Intellij IDEA, you can open kotlin plugin. First time you open the project, Intellij downloads all dependencies using gradle. It took me about 50 mins. Just wait.</p>
+
+<h3>Module</h3>
+
+<p>After downloading dependencies, you will notice that there is no source code in Project view. To fix this problem, you will need to do the followings:</p>
+
+<ul>
+<li>Go to File | New | Module from Existing Sources | and then select
+<code>build.gradle.kts</code> file</li>
+<li>After selecting the file, <code>Import Module from Gradle</code> dialog popup. Select <code>use default gradle wrapper</code></li>
+</ul>
+
+
+<p>The following gif visually describes the steps</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/module.gif" alt="module" /></p>
+
+<h3>Run</h3>
+
+<p>Setup is done. Let&rsquo;s run it. To run it, select <code>IDEA</code> run configuration and hit run button.</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/run.gif" alt="run" /></p>
+
+<p>After waiting a few minites, the child IDEA shows up. What does this do is if you change your Kotlin project, the change is bundle to this child IDEA. You can test your new feature in this child IDEA.</p>
+
+<p>If you cannot build or run the project, ask other kontributors! In next blog post, I will talk about how to intract with other Kontributors or JetBrains team.</p>
+</div>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="9086067267"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Shiraji</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2018-03-04T00:00:01+09:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2018</span></span> <span class='time'>12:00 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/kotlin/'>kotlin</a>, <a class='category' href='/blog/categories/oss/'>oss</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  <a href="http://b.hatena.ne.jp/entry/http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup/" data-via="shiraj_i" data-counturl="http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2017/12/16/kotlinpoet/" title="Previous Post: KotlinPoetを使ってみた">&laquo; KotlinPoetを使ってみた</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2018/03/04/how-to-kontribute-v3-setup/">How to Kontribute (V3) - Setup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/12/16/kotlinpoet/">KotlinPoetを使ってみた</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/12/05/permissions-dispatcher-v3/">PermissionsDispatcher V3に関して</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/07/14/testing-against-annotation-processing/">Testing Against Annotation Processing</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/06/19/string-dot-substring-methods/">Visualize Kotlin substringXxx Methods</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/shiraji">@shiraji</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'shiraji',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2018 - Shiraji -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

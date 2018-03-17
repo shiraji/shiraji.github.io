@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Github | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/github/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2017-12-16T00:06:30+09:00</updated>
+  <updated>2018-03-17T20:30:48+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -12,6 +12,125 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How to Kontribute (V3) - Setup]]></title>
+    <link href="http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup/"/>
+    <updated>2018-03-04T00:00:01+09:00</updated>
+    <id>http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup</id>
+    <content type="html"><![CDATA[<p>This blog post describes how to start Kontribute or how to start contributing <a href="https://kotlinlang.org/">Kotlin</a>.</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h2>Who am I?</h2>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.002.jpg" alt="intro" /></p>
+
+<p>I&rsquo;ve been kontributors since July 2016. I made more than 60 commits by now. I love Kotlin, my beautiful wife and lovely son.</p>
+
+<p>I talked about this topic a few times in different places. After speaking at DroidKaigi 2018 and Kotlin Night Kolkata, some people gave me feed back that it is also helpful for new Kontributors if I make a blog post in English. I am too lazy to write this from scratch, so I re-used some of contents from those presentation.</p>
+
+<h2>Prerequisite</h2>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.004.jpg" alt="Prerequisite" /></p>
+
+<p>This blog entry does not explain how to use git/github and how to write Kotlin.</p>
+
+<p>Since I mainly contribute to Kotlin plguin features, this blog post focus on how to contribute kotlin plugin. However, once you undersntand how to do it, it is really easy to contribute to Kotlin Languages, Kotlin JS or Kotlin Native because it is in the same repository.</p>
+
+<h2>Outline</h2>
+
+<ul>
+<li>Setup</li>
+<li>Communication</li>
+<li>1st Recommended Ways to Kontribute</li>
+<li>Developing/Testing Kotlin plugin</li>
+</ul>
+
+
+<h2>Setup</h2>
+
+<p>It &ldquo;was&rdquo; the hardest part but not anymore. This is the reason I updated this topic as v3. There are &ldquo;only&rdquo; 4 parts of setups</p>
+
+<h3>JDK</h3>
+
+<p>The first one is JDK.</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.007.jpg" alt="JDK" /></p>
+
+<p>You need to install 3 differenct versions of JDKs.</p>
+
+<p>In order to use those JDK, you must setup environment variables like this</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.008.jpg" alt="JDK-env-var" /></p>
+
+<p>It&rsquo;s quite annoying to set each environment variables. Here is what I did.</p>
+
+<pre><code>export JAVA_HOME=`/usr/libexec/java_home -v "1.8"`
+export JDK_16=`/usr/libexec/java_home -v "1.6"`
+export JDK_17=`/usr/libexec/java_home -v "1.7"`
+export JDK_18=`/usr/libexec/java_home -v "1.8"`
+</code></pre>
+
+<h3>Intellij IDEA &amp; Plugins</h3>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.008.jpg" alt="JDK-env-var" /></p>
+
+<p>As for Intellij IDEA, you can use both community and ultimate version.</p>
+
+<p>To make sure you are using latest kotlin plugin, check the following gif.</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/plugin_up-to-date.gif" alt="plugin_up-to-date" /></p>
+
+<h3>Open project</h3>
+
+<p>After setup Intellij IDEA, you can open kotlin plugin. First time you open the project, Intellij downloads all dependencies using gradle. It took me about 50 mins. Just wait.</p>
+
+<h3>Module</h3>
+
+<p>After downloading dependencies, you will notice that there is no source code in Project view. To fix this problem, you will need to do the followings:</p>
+
+<ul>
+<li>Go to File | New | Module from Existing Sources | and then select
+<code>build.gradle.kts</code> file</li>
+<li>After selecting the file, <code>Import Module from Gradle</code> dialog popup. Select <code>use default gradle wrapper</code></li>
+</ul>
+
+
+<p>The following gif visually describes the steps</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/module.gif" alt="module" /></p>
+
+<h3>Run</h3>
+
+<p>Setup is done. Let&rsquo;s run it. To run it, select <code>IDEA</code> run configuration and hit run button.</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/run.gif" alt="run" /></p>
+
+<p>After waiting a few minites, the child IDEA shows up. What does this do is if you change your Kotlin project, the change is bundle to this child IDEA. You can test your new feature in this child IDEA.</p>
+
+<p>If you cannot build or run the project, ask other kontributors! In next blog post, I will talk about how to intract with other Kontributors or JetBrains team.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[アクセス修飾子次第で、メソッド数が増えてしまう問題について]]></title>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Kotlin | Shiraji's Blog]]></title>
   <link href="http://shiraji.github.io/blog/categories/kotlin/atom.xml" rel="self"/>
   <link href="http://shiraji.github.io/"/>
-  <updated>2017-12-16T00:06:30+09:00</updated>
+  <updated>2018-03-17T20:30:48+09:00</updated>
   <id>http://shiraji.github.io/</id>
   <author>
     <name><![CDATA[Shiraji]]></name>
@@ -12,6 +12,125 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How to Kontribute (V3) - Setup]]></title>
+    <link href="http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup/"/>
+    <updated>2018-03-04T00:00:01+09:00</updated>
+    <id>http://shiraji.github.io/blog/2018/03/04/how-to-kontribute-v3-setup</id>
+    <content type="html"><![CDATA[<p>This blog post describes how to start Kontribute or how to start contributing <a href="https://kotlinlang.org/">Kotlin</a>.</p>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<!-- 728x90 -->
+
+
+<p><ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3940616565912592"
+     data-ad-slot="7693358062"></ins></p>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+<!-- more -->
+
+
+<h2>Who am I?</h2>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.002.jpg" alt="intro" /></p>
+
+<p>I&rsquo;ve been kontributors since July 2016. I made more than 60 commits by now. I love Kotlin, my beautiful wife and lovely son.</p>
+
+<p>I talked about this topic a few times in different places. After speaking at DroidKaigi 2018 and Kotlin Night Kolkata, some people gave me feed back that it is also helpful for new Kontributors if I make a blog post in English. I am too lazy to write this from scratch, so I re-used some of contents from those presentation.</p>
+
+<h2>Prerequisite</h2>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.004.jpg" alt="Prerequisite" /></p>
+
+<p>This blog entry does not explain how to use git/github and how to write Kotlin.</p>
+
+<p>Since I mainly contribute to Kotlin plguin features, this blog post focus on how to contribute kotlin plugin. However, once you undersntand how to do it, it is really easy to contribute to Kotlin Languages, Kotlin JS or Kotlin Native because it is in the same repository.</p>
+
+<h2>Outline</h2>
+
+<ul>
+<li>Setup</li>
+<li>Communication</li>
+<li>1st Recommended Ways to Kontribute</li>
+<li>Developing/Testing Kotlin plugin</li>
+</ul>
+
+
+<h2>Setup</h2>
+
+<p>It &ldquo;was&rdquo; the hardest part but not anymore. This is the reason I updated this topic as v3. There are &ldquo;only&rdquo; 4 parts of setups</p>
+
+<h3>JDK</h3>
+
+<p>The first one is JDK.</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.007.jpg" alt="JDK" /></p>
+
+<p>You need to install 3 differenct versions of JDKs.</p>
+
+<p>In order to use those JDK, you must setup environment variables like this</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.008.jpg" alt="JDK-env-var" /></p>
+
+<p>It&rsquo;s quite annoying to set each environment variables. Here is what I did.</p>
+
+<pre><code>export JAVA_HOME=`/usr/libexec/java_home -v "1.8"`
+export JDK_16=`/usr/libexec/java_home -v "1.6"`
+export JDK_17=`/usr/libexec/java_home -v "1.7"`
+export JDK_18=`/usr/libexec/java_home -v "1.8"`
+</code></pre>
+
+<h3>Intellij IDEA &amp; Plugins</h3>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/how-to-kontribute-v3.008.jpg" alt="JDK-env-var" /></p>
+
+<p>As for Intellij IDEA, you can use both community and ultimate version.</p>
+
+<p>To make sure you are using latest kotlin plugin, check the following gif.</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/plugin_up-to-date.gif" alt="plugin_up-to-date" /></p>
+
+<h3>Open project</h3>
+
+<p>After setup Intellij IDEA, you can open kotlin plugin. First time you open the project, Intellij downloads all dependencies using gradle. It took me about 50 mins. Just wait.</p>
+
+<h3>Module</h3>
+
+<p>After downloading dependencies, you will notice that there is no source code in Project view. To fix this problem, you will need to do the followings:</p>
+
+<ul>
+<li>Go to File | New | Module from Existing Sources | and then select
+<code>build.gradle.kts</code> file</li>
+<li>After selecting the file, <code>Import Module from Gradle</code> dialog popup. Select <code>use default gradle wrapper</code></li>
+</ul>
+
+
+<p>The following gif visually describes the steps</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/module.gif" alt="module" /></p>
+
+<h3>Run</h3>
+
+<p>Setup is done. Let&rsquo;s run it. To run it, select <code>IDEA</code> run configuration and hit run button.</p>
+
+<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/how-to-kontribute-v3/run.gif" alt="run" /></p>
+
+<p>After waiting a few minites, the child IDEA shows up. What does this do is if you change your Kotlin project, the change is bundle to this child IDEA. You can test your new feature in this child IDEA.</p>
+
+<p>If you cannot build or run the project, ask other kontributors! In next blog post, I will talk about how to intract with other Kontributors or JetBrains team.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[KotlinPoetを使ってみた]]></title>
@@ -883,891 +1002,6 @@ class ConvertToDatabindingLayoutIntention : IntentionAction {
 <p>このgradleプラグインのセットアップウィザードはないので、gradle-intellij-plugin wizardを使うと便利だよ(ステマ)</p>
 
 <p><a href="https://plugins.jetbrains.com/plugin/8450">https://plugins.jetbrains.com/plugin/8450</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[What's Good About Kotlin in Android Development]]></title>
-    <link href="http://shiraji.github.io/blog/2016/12/11/whats-good-about-kotlin-in-android-development/"/>
-    <updated>2016-12-11T00:00:01+09:00</updated>
-    <id>http://shiraji.github.io/blog/2016/12/11/whats-good-about-kotlin-in-android-development</id>
-    <content type="html"><![CDATA[<p>これは<a href="http://qiita.com/advent-calendar/2016/kotlin">Kotlin Advent Calendar 2016</a>の12/11の記事です。</p>
-
-<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">kotlinでやるとAndroid簡単に書ける手法まとめとかないかな。extentionでbindingadapter書くとか、custom viewのコンストラクタをJvmOverloadsで省略とか。</p>&mdash; しらじ (@shiraj_i) <a href="https://twitter.com/shiraj_i/status/768082977569898496">2016年8月23日</a></blockquote>
-
-
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-<p>8月23日にこんなつぶやきをして、今日まで溜めたAndroid開発をしていて、こう書くと簡単でキモチイイ！！！というKotlinの文法を紹介したいと思います。</p>
-
-<p>(あくまで自分が気持ちいいってだけだからね！)</p>
-
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-
-<!-- 728x90 -->
-
-
-<p><ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-3940616565912592"
-     data-ad-slot="7693358062"></ins></p>
-
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-
-
-
-<!-- more -->
-
-
-<h1>自己紹介</h1>
-
-<p><a href="https://blog.jetbrains.com/kotlin/2016/09/kotlin-1-0-4-is-here/">Kotlin 1.0.4</a>, <a href="https://blog.jetbrains.com/kotlin/2016/11/kotlin-1-0-5-is-here/">Kotlin 1.0.5</a>で名前が載ったExternal Contributorsの一人です(嬉しいから自慢)。主にKotlin Pluginの静的解析にコントリビュートしています。Kotlinで書かれている<a href="https://github.com/hotchemi/PermissionsDispatcher">PermissionsDispatcher</a>の開発にも参加しています。</p>
-
-<p>Android開発経験3年ほどで、今はAndroidをJavaでもKotlinでも開発しています。</p>
-
-<p>少しくらいならブログでAndroid/Kotlinネタ書いてもいいレベルかな？と思います。</p>
-
-<h1>前提条件と想定読者</h1>
-
-<ul>
-<li>Android開発はある程度知っている</li>
-<li>KotlinでのAndroid興味がある人</li>
-<li>KotlinでのAndroid開発良いと言われてるけど、何がいいかわからねな人</li>
-</ul>
-
-
-<p>Kotlinの文法はJavaコードと比較すればだいたいわかる感じで記載していきますが、もしわからなければ、<a href="https://twitter.com/shiraj_i">@shiraj_i</a>にメンションいただければ答えますので、お気軽に質問して下さい。</p>
-
-<h1>キモチイイ！文法たち</h1>
-
-<p>Kotlinは書きやすいとよく耳にしますが、実際どういうところでどういう文法にすると「書きやすい」になるのかJavaとの比較があまりありません。そこで独断と偏見で気持ちいい文法だこれ！と思った文法や書き方を紹介したいと思います。</p>
-
-<p>Kotlinで一番有名であろう機能、Null安全やセミコロンレスに関しては多くのドキュメントやブログがありますので割愛します。</p>
-
-<h2>一行メソッド</h2>
-
-<p>ある特定のテキストを返すだけのメソッドを作る時、Javaで書くとこんな感じになります。</p>
-
-<pre><code class="java">public String getName() {
-  return "MyApp";
-}
-</code></pre>
-
-<p>Kotlinでも同じように書けます。</p>
-
-<pre><code class="kotlin">fun getName(): String {
-  return "MyApp"
-}
-</code></pre>
-
-<p>ただ、Kotlinは一行でreturn出来る場合、<code>=</code>をつけて<code>{}</code>を省略することが出来ます。</p>
-
-<pre><code class="kotlin">fun getName(): String = "MyApp"
-</code></pre>
-
-<p>さらに、戻り値の型が明らかな場合、型の指定しなくても良いので</p>
-
-<pre><code class="kotlin">fun getName() = "MyApp"
-</code></pre>
-
-<p>短くてだいぶ気持ちいいですね。</p>
-
-<p>こんな感じで、以下もJavaの例文を出して、Kotlinで気持ち良くなっていきます。それではどんどんいきます。</p>
-
-<h2>null時何する？</h2>
-
-<p>例えば、パラメータがnullだった場合、即メソッドを抜けるという処理を書くとします。Javaの場合、結構色々書かなきゃいけません。</p>
-
-<pre><code class="java">public void foo(@Nullable String text) {
-    if (text == null) {
-        return;
-    }
-    // ...
-}
-</code></pre>
-
-<p>Kotlinはnull時にこれをしてくれという<code>?:</code>文法が用意されています。それを使うと一行で書けちゃいます。</p>
-
-<pre><code class="kotlin">fun foo(text: String?) {
-    text ?: return
-    // ...
-}
-</code></pre>
-
-<p>null時に別値を代入ということも可能です。</p>
-
-<pre><code class="kotlin">fun foo(text: String?) {
-    val bar = text ?: "" // textをbarに代入する。textがnullだった場合、空文字とする。
-    // ...
-}
-</code></pre>
-
-<h2>空クラス</h2>
-
-<p>Javaでは空クラスだろうと、<code>{}</code>を書かなくてはなりません。特に目印用のinterfaceとかであると思いますが</p>
-
-<pre><code class="java">interface Foo {}
-</code></pre>
-
-<p>Kotlinではボディが空のクラスの場合、<code>{}</code>を書かなくて良いので</p>
-
-<pre><code class="kotlin">interface Foo
-</code></pre>
-
-<p>もちろん、classでも可能です。</p>
-
-<pre><code class="kotlin">class Bar
-</code></pre>
-
-<h2>空メソッド</h2>
-
-<p>空メソッド。Javaの場合、<code>{}</code>を書かなくてはなりません。</p>
-
-<pre><code class="java">public void foo() {
-}
-</code></pre>
-
-<p>Kotlinの場合、一行メソッドと同じように書けます。</p>
-
-<pre><code class="kotlin">fun foo() = Unit
-</code></pre>
-
-<p>あれ？ながｋ&hellip;気持ちいいですね！</p>
-
-<h2>getter/setter省略</h2>
-
-<p>Kotlinでは、getter/setterがあった場合、propertyとしてアクセス可能になります。AOSPに書いてあるgetter/setterも同様です。</p>
-
-<p><code>Activity#getLayoutInflater()</code>を使うようなメソッドを定義する場合</p>
-
-<pre><code class="java">public LayoutInflater getLayoutInflater() {
-    return activity.getLayoutInflater();
-}
-</code></pre>
-
-<p>Kotlinで書くと以下のように書けます。</p>
-
-<pre><code class="kotlin">fun layoutInflater(): LayoutInflater = activity.layoutInflater
-</code></pre>
-
-<p>実際にはActivity内に<code>layoutInflater</code>というプロパティは存在していませんが、Kotlinが解釈してくれます。</p>
-
-<p>もちろんですが、以下のようにも書けます。</p>
-
-<pre><code class="kotlin">fun layoutInflater(): LayoutInflater = activity.getLayoutInflater()
-</code></pre>
-
-<p>ただ、Android Studioさんが「これプロパティアクセスに変えな？」というサジェストが出ます。</p>
-
-<p><img src="https://raw.githubusercontent.com/wiki/shiraji/images/blog/images/whats-good-about-kotlin-in-android-development/getter_setter.png" alt="getter_setter" /></p>
-
-<p>Javaっぽいコードを書くとこのようにワーニングを出してくれるので、都度修正していくとKotlinらしい文法の勉強も捗ります。(platform typeにはご注意下さい)</p>
-
-<h2>パラメータのデフォルト値</h2>
-
-<p>ここのパラメータだいたい同じ値なのだけど、時々違うから、overloadメソッドを用意するか！ってことありませんか？</p>
-
-<pre><code class="java">  public static boolean maybeStartActivity(Context context, Intent intent) {
-    return maybeStartActivity(context, intent, false);
-  }
-
-  private static boolean maybeStartActivity(Context context, Intent intent, boolean chooser) {
-      // ...
-  }
-</code></pre>
-
-<p>かの有名な<a href="https://github.com/JakeWharton/u2020/blob/70dd9572f45afb21a62ff414d19b7c095d737372/src/main/java/com/jakewharton/u2020/util/Intents.java">u2020</a>にもありました。</p>
-
-<p>Kotlinはパラメータのデフォルト値を定義出来ます。</p>
-
-<pre><code class="kotlin">  fun maybeStartActivity(context: Context, intent: Intent, chooser: Boolean = false): Boolean {
-      // ...
-  }
-</code></pre>
-
-<h3>カスタムViewのコンストラクタ</h3>
-
-<p>パラメータのデフォルト値に関連して、カスタムViewのコンストラクタの定義って大変だと思います。</p>
-
-<pre><code class="java">    public CustomView(Context context) {
-        this(context, null);
-    }
-
-    public CustomView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public CustomView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.custom_view, this, true);
-    }
-</code></pre>
-
-<p>Kotlinはデフォルト値を定義したメソッドを上記のようにJavaから見たら複数あるようにする<code>@JvmOverloads</code>というアノテーションがあります。</p>
-
-<p>これを使うと、カスタムViewのコンストラクタは一行定義するだけで書けます。</p>
-
-<pre><code class="kotlin">class @JvmOverloads CustomView(context: Context, attrs: AttributeSet = null, defStyleAttr: Int = 0) {
-}
-</code></pre>
-
-<p>(Kotlinのコンストラクタ自体は気持ちよくないので説明省略します。)</p>
-
-<h2>キャストで括弧少ない</h2>
-
-<p>Javaでキャストする場合、括弧が多くなりがちです。PagerAdapterの<code>destroyItem</code>を実装してみます。</p>
-
-<pre><code class="java">＠Override public void destroyItem(ViewGroup container, int position, Object obj) {
-    ((ViewPager) container).removeView((View) obj)
-}
-</code></pre>
-
-<p>Kotlinだと<code>as</code>を使ってキャストします。文法的にも括弧が減り、どこで括弧が終わっているのかがわかりやすくなります。</p>
-
-<pre><code class="kotlin">override fun destroyItem(container: ViewGroup?, position: Int, obj: Any?) {
-    (container as ViewPager).removeView(obj as View)
-}
-</code></pre>
-
-<h3>キャスト失敗時に何する？</h3>
-
-<p>null時に何する？との組み合わせることでキャスト失敗時に何するかの定義も簡単にできます。</p>
-
-<pre><code class="kotlin">override fun destroyItem(container: ViewGroup?, position: Int, obj: Any?) {
-    container as? ViewPager ?: return
-    // ...
-}
-</code></pre>
-
-<p>また、readonlyの変数のキャストに成功すると自動的にその変数をキャストしてくれます。メソッドパラメータはreadonly。各所に出てくる<code>val</code>と定義されている変数もreadonlyです。(余談ですが、immutableではありませんので注意して下さい。)</p>
-
-<pre><code class="kotlin">override fun destroyItem(container: ViewGroup?, position: Int, obj: Any?) {
-    container as? ViewPager ?: return
-    obj as? View ?: return
-    container.removeView(obj)
-}
-</code></pre>
-
-<p>mutable変数<code>var</code>の場合、<code>as?</code>後に変更可能なので、自動的にキャストしてもらえないので注意。Kotlinでは理由がない限り、<code>var</code>を使わないほうが良いです。</p>
-
-<h2>Util系</h2>
-
-<p>XxxUtilsとか作って、全メソッドをstaticにして、privateコンストラクタを作って・・・みたいなやり方をJavaではちょくちょくしていました。</p>
-
-<pre><code class="java">public class LogUtil {
-  private LogUtil() {}
-
-  public void initLog(String tag) {
-    Timber.plant(ExtTree(tag))
-  }
-}
-</code></pre>
-
-<p>kotlinではTopレベルにメソッドを書けば、このようなUtil系のメソッドを書くことが出来ます。</p>
-
-<pre><code class="kotlin">fun initLog(tag: String) = Timber.plant(ExtTree(tag))
-</code></pre>
-
-<p>使い方もJavaのときと変わりません。</p>
-
-<pre><code class="kotlin">import package.initLog
-
-fun foo() {
-  initLog("MyApp")
-}
-</code></pre>
-
-<h2>Stringテンプレート</h2>
-
-<p>JavaでStringの結合をする場合、こんな感じになります。</p>
-
-<pre><code class="java">return originalResponse.newBuilder()
-                    .header("Cache-Control", "public, max-age=" + 60 * 3)
-                    .build();
-</code></pre>
-
-<p>KotlinにはStringテンプレートとしてString内に<code>${}</code>で変数を書くことが出来ます。</p>
-
-<pre><code class="kotlin">return originalResponse.newBuilder()
-                    .header("Cache-Control", "public, max-age=${60 * 3}")
-                    .build()
-</code></pre>
-
-<p>変数一つだけである場合、<code>{}</code>の省略も出来ます。</p>
-
-<pre><code class="kotlin">val foo = 1
-val bar = "Text$foo" // &lt;= "Text1"という文字列に
-</code></pre>
-
-<h2>複数行のString</h2>
-
-<p>JavaのStringで複数行を生成する場合、結構辛いです。</p>
-
-<pre><code class="java">String text = "aaa\nbbb\nccc";
-</code></pre>
-
-<p>Kotlinでは<code>"""</code>を使うことで複数行のStringの定義を出来ます。</p>
-
-<pre><code class="kotlin">val text = """aaa
-              bbb
-              ccc""".trimMargin();
-</code></pre>
-
-<p>.trimMargin()のこととか、マージンの開始位置とか複数行のStringは結構多機能ですが、詳細知りたければ<a href="https://kotlinlang.org/docs/reference/basic-types.html#string-literals">公式のstring-literals</a>を確認してね。</p>
-
-<h2>複数if -> when</h2>
-
-<p>Javaではifが複数ある場合、ちょっとつらいです。</p>
-
-<p>例えば以下のようなコードがあったとします。(Javaでbehaviorを独自実装したときに使っていたコード)</p>
-
-<pre><code class="java">if (isAnimating) return;
-if (consumed &gt; 0) {
-    hide(child);
-} else {
-    show(child);
-}
-</code></pre>
-
-<p>これをKotlinでもそのままif/else書けます。</p>
-
-<pre><code class="kotlin">if (isAnimating) return
-if (consumed &gt; 0) {
-    hide(child)
-} else {
-    show(child)
-}
-</code></pre>
-
-<p>しかし、もう少し簡単にwhenでまとめることも可能です。</p>
-
-<pre><code class="kotlin">when {
-    isAnimating -&gt; return
-    consumed &gt; 0 -&gt; animateHide(child)
-    else -&gt; animateShow(child)
-}
-</code></pre>
-
-<p>whenはJavaでいうSwitch文に近いですが、上記のようにwhenの後に条件を付けなかったり、変数の型のcase文に出来たりとめちゃくちゃ気持ちよくなれます。</p>
-
-<h2>式</h2>
-
-<p>Kotlinではifやwhenなど諸々が式です。</p>
-
-<p>例えば、ifの結果を変数に代入する場合、</p>
-
-<pre><code class="java">int foo;
-if(flag) {
-    foo = 10;
-} else {
-    foo = 100;
-}
-</code></pre>
-
-<p>kotlinではこんな感じになります。</p>
-
-<pre><code class="kotlin">val foo = if (flag) {
-    10
-}  else {
-    100
-}
-</code></pre>
-
-<p>単純な場合、<code>{}</code>は省略するので一行で書くことが多いです。</p>
-
-<pre><code class="kotlin">val foo = if (flag) 10 else 100
-</code></pre>
-
-<p>条件により違った値を代入しているのですが<code>val</code>で定義出来るのがポイントです。</p>
-
-<p>ちなみに、<a href="https://github.com/hotchemi/PermissionsDispatcher">PermissionsDispatcher</a>さんでも利用していて、メソッドの引数として使ったりもしています。</p>
-
-<pre><code class="kotlin">builder.beginControlFlow("if (\$N\$T.shouldShowRequestPermissionRationale(\$N, \$N))", if (isPositiveCondition) "" else "!", PERMISSION_UTILS, targetParam, permissionField)
-</code></pre>
-
-<p>ネストさせることも出来るのですが、複雑になるので見にくい場合はローカル変数に切り出すのが良いと思います。</p>
-
-<h2>Annotation</h2>
-
-<p>Dagger2を使う場合、ActivityやFragmentスコープを作るために独自Annotation作ったりします。</p>
-
-<pre><code class="java">@Scope
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ActivityScope {
-}
-</code></pre>
-
-<p><code>@interface</code>というキーワードを使っていましたが、Kotlinでは<code>annotation</code>と表現します。直感的で良いです。</p>
-
-<pre><code class="kotlin">@Scope
-@Retention
-annotation class ActivityScope
-</code></pre>
-
-<p><code>Retention</code>のデフォルト値が<code>RetentionPolicy.RUNTIME</code>なので、指定を省略出来るのもスッキリしていて気持ち良いです。</p>
-
-<h2>Singleton</h2>
-
-<p>Javaでは(簡易的な)シングルトンを作成する場合、以下のように書く必要がありました。</p>
-
-<pre><code class="java">public class MoshiUtil {
-    private static Moshi moshi;
-
-    public static Moshi getMoshi() {
-        if (moshi == null) {
-            moshi = Moshi.Builder().add(DateAdapter()).build();
-        }
-        return moshi;
-    }
-}
-</code></pre>
-
-<p>Kotlinでは、<code>object</code>として定義すればアプリ内でシングルトンとして利用可能です。</p>
-
-<pre><code class="kotlin">object MoshiUtil {
-    val moshi: Moshi by lazy {
-        Moshi.Builder().add(DateAdapter()).build()
-    }
-}
-</code></pre>
-
-<p>使い方もJavaの時と同じです。</p>
-
-<pre><code class="kotlin">MoshiUtil.moshi.adapter(BlackjackHand::java.class)
-</code></pre>
-
-<h2>rx.ObservableのThread指定方法</h2>
-
-<p>ちょこっとしたことなのですが、Rxの実行スレッド方法の指定も気持ちよく書けるようになります。</p>
-
-<pre><code class="java">load()
-  .subscribeOn(AndroidSchedulers.mainThread())
-  .observeOn(AndroidSchedulers.mainThread())
-  .subscribe();
-</code></pre>
-
-<p>Kotlinの拡張プロパティを利用し、スレッドの指定方法を定義します。</p>
-
-<pre><code class="kotlin">val &lt;T&gt; Observable&lt;T&gt;.observeOnUI: Observable&lt;T&gt;
-    get() = observeOn(AndroidSchedulers.mainThread())
-
-val &lt;T&gt; Observable&lt;T&gt;.observeOnIO: Observable&lt;T&gt;
-    get() = observeOn(Schedulers.io())
-
-val &lt;T&gt; Observable&lt;T&gt;.observeOnComputation: Observable&lt;T&gt;
-    get() = observeOn(Schedulers.computation())
-
-val &lt;T&gt; Observable&lt;T&gt;.subscribeOnUI: Observable&lt;T&gt;
-    get() = subscribeOn(AndroidSchedulers.mainThread())
-
-val &lt;T&gt; Observable&lt;T&gt;.subscribeOnIO: Observable&lt;T&gt;
-    get() = subscribeOn(Schedulers.io())
-
-val &lt;T&gt; Observable&lt;T&gt;.subscribeOnComputation: Observable&lt;T&gt;
-    get() = subscribeOn(Schedulers.computation()).unsubscribeOn(Schedulers.computation())
-</code></pre>
-
-<p>この拡張プロパティを利用すると以下のように書けます。</p>
-
-<pre><code class="kotlin">load()
-  .subscribeOnIO
-  .observeOnIO
-  .subscribe()
-</code></pre>
-
-<h2>DatabindingのBindingAdapter指定方法</h2>
-
-<p>DatabindingのBindingAdapterの<a href="https://developer.android.com/reference/android/databinding/BindingAdapter.html">公式ドキュメントのコード</a>をKotlinで書いてみます。</p>
-
-<pre><code class="java">@BindingAdapter("android:bufferType")
-public static void setBufferType(TextView view, TextView.BufferType bufferType) {
-    view.setText(view.getText(), bufferType);
-}
-</code></pre>
-
-<p>これがこんな感じになります。<code>view</code>が消えました。</p>
-
-<pre><code class="java">@BindingAdapter("android:bufferType")
-fun TextView.setBufferType(TextView.BufferType bufferType) {
-    setText(getText(), bufferType)
-}
-</code></pre>
-
-<h2>DatabindingのonClickなどのイベント指定方法</h2>
-
-<p>これも拡張メソッドでいきます。</p>
-
-<pre><code class="xml">&lt;android.support.design.widget.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing"
-                android:onClick="@{viewModel::onClickTopFab}"
-                app:backgroundTint="@color/action_green"
-                app:fabSize="normal"
-                app:layout_anchor="@id/app_bar"
-                app:layout_anchorGravity="bottom|end"
-                app:srcCompat="@drawable/plus"/&gt;
-</code></pre>
-
-<pre><code class="java">fun onClickFab(View view) {
-    Toast.makeText(view.getContext(), R.string.message_fab, Toast.LENGTH_LONG).show();
-}
-</code></pre>
-
-<p>kotlinではこんな感じ。Toast表示用の拡張メソッドも定義しています。</p>
-
-<pre><code class="kotlin">fun View.onClickFab() {
-    Toast.makeText(context, R.string.message_fab, Toast.LENGTH_LONG).show()
-}
-</code></pre>
-
-<p>ちょっと手が滑ると</p>
-
-<pre><code class="kotlin">fun Context.showLongToast(@StringRes id: Int) {
-    Toast.makeText(this, id, Toast.LENGTH_LONG).show()
-}
-
-fun View.onClickFab() {
-    context.showLongToast(R.string.message_fab)
-}
-</code></pre>
-
-<p>topレベルの拡張メソッドは用法・用量を守って正しくお使い下さい。</p>
-
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-
-<!-- 728x90 -->
-
-
-<p><ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-3940616565912592"
-     data-ad-slot="7693358062"></ins></p>
-
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-
-<h2>createIntent/newInstance</h2>
-
-<p>自分はcreateIntent/newInstanceパターン大好きです。</p>
-
-<p>これも気持ちよくなれます。</p>
-
-<pre><code class="java">public static Intent createIntent(Context context) {
-    Intent intent = new Intent(context, MyActivity.class);
-    return intent;
-}
-</code></pre>
-
-<p>applyを使って、一行に。</p>
-
-<pre><code class="kotlin">companion object {
-    fun createIntent(context: Context) = Intent(context, MyActivity::class.java).apply { }
-}
-</code></pre>
-
-<p>newInstanceもやってみます。</p>
-
-<pre><code class="java">public static SimpleDialogFragment newInstance(MyPacel entity) {
-    SimpleDialogFragment fragment = new SimpleDialogFragment();
-    Bundle bundle = new Bundle();
-    bundle.putParcelable(PARCELABLE_KEY, entity);
-    fragment.setArguments(bundle);
-    return fragment;
-}
-</code></pre>
-
-<p>パラメータセットしたインスタンスを作りたいだけなのですが、結構冗長的で辛い。。。</p>
-
-<p>Kotlinで短くしてみます。</p>
-
-<pre><code class="kotlin">fun newInstance(entity: MyPacel) =
-　   SimpleDialogFragment().apply {
-         arguments = Bundle().apply {
-             putParcelable(PARCELABLE_KEY, entity)
-         }
-     }
-</code></pre>
-
-<p>nestが激しいのでバラしていきます。まずはこの部分。</p>
-
-<pre><code class="kotlin">arguments = Bundle().apply {
-    putParcelable(PARCELABLE_KEY, entity)
-}
-</code></pre>
-
-<p>これをメソッド化すると</p>
-
-<pre><code class="kotlin">private fun entity(bundle: Bundle, entity: MyPacel): Bundle {
-    return bundle.apply {
-        putParcelable(PARCELABLE_KEY, entity)
-    }
-}
-</code></pre>
-
-<p>bundle変数に関する処理なので、Bundleの拡張メソッドと考えると良さ気。</p>
-
-<pre><code class="kotlin">private fun Bundle.entity(entity: MyPacel): Bundle {
-    return this.apply {
-        putParcelable(PARCELABLE_KEY, entity)
-    }
-}
-</code></pre>
-
-<p>return文一文なので、省略。thisも必要ないので、省略。</p>
-
-<pre><code class="kotlin">private fun Bundel.entity(entity: MyPacel) = apply { putParcelable(PARCELABLE_KEY, entity) }
-</code></pre>
-
-<p>イマココ</p>
-
-<pre><code class="kotlin">fun newInstance(entity: MyPacel) =
-     SimpleDialogFragment().apply {
-         arguments = Bundle().entity(entity)
-     }
-
-private fun Bundel.entity(entity: MyPacel) = apply { putParcelable(PARCELABLE_KEY, entity) }
-</code></pre>
-
-<p>SimpleDialogFragmentの部分も同じように拡張メソッドを使って書くと。</p>
-
-<pre><code class="kotlin">fun newInstance(entity: MyPacel) = MyFragment().entity(entity)
-
-private fun MyFragment.entity(entity: MyPacel) = apply { arguments = Bundle().entity(entity) }
-
-private fun Bundle.entity(entity: MyPacel) = apply { putParcelable(KEY, entity) }
-</code></pre>
-
-<p>だいぶシンプルになりました。ヨイヨヨイヨ。</p>
-
-<h2>setVisibleOrGone</h2>
-
-<p>Databinding前には結構使うことが多かったのですが、今となっては・・・でも一応。</p>
-
-<p>Viewを消してしまうか表示するかをBoolean値で判別するようなUtil系のメソッドを書くとすると</p>
-
-<pre><code class="java">public static void setVisibleOrGone(View view, boolean isVisible) {
-    if(view == null) {
-        return;
-    }
-
-    if(isVisible) {
-        view.setVisiblity(View.VISIBLE);
-    } else {
-        view.setVisiblity(View.GONE);
-    }
-}
-</code></pre>
-
-<p>これをkotlinで書くと一行でいけます。</p>
-
-<pre><code class="kotlin">fun View?.setVisibleOrGone(isVisible: Boolean) {
-    this?.visibility = if (isVisible) View.VISIBLE else View.GONE
-}
-</code></pre>
-
-<p>nullableのViewの拡張メソッド、null安全、setter/getterの省略、if式利用と色々Javaにはない機能を利用しています。</p>
-
-<h2>BaseObservable</h2>
-
-<p>公式にある、以下のコードをKotlinで気持ちよく書いてみます。</p>
-
-<pre><code class="java">private static class User extends BaseObservable {
-   private String firstName;
-   private String lastName;
-   @Bindable
-   public String getFirstName() {
-       return this.firstName;
-   }
-   @Bindable
-   public String getLastName() {
-       return this.lastName;
-   }
-   public void setFirstName(String firstName) {
-       this.firstName = firstName;
-       notifyPropertyChanged(BR.firstName);
-   }
-   public void setLastName(String lastName) {
-       this.lastName = lastName;
-       notifyPropertyChanged(BR.lastName);
-   }
-}
-</code></pre>
-
-<p>Kotlinで書く前に、そもそも具体的にやることは以下</p>
-
-<ul>
-<li>getterに<code>@Bindable</code>をつける</li>
-<li>setterの最後に<code>notifyPropertyChanged(BR.firstName);</code>を呼ぶ</li>
-</ul>
-
-
-<pre><code class="kotlin">class User : BaseObservable {
-    @get:Bindable
-    var firstName: String
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.firstName)
-        }
-
-    @get:Bindable
-    var lastName: String
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.lastName)
-        }
-}
-</code></pre>
-
-<p>setter/getterを書かなくて良いのでシンプルになってます。</p>
-
-<p>もうちょいキレイになればいいですが、わざわざメソッド書かなくて良いというだけでも気持ちいいです。</p>
-
-<h2>Delegate</h2>
-
-<p>継承するな！移譲しろ！と言われてもJava使ってると継承しちゃいガチなのですが、KotlinのDelegateがあるとこれを積極的に利用したいなと思えるようになります。</p>
-
-<p>ViewModelにRxのSubscriptionの機能を実装し、<code>Activity#onDestroy</code>時に<code>unsubscribe()</code>したいという時</p>
-
-<pre><code class="java">public class MyViewModel(CompositeSubscription compositeSubscription) {
-    // ...
-    public void unsubscribe() {
-        compositeSubscription.unsubscribe();
-    }
-}
-</code></pre>
-
-<p>Kotlinでdelegateすると<code>unsubscribe()</code>は書かなくて良くなります。</p>
-
-<pre><code class="kotlin">class MyViewModel @Inject constructor(var compositeSubscription: CompositeSubscription) : Subscription by compositeSubscription {
-    // ...
-}
-</code></pre>
-
-<p>Activityではこんな感じ。<code>MyViewModel</code>で実装していないのに<code>unsubscribe()</code>を呼ぶことが出来る。</p>
-
-<pre><code class="kotlin">class ThirdActivity : AppCompatActivity() {
-
-    @field:[Inject]
-    lateinit var viewModel: MyViewModel
-
-// ...
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.unsubscribe()
-    }
-</code></pre>
-
-<p>droidkaigi2016の<a href="https://github.com/konifar/droidkaigi2016/blob/master/app/src/main/java/io/github/droidkaigi/confsched/widget/ArrayRecyclerAdapter.java">ArrayRecyclerAdapter</a>を以下のようなにすることもできるけど、余計なメソッドも生えるので、用法と用量を(省略</p>
-
-<pre><code class="kotlin">abstract class MutableListRecyclerAdapter&lt;T, VH : RecyclerView.ViewHolder&gt;(private val list: MutableList&lt;T&gt;) :
-        RecyclerView.Adapter&lt;VH&gt;(), Iterable&lt;T&gt;, MutableList&lt;T&gt; by list {
-
-    var itemClickListener: View.OnClickListener? = null
-
-    override fun getItemCount() = list.size
-
-    @UiThread fun addAllWithNotification(items: Collection&lt;T&gt;) {
-        val position = itemCount
-        addAll(items)
-        notifyItemChanged(position)
-    }
-
-    @UiThread fun reset(items: Collection&lt;T&gt;) {
-        clear()
-        addAll(items)
-        notifyDataSetChanged()
-    }
-}
-</code></pre>
-
-<h2>遅延初期化</h2>
-
-<p>Javaで簡単にやる場合、getterを作成し、propertyアクセスは禁止し、そのgetter経由で値を取得するというルールの下かろうじて出来る遅延初期化処理です。</p>
-
-<p>例えば、Databindingの<code>setContentView</code>を利用して、<code>binding</code>変数を初期化します。</p>
-
-<pre><code class="java">private MyBinding binding;
-
-private MyBinding getBinding() {
-    if(binding == null) {
-        binding = DataBindingUtil.setContentView&lt;MyBinding&gt;(this, R.layout.my);
-    }
-    return binding;
-}
-</code></pre>
-
-<p>Kotlinでは<code>by lazy</code>を利用して書きます。一旦<code>binding</code>変数にアクセスしたら<code>by lazy</code>内の処理が実行され、初期化されます。</p>
-
-<pre><code class="kotlin">private val binding by lazy {
-    DataBindingUtil.setContentView&lt;MyBinding&gt;(this, R.layout.my)
-}
-</code></pre>
-
-<p>valであるのも良いです。</p>
-
-<p>ちなみに、enumに<code>ordinal</code>ではない数値のidを振ることがあって、そのidから逆引きしたい時にキャッシュした<code>SparseArray</code>を利用して逆引きしますが、この時も<code>by lazy</code>使います。</p>
-
-<pre><code class="kotlin">companion object {
-    private val lookup: SparseArray&lt;MyType&gt; by lazy {
-        SparseArray&lt;MyType&gt;().apply {
-            EnumSet.allOf(MyType::class.java).forEach {
-                this@apply.put(it.typeId, it)
-            }
-        }
-    }
-
-    fun fromTypeId(typeId: Int): MyType {
-        return lookup.get(typeId)
-    }
-}
-</code></pre>
-
-<h2>parameter name</h2>
-
-<p>Javaではそもそも出来ないのですが、こんなPOJOクラスがあったとします。</p>
-
-<pre><code class="java">public class User {
-    private String firstName;
-    private String lastName;
-
-    public User(firstName, lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    // その他メソッド省略
-}
-</code></pre>
-
-<pre><code class="java">new User("名", "姓");
-new User("姓", "名"); // 間違っているけど、コンパイルOK
-</code></pre>
-
-<p>第一引数と第二引数がfirstなのか、lastなのかわからなくなります。ランタイムでしか検知できないのが辛いです。</p>
-
-<pre><code class="kotlin">User(firstName = "名", lastName = "姓")
-</code></pre>
-
-<p>引数に名前を設定して、メソッドを呼び出せます。こんなことしても叱られませんし、間違った挙動を起こしません。同じような型が多いメソッド呼び出しでは積極的に使うと気持ち良いです。</p>
-
-<pre><code class="kotlin">User(lastName = "姓", firstName = "名")
-</code></pre>
-
-<h2>最後に</h2>
-
-<p>リストアップしてみたら結構出てきました。。。</p>
-
-<p>落選した項目は<a href="https://gist.github.com/shiraji/2caf8190d282ab3594a21b467980267e">gist</a>で公開しています。</p>
 ]]></content>
   </entry>
   
